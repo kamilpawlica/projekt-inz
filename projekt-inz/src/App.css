@@ -1,10 +1,10 @@
 body{
-  background-color: grey;
+  background-color: rgb(35, 37, 30);
 }
 .navbar {
   height: 50px;
   background-color: goldenrod;
-  color: white;
+  color: black;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -48,6 +48,7 @@ body{
   -moz-box-shadow: 0px 0px 26px 16px rgba(144, 108, 19, 1);
   box-shadow: 0px 0px 26px 16px rgba(144, 108, 19, 1);
   border-radius: 20px;
+  color: white;
 }
 
 .img{
@@ -58,7 +59,7 @@ body{
 }
 
 .desc{
-  color: #333;
+  color: white;
   margin-bottom: 20px;
   line-height: 25px;
 }
@@ -66,7 +67,7 @@ body{
 .cardButton{
   border: none;
   border-radius: 10px;
-  background-color: seagreen;
+  background-color: goldenrod;
   padding: 10px;
   font-weight: bold;
   cursor: pointer;
@@ -89,7 +90,7 @@ body{
   padding: 0 100px;
   font-size: 24px;
   font-weight: 300;
-  color: gray;
+  color: white;
   margin-top: 50px;
 }
 
@@ -98,6 +99,11 @@ body{
   padding-top: 50px;
   font-size: 18px;
   line-height: 24px;
+  color: white;
+}
+
+.postTitle{
+  color:wheat;
 }
 
 .login {
@@ -110,9 +116,9 @@ body{
 .wrapper {
   width: 60%;
   height: 75%;
-  -webkit-box-shadow: 0px 5px 33px -21px rgba(66, 68, 90, 1);
-  -moz-box-shadow: 0px 5px 33px -21px rgba(66, 68, 90, 1);
-  box-shadow: 0px 5px 33px -21px rgba(66, 68, 90, 1);
+  -webkit-box-shadow: 0px 0px 26px 16px rgba(144, 108, 19, 1);
+  -moz-box-shadow: 0px 0px 26px 16px rgba(144, 108, 19, 1);
+  box-shadow: 0px 0px 26px 16px rgba(144, 108, 19, 1);
   display: flex;
   align-items: center;
   border-radius: 20px;
@@ -190,7 +196,7 @@ input{
 
 .submit{
   width: 200px;
-  background-color: rgba(128, 0, 128, 0.671);
+  background-color: goldenrod;
   color: white;
   font-weight: bold;
   border: none;

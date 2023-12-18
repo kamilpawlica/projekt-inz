@@ -10,20 +10,21 @@ const pool = new Pool ({
 
 
 const addUserToDatabase = async (userData) => {
-    const { google_id, first_name, last_name } = userData;
-  
-    // Sprawdź, czy użytkownik już istnieje
-    const res = await pool.query('SELECT * FROM users WHERE google_id = $1', [google_id]);
-    if (res.rows.length === 0) {
-      // Użytkownik nie istnieje, dodaj do bazy danych
-      await pool.query(
-        'INSERT INTO users (google_id, first_name, last_name) VALUES ($1, $2, $3)',
-        [google_id, first_name, last_name]
-      );
-    } else {
-      // Użytkownik już istnieje, możesz zaktualizować dane lub nic nie robić
-    }
-  };    
+  const { google_id, first_name, last_name, email } = userData;
+
+  // Sprawdź, czy użytkownik już istnieje
+  const res = await pool.query('SELECT * FROM users WHERE GoogleID  = $1', [google_id]);
+  if (res.rows.length === 0) {
+    // Użytkownik nie istnieje, dodaj do bazy danych
+    await pool.query(
+      'INSERT INTO users (GoogleID , FirstName , LastName , Email ) VALUES ($1, $2, $3, $4)',
+      [google_id, first_name, last_name, email]
+    );
+  } else {
+    // Użytkownik już istnieje, możesz zaktualizować dane lub nic nie robić
+  }
+};
+
   
   
 

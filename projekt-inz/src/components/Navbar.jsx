@@ -7,9 +7,9 @@ const Navbar = ({ user }) => {
   return (
     <div className="navbar">
       <span className="logo">
-        <Link className="link" to="/">
+        
           Human resource management
-        </Link>
+        
       </span>
       {user ? (
         <ul className="list">

@@ -1,5 +1,4 @@
 const Pool = require("pg").Pool;
-
 const pool = new Pool ({
     user: "postgres",
     password: "admin",
@@ -13,11 +12,11 @@ const addUserToDatabase = async (userData) => {
   const { google_id, first_name, last_name, email } = userData;
 
   // Sprawdź, czy użytkownik już istnieje
-  const res = await pool.query('SELECT * FROM users WHERE GoogleID  = $1', [google_id]);
+  const res = await pool.query('SELECT * FROM pracownicy WHERE googleid = $1', [google_id]);
   if (res.rows.length === 0) {
     // Użytkownik nie istnieje, dodaj do bazy danych
     await pool.query(
-      'INSERT INTO users (GoogleID , FirstName , LastName , Email ) VALUES ($1, $2, $3, $4)',
+      'INSERT INTO pracownicy (googleid, imie, nazwisko, email) VALUES ($1, $2, $3, $4)',
       [google_id, first_name, last_name, email]
     );
   } else {
@@ -25,10 +24,10 @@ const addUserToDatabase = async (userData) => {
   }
 };
 
-  
-  
+
+
 
 module.exports = {
-    pool,
-    addUserToDatabase
+  pool,
+  addUserToDatabase,
 };

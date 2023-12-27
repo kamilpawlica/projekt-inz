@@ -60,9 +60,11 @@ const UserPanel = () => {
 
     return (
         <div>
-            <h1><center>Witaj, {userData.imie} </center></h1>
+            <h1><center>Panel pracownika </center></h1>
+            <h2><center>Witaj, {userData.imie} </center></h2>
             {userData ? (
                 <div>
+                
                     {/* komponenty */}
                 <UserInfo usersData={userData} />
                   

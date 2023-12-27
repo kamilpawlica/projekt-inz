@@ -93,16 +93,30 @@ app.get('/stanowiska/:id', async (req, res) => {
 });
 
 
-// Pobieranie wszystkich benefitów
-app.get('/benefity', async (req, res) => {
+// Pobieranie nazwy benefita na podstawie ID
+app.get('/benefity/:googleid', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM benefity');
-    res.json(result.rows);
+    const googleId = req.params.googleid;
+    const query = `
+      SELECT b.nazwa_benefitu
+      FROM benefity_pracownicy bp
+      JOIN benefity b ON bp.id_benefitu = b.id
+      WHERE bp.googleid = $1
+    `;
+    const { rows } = await pool.query(query, [googleId]);
+
+    if (rows.length > 0) {
+      const benefity = rows.map(row => row.nazwa_benefitu);
+      res.json(benefity);
+    } else {
+      res.status(404).json({ message: 'Benefity nie znalezione' });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Wystąpił błąd podczas pobierania benefitów' });
   }
 });
+
 
 // Pobieranie wszystkich kompetencji
 app.get('/kompetencje', async (req, res) => {
@@ -115,17 +129,44 @@ app.get('/kompetencje', async (req, res) => {
   }
 });
 
-// Pobieranie wszystkich kompetencji
-app.get('/typ_umow', async (req, res) => {
+// Pobieranie nazwy umowy na podstawie id
+app.get('/typ_umow/:id', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM typ_umow');
-    res.json(result.rows);
+    const id = req.params.id;
+    const result = await pool.query('SELECT nazwa_typu_umowy FROM typ_umow WHERE id = $1', [id]);
+
+    if (result.rows.length > 0) {
+      res.json(result.rows[0]); // Zwracamy pierwszą pasującą nazwę umowy
+    } else {
+      res.status(404).json({ message: 'Typ umowy nie znaleziony' });
+    }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Wystąpił błąd podczas pobierania typow umow' });
+    res.status(500).json({ message: 'Wystąpił błąd podczas pobierania typu umowy' });
   }
 });
 
+
+app.get('/kompetencje/:googleid', async (req, res) => {
+  try {
+    const googleId = req.params.googleid;
+    // Pobierz nazwy kompetencji dla danego googleid z tabeli kompetencje_pracownicy
+    const query = `
+      SELECT k.nazwa_kompetencji
+      FROM kompetencje_pracownicy kp
+      JOIN kompetencje k ON kp.kompetencje = k.ID
+      WHERE kp.googleid = $1
+    `;
+    const { rows } = await pool.query(query, [googleId]);
+
+    // Zwróć nazwy kompetencji jako odpowiedź HTTP
+    const kompetencje = rows.map(row => row.nazwa_kompetencji);
+    res.json(kompetencje);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas pobierania kompetencji' });
+  }
+});
 
 
 app.listen("5000", () => {

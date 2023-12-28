@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import UserInfo from '../components/UserInfo';
+import AbsenceForm from '../components/AbsenceForm';
+import Danezdj from "../img/dane.PNG";
+import { Link } from "react-router-dom";
+import "../pages/UserPanel.css"
 const UserPanel = () => {
     const [userData, setUserData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -63,11 +67,12 @@ const UserPanel = () => {
             <h1><center>Panel pracownika </center></h1>
             <h2><center>Witaj, {userData.imie} </center></h2>
             {userData ? (
-                <div>
+                <div className='ukladstrony'>
                 
                     {/* komponenty */}
+                {/*  */}
                 <UserInfo usersData={userData} />
-                  
+                <AbsenceForm usersData={userData} />
 
 
                    

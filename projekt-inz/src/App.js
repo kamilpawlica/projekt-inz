@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import RedirectWithId from  "./components/RedirectWithId";
 import MainPage from "./pages/MainPage";
+
 const App = () => {
   const [user, setUser] = useState(null);
 

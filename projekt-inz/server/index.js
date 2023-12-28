@@ -169,6 +169,74 @@ app.get('/kompetencje/:googleid', async (req, res) => {
 });
 
 
+
+// Endpoint do wstawiania danych nieobecności
+app.post('/insert-absence', async (req, res) => {
+  try {
+    const { googleid, data_poczatkowa, data_koncowa, powod } = req.body;
+
+    // Tutaj możesz dodać walidację danych wejściowych, jeśli jest to wymagane
+
+    // Wstawienie danych do tabeli 'nieobecnosc'
+    const queryText = `
+      INSERT INTO nieobecnosci (googleid, data_poczatkowa, data_koncowa, powod)
+      VALUES ($1, $2, $3, $4)
+    `;
+    const values = [googleid, data_poczatkowa, data_koncowa, powod];
+
+    await pool.query(queryText, values);
+
+    res.status(201).json({ message: 'Dane nieobecności zostały dodane pomyślnie.' });
+  } catch (error) {
+    console.error('Błąd podczas wstawiania danych nieobecności:', error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas wstawiania danych nieobecności.' });
+  }
+});
+
+app.get('/employee-absences/:googleid', async (req, res) => {
+  try {
+    const { googleid } = req.params;
+
+    // Pobierz nieobecności pracownika na podstawie jego googleid
+    const queryText = `
+      SELECT * FROM nieobecnosci
+      WHERE googleid = $1
+    `;
+    const { rows } = await pool.query(queryText, [googleid]);
+
+    res.json(rows);
+  } catch (error) {
+    console.error('Błąd podczas pobierania nieobecności pracownika:', error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas pobierania nieobecności pracownika.' });
+  }
+});
+
+app.delete('/delete-absence/:absenceId', async (req, res) => {
+  try {
+    const { absenceId } = req.params;
+
+    // Usuwanie nieobecności na podstawie ID nieobecności
+    const queryText = `
+      DELETE FROM nieobecnosci
+      WHERE ID = $1
+    `;
+    const values = [absenceId];
+
+    const result = await pool.query(queryText, values);
+
+    if (result.rowCount > 0) {
+      res.status(200).json({ message: 'Nieobecność została usunięta pomyślnie.' });
+    } else {
+      res.status(404).json({ message: 'Nie znaleziono nieobecności do usunięcia.' });
+    }
+  } catch (error) {
+    console.error('Błąd podczas usuwania nieobecności:', error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas usuwania nieobecności.' });
+  }
+});
+
+
+
 app.listen("5000", () => {
   console.log("Server is running!");
 });

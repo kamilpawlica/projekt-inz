@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import "../pages/UserPanel.css"; 
 const UserInfoList = ({ usersData }) => {
   const [userInfo, setUserInfo] = useState(usersData);
   const [stanowisko, setStanowisko] = useState('');
@@ -88,7 +88,7 @@ const UserInfoList = ({ usersData }) => {
   }
 
   return (
-    <div>
+    <div className='pozycja'>
       <h1>Dane użytkownika</h1>
       <ul>
         <li>Typ umowy: {typUmowy}</li>

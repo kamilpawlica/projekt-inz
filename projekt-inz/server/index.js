@@ -129,6 +129,17 @@ app.get('/kompetencje', async (req, res) => {
   }
 });
 
+// Pobieranie wszystkich benefitow
+app.get('/benefity', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM benefity');
+    res.json(result.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas pobierania benefitow' });
+  }
+});
+
 // Pobieranie nazwy umowy na podstawie id
 app.get('/typ_umow/:id', async (req, res) => {
   try {
@@ -232,6 +243,151 @@ app.delete('/delete-absence/:absenceId', async (req, res) => {
   } catch (error) {
     console.error('Błąd podczas usuwania nieobecności:', error);
     res.status(500).json({ message: 'Wystąpił błąd podczas usuwania nieobecności.' });
+  }
+});
+
+
+
+
+
+// Endpoint do wstawiania danych urlopu przez pracownika
+app.post('/insert-leave', async (req, res) => {
+  try {
+    const { googleid, data_rozpoczecia, data_zakonczenia } = req.body;
+
+    // Tutaj możesz dodać walidację danych wejściowych, jeśli jest to wymagane
+
+    // Wstawienie danych do tabeli 'urlopy'
+    const queryText = `
+      INSERT INTO urlopy (googleid, data_rozpoczecia, data_zakonczenia)
+      VALUES ($1, $2, $3)
+    `;
+    const values = [googleid, data_rozpoczecia, data_zakonczenia];
+
+    await pool.query(queryText, values);
+
+    res.status(201).json({ message: 'Urlop został dodany pomyślnie.' });
+  } catch (error) {
+    console.error('Błąd podczas dodawania urlopu:', error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas dodawania urlopu.' });
+  }
+});
+
+
+
+
+// Endpoint do pobierania danych urlopów pracownika
+app.get('/employee-leaves/:googleid', async (req, res) => {
+  try {
+    const { googleid } = req.params;
+
+    // Pobierz urlopy pracownika na podstawie jego googleid
+    const queryText = `
+      SELECT * FROM urlopy
+      WHERE googleid = $1
+    `;
+    const { rows } = await pool.query(queryText, [googleid]);
+
+    res.json(rows);
+  } catch (error) {
+    console.error('Błąd podczas pobierania urlopów pracownika:', error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas pobierania urlopów pracownika.' });
+  }
+});
+
+
+
+
+// Endpoint do usuwania danych urlopów pracownika
+app.delete('/delete-leave/:leaveId', async (req, res) => {
+  try {
+    const { leaveId } = req.params;
+
+    // Usuwanie urlopu na podstawie ID urlopu
+    const queryText = `
+      DELETE FROM urlopy
+      WHERE ID = $1
+    `;
+    const values = [leaveId];
+
+    const result = await pool.query(queryText, values);
+
+    if (result.rowCount > 0) {
+      res.status(200).json({ message: 'Urlop został usunięty pomyślnie.' });
+    } else {
+      res.status(404).json({ message: 'Nie znaleziono urlopu do usunięcia.' });
+    }
+  } catch (error) {
+    console.error('Błąd podczas usuwania urlopu:', error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas usuwania urlopu.' });
+  }
+});
+
+
+
+app.post('/insert-availability', async (req, res) => {
+  try {
+    const { googleid, dzien_tygodnia, godzina_rozpoczecia, godzina_zakonczenia } = req.body;
+
+    // Tutaj możesz dodać walidację danych wejściowych, jeśli jest to wymagane
+
+    // Wstawienie danych do tabeli 'dostepnosc'
+    const queryText = `
+      INSERT INTO dostepnosc (googleid, dzien_tygodnia, godzina_rozpoczecia, godzina_zakonczenia)
+      VALUES ($1, $2, $3, $4)
+    `;
+    const values = [googleid, dzien_tygodnia, godzina_rozpoczecia, godzina_zakonczenia];
+
+    await pool.query(queryText, values);
+
+    res.status(201).json({ message: 'Dostępność została dodana pomyślnie.' });
+  } catch (error) {
+    console.error('Błąd podczas dodawania dostępności:', error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas dodawania dostępności.' });
+  }
+});
+
+
+app.get('/employee-availability/:googleid', async (req, res) => {
+  try {
+    const { googleid } = req.params;
+
+    // Pobierz dostępność pracownika na podstawie jego googleid
+    const queryText = `
+      SELECT * FROM dostepnosc
+      WHERE googleid = $1
+    `;
+    const { rows } = await pool.query(queryText, [googleid]);
+
+    res.json(rows);
+  } catch (error) {
+    console.error('Błąd podczas pobierania dostępności pracownika:', error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas pobierania dostępności pracownika.' });
+  }
+});
+
+
+app.delete('/delete-availability/:availabilityId', async (req, res) => {
+  try {
+    const { availabilityId } = req.params;
+
+    // Usuwanie dostępności na podstawie ID dostępności
+    const queryText = `
+      DELETE FROM dostepnosc
+      WHERE ID = $1
+    `;
+    const values = [availabilityId];
+
+    const result = await pool.query(queryText, values);
+
+    if (result.rowCount > 0) {
+      res.status(200).json({ message: 'Dostępność została usunięta pomyślnie.' });
+    } else {
+      res.status(404).json({ message: 'Nie znaleziono dostępności do usunięcia.' });
+    }
+  } catch (error) {
+    console.error('Błąd podczas usuwania dostępności:', error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas usuwania dostępności.' });
   }
 });
 

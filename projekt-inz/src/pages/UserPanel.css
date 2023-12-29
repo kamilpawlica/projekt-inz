@@ -1,6 +1,13 @@
 .ukladstrony {
     display: flex;
-    flex-direction: row;
-    border: 1px black solid;
     justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    align-content: center;
+    border: 1px black solid;
+    
   }
+
+.pozycja {
+  margin-bottom: 100px;
+}

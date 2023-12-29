@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import UserInfo from '../components/UserInfo';
 import AbsenceForm from '../components/AbsenceForm';
+import LeaveForm from '../components/LeaveForm';
+import AvailabilityForm from '../components/AvailabilityForm';
 import Danezdj from "../img/dane.PNG";
 import { Link } from "react-router-dom";
 import "../pages/UserPanel.css"
@@ -73,8 +75,8 @@ const UserPanel = () => {
                 {/*  */}
                 <UserInfo usersData={userData} />
                 <AbsenceForm usersData={userData} />
-
-
+                <LeaveForm usersData={userData} />
+                <AvailabilityForm usersData={userData} />
                    
                 </div>
             ) : (

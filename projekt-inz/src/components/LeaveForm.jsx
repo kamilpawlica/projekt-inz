@@ -6,12 +6,12 @@ const AbsenceForm = ({ usersData }) => {
   const initialFormData = {
     data_poczatkowa: "",
     data_koncowa: "",
-    powod: "",
   };
 
   const [formData, setFormData] = useState(initialFormData);
   const [error, setError] = useState("");
   const [absences, setAbsences] = useState([]);
+  const [usedDays, setUsedDays] = useState(0); // Licznik wykorzystanych dni urlopu
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,7 +21,7 @@ const AbsenceForm = ({ usersData }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { data_poczatkowa, data_koncowa, powod } = formData;
+    const { data_poczatkowa, data_koncowa } = formData;
 
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Ustaw godzinę na północ, aby porównywać tylko daty
@@ -31,7 +31,7 @@ const AbsenceForm = ({ usersData }) => {
       
       // Wyświetl komunikat o błędzie za pomocą react-toastify
       toast.error(
-        "Nie można ustawić nieobecności w dniu wcześniejszym niż dzisiaj.",
+        "Nie można ustawić dni urlopowych w dniu wcześniejszym niż dzisiaj.",
         {
           position: "top-right",
           autoClose: 3000, // Czas wyświetlania komunikatu (3 sekundy)
@@ -60,6 +60,28 @@ const AbsenceForm = ({ usersData }) => {
       return;
     }
 
+    // Oblicz liczbę dni urlopu między datą początkową a datą końcową
+    const oneDay = 24 * 60 * 60 * 1000; // Liczba milisekund w jednym dniu
+    const startDate = new Date(data_poczatkowa);
+    const endDate = new Date(data_koncowa);
+    const daysDiff = Math.round(
+      Math.abs((startDate - endDate) / oneDay)
+    );
+
+    // Sprawdź, czy użytkownik nie przekracza limitu 20 dni urlopu
+    if (usedDays + daysDiff > 20) {
+      
+      // Wyświetl komunikat o błędzie za pomocą react-toastify
+      toast.error("Przekroczyłeś limit 20 dni urlopu.", {
+        position: "top-right",
+        autoClose: 3000, // Czas wyświetlania komunikatu (3 sekundy)
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+      });
+      return;
+    }
+
     try {
       const response = await fetch("http://localhost:5000/insert-absence", {
         method: "POST",
@@ -70,19 +92,21 @@ const AbsenceForm = ({ usersData }) => {
           googleid: usersData.googleid,
           data_poczatkowa,
           data_koncowa,
-          powod,
         }),
       });
 
       if (response.ok) {
         // Wyświetl komunikat o sukcesie za pomocą react-toastify
-        toast.success("Dane nieobecności zostały dodane pomyślnie.", {
+        toast.success("Dni urlopowe zostały dodane pomyślnie.", {
           position: "top-right",
           autoClose: 3000, // Czas wyświetlania komunikatu (3 sekundy)
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
         });
+
+        // Zaktualizuj licznik wykorzystanych dni urlopu
+        setUsedDays(usedDays + daysDiff);
 
         // Wyczyść pola formularza i błąd
         setFormData(initialFormData);
@@ -91,14 +115,14 @@ const AbsenceForm = ({ usersData }) => {
         fetchAbsences();
       } else {
         // Obsługa błędu, np. wyświetlenie komunikatu o błędzie
-        console.error("Błąd podczas dodawania danych nieobecności.");
+        console.error("Błąd podczas dodawania dni urlopowych.");
       }
     } catch (error) {
       console.error("Błąd podczas wysyłania żądania HTTP:", error);
     }
   };
 
-  const handleDeleteAbsence = async (absenceID) => {
+  const handleDeleteAbsence = async (absenceID, daysDiff) => {
     try {
       const response = await fetch(
         `http://localhost:5000/delete-absence/${absenceID}`,
@@ -109,7 +133,7 @@ const AbsenceForm = ({ usersData }) => {
 
       if (response.ok) {
         // Wyświetl komunikat o sukcesie za pomocą react-toastify
-        toast.success("Nieobecność została usunięta pomyślnie.", {
+        toast.success("Dni urlopowe zostały usunięte pomyślnie.", {
           position: "top-right",
           autoClose: 3000, // Czas wyświetlania komunikatu (3 sekundy)
           hideProgressBar: false,
@@ -117,13 +141,14 @@ const AbsenceForm = ({ usersData }) => {
           pauseOnHover: true,
         });
 
-        console.log(absenceID);
+        // Zaktualizuj licznik wykorzystanych dni urlopu po usunięciu
+        setUsedDays(usedDays - daysDiff);
 
-        // Odśwież listę nieobecności po usunięciu
+        // Odśwież listę nieobecności
         fetchAbsences();
       } else {
         // Obsługa błędu, np. wyświetlenie komunikatu o błędzie
-        console.error("Błąd podczas usuwania nieobecności.");
+        console.error("Błąd podczas usuwania dni urlopowych.");
       }
     } catch (error) {
       console.error("Błąd podczas wysyłania żądania HTTP:", error);
@@ -142,7 +167,7 @@ const AbsenceForm = ({ usersData }) => {
       const data = await response.json();
       setAbsences(data);
     } catch (error) {
-      console.error("Błąd podczas pobierania nieobecności pracownika:", error);
+      console.error("Błąd podczas pobierania urlopu pracownika:", error);
     }
   };
 
@@ -153,7 +178,10 @@ const AbsenceForm = ({ usersData }) => {
   return (
     <div className='pozycja'>
       <ToastContainer />
-      <h2>Dodaj nieobecność</h2>
+      <h2>Zaplanuj urlop</h2>
+      <p>
+        Dostępne dni urlopu: {20 - usedDays} / 20
+      </p>
       <form onSubmit={handleSubmit}>
         {error && <p style={{ color: "red" }}>{error}</p>}
         <div>
@@ -177,17 +205,7 @@ const AbsenceForm = ({ usersData }) => {
           />
         </div>
         <div>
-          <label>Powód:</label>
-          <input
-            type="text"
-            name="powod"
-            value={formData.powod}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <button type="submit">Dodaj nieobecność</button>
+          <button type="submit">Dodaj dni urlopowe</button>
         </div>
       </form>
       {absences.length > 0 && (
@@ -198,9 +216,21 @@ const AbsenceForm = ({ usersData }) => {
               <li key={absence.id}>
                 Data początkowa:{" "}
                 {new Date(absence.data_poczatkowa).toLocaleDateString()}, Data
-                końcowa: {new Date(absence.data_koncowa).toLocaleDateString()},
-                Powód: {absence.powod}
-                <button onClick={() => handleDeleteAbsence(absence.id)}>
+                końcowa: {new Date(absence.data_koncowa).toLocaleDateString()}
+                <button
+                  onClick={() =>
+                    handleDeleteAbsence(
+                      absence.id,
+                      Math.round(
+                        Math.abs(
+                          (new Date(absence.data_poczatkowa) -
+                            new Date(absence.data_koncowa)) /
+                            (24 * 60 * 60 * 1000)
+                        )
+                      )
+                    )
+                  }
+                >
                   Usuń
                 </button>
               </li>

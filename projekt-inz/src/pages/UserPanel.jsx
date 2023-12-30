@@ -4,6 +4,8 @@ import UserInfo from '../components/UserInfo';
 import AbsenceForm from '../components/AbsenceForm';
 import LeaveForm from '../components/LeaveForm';
 import AvailabilityForm from '../components/AvailabilityForm';
+import Benefits from '../components/Benefits';
+import Training from '../components/Training';
 import Danezdj from "../img/dane.PNG";
 import { Link } from "react-router-dom";
 import "../pages/UserPanel.css"
@@ -77,6 +79,8 @@ const UserPanel = () => {
                 <AbsenceForm usersData={userData} />
                 <LeaveForm usersData={userData} />
                 <AvailabilityForm usersData={userData} />
+                <Training usersData={userData} />
+                <Benefits />
                    
                 </div>
             ) : (

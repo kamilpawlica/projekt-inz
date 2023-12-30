@@ -392,6 +392,139 @@ app.delete('/delete-availability/:availabilityId', async (req, res) => {
 });
 
 
+app.delete('/delete-employee-training/:googleid', async (req, res) => {
+  try {
+    const { googleid } = req.params;
+
+    // Usuwanie rekordu z tabeli szkolenia_pracownicy na podstawie googleid
+    const queryText = `
+      DELETE FROM szkolenia_pracownicy
+      WHERE googleid = $1
+    `;
+    const values = [googleid];
+
+    const result = await pool.query(queryText, values);
+
+    if (result.rowCount > 0) {
+      res.status(200).json({ message: 'Rekord został usunięty pomyślnie.' });
+    } else {
+      res.status(404).json({ message: 'Nie znaleziono rekordu do usunięcia.' });
+    }
+  } catch (error) {
+    console.error('Błąd podczas usuwania rekordu:', error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas usuwania rekordu.' });
+  }
+});
+
+
+app.get('/assigned-trainings/:googleid', async (req, res) => {
+  const { googleid } = req.params;
+
+  try {
+    const result = await pool.query(`
+      SELECT sz.*, sp.googleid
+      FROM szkolenia_pracownicy sp
+      JOIN szkolenia sz ON sp.id_szkolenia = sz.id
+      WHERE sp.googleid = $1
+    `, [googleid]);
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas pobierania przypisanych szkoleń pracownika.' });
+  }
+});
+
+app.get('/szkolenia_pracownicy/:googleid', async (req, res) => {
+  try {
+    const { googleid } = req.params;
+
+    // Pobierz szkolenia przypisane do pracownika na podstawie jego googleid
+    const queryText = `
+    SELECT * FROM szkolenia_pracownicy
+    WHERE googleid = $1
+    `;
+    const { rows } = await pool.query(queryText, [googleid]);
+
+    res.json(rows);
+  } catch (error) {
+    console.error('Błąd podczas pobierania szkoleń pracownika:', error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas pobierania szkoleń pracownika.' });
+  }
+});
+
+app.get('/szkolenia_pracownicy', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM szkolenia_pracownicy');
+    res.json(result.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas pobierania szkolen' });
+  }
+});
+
+//pobieranie wszystkich szkolen w firmie
+app.get('/szkolenia', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM szkolenia');
+    res.json(result.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas pobierania szkolen' });
+  }
+});
+
+
+//wstawianie szkolenia 
+app.post('/insert-training', async (req, res) => {
+  try {
+    const { nazwa_szkolenia, opis_szkolenia, data_szkolenia } = req.body;
+
+    // Tutaj możesz dodać walidację danych wejściowych, jeśli jest to wymagane
+
+    // Wstawienie danych do tabeli 'szkolenia'
+    const queryText = `
+      INSERT INTO szkolenia (nazwa_szkolenia, opis_szkolenia, data_szkolenia)
+      VALUES ($1, $2, $3)
+    `;
+    const values = [nazwa_szkolenia, opis_szkolenia, data_szkolenia];
+
+    await pool.query(queryText, values);
+
+    res.status(201).json({ message: 'Szkolenie zostało dodane pomyślnie.' });
+  } catch (error) {
+    console.error('Błąd podczas dodawania szkolenia:', error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas dodawania szkolenia.' });
+  }
+});
+
+
+app.post('/assign-training', async (req, res) => {
+  try {
+    const { googleid, id_szkolenia } = req.body;
+
+    // Tutaj możesz dodać walidację danych wejściowych, jeśli jest to wymagane
+
+    // Przypisanie pracownika do szkolenia w tabeli 'szkolenia_pracownicy'
+    const queryText = `
+      INSERT INTO szkolenia_pracownicy (googleid, id_szkolenia)
+      VALUES ($1, $2)
+    `;
+    const values = [googleid, id_szkolenia];
+
+    await pool.query(queryText, values);
+
+    res.status(201).json({ message: 'Przypisanie szkolenia do pracownika zostało wykonane pomyślnie.' });
+  } catch (error) {
+    console.error('Błąd podczas przypisywania szkolenia do pracownika:', error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas przypisywania szkolenia do pracownika.' });
+  }
+
+
+ 
+
+});
+
 
 app.listen("5000", () => {
   console.log("Server is running!");

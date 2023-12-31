@@ -42,7 +42,22 @@ const Training = ({ usersData }) => {
     fetchAssignedTrainings();
   }, [usersData.googleid]);
 
+  const isAssignedToTraining = (id_szkolenia) => {
+    return assignedTrainings.some((training) => training.id === id_szkolenia);
+  };
+
   const handleAssignTraining = async (id_szkolenia) => {
+    if (isAssignedToTraining(id_szkolenia)) {
+      toast.warning('Jesteś już przypisany do tego szkolenia.', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+      });
+      return;
+    }
+
     try {
       const response = await fetch('http://localhost:5000/assign-training', {
         method: 'POST',

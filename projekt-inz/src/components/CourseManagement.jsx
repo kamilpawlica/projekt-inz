@@ -9,6 +9,7 @@ const CourseManagement = () => {
     opis_szkolenia: '',
     data_szkolenia: '',
   });
+  const [registeredEmployees, setRegisteredEmployees] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,6 +62,18 @@ const CourseManagement = () => {
       return;
     }
 
+    const currentDate = new Date();
+    const selectedDate = new Date(newCourse.data_szkolenia);
+
+    if (selectedDate < currentDate) {
+      // Wyświetl toast, jeśli data jest wcześniejsza niż dzisiejsza data
+      toast.error('Data szkolenia nie może być wcześniejsza niż dzisiejsza data', {
+        position: 'top-right',
+        autoClose: 3000, // Czas wyświetlania toastu w milisekundach
+      });
+      return;
+    }
+
     try {
       const response = await fetch('http://localhost:5000/add_szkolenie', {
         method: 'POST',
@@ -95,9 +108,43 @@ const CourseManagement = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchRegisteredEmployees = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/szkolenia_prac');
+        if (!response.ok) {
+          throw new Error('Błąd podczas pobierania danych pracowników zapisanych na szkolenia');
+        }
+        const data = await response.json();
+
+        // Przetwarzanie danych, aby pracownicy byli wyświetlani tylko raz
+        const uniqueEmployees = {};
+        data.forEach((employee) => {
+          const key = `${employee.imie}_${employee.nazwisko}_${employee.email}`;
+          if (!uniqueEmployees[key]) {
+            uniqueEmployees[key] = {
+              imie: employee.imie,
+              nazwisko: employee.nazwisko,
+              email: employee.email,
+              szkolenia: [employee.nazwa_szkolenia],
+            };
+          } else {
+            uniqueEmployees[key].szkolenia.push(employee.nazwa_szkolenia);
+          }
+        });
+
+        setRegisteredEmployees(Object.values(uniqueEmployees));
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchRegisteredEmployees();
+  }, []);
+
   return (
     <div>
-      <h2>Zarządzanie Szkoleniami</h2>
+      <h2><center>Zarządzanie Szkoleniami</center></h2>
       <table>
         <thead>
           <tr>
@@ -112,7 +159,7 @@ const CourseManagement = () => {
             <tr key={course.id}>
               <td>{course.nazwa_szkolenia}</td>
               <td>{course.opis_szkolenia}</td>
-              <td>{course.data_szkolenia}</td>
+              <td>{new Date(course.data_szkolenia).toLocaleDateString()}</td>
               <td>
                 <button onClick={() => handleDeleteCourse(course.id)}>Usuń</button>
               </td>
@@ -141,6 +188,28 @@ const CourseManagement = () => {
         />
         <button onClick={handleAddCourse}>Dodaj</button>
       </div>
+
+      <h3><center>Lista pracowników zapisanych na szkolenia</center></h3>
+<table>
+  <thead>
+    <tr>
+      <th>Imię</th>
+      <th>Nazwisko</th>
+      <th>Email</th>
+      <th>Nazwa Szkolenia</th>
+    </tr>
+  </thead>
+  <tbody>
+    {registeredEmployees.map((employee) => (
+      <tr key={`${employee.email}_${employee.imie}_${employee.nazwisko}`}>
+        <td>{employee.imie}</td>
+        <td>{employee.nazwisko}</td>
+        <td>{employee.email}</td>
+        <td>{employee.szkolenia.join(', ')}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
       <ToastContainer />
     </div>
   );

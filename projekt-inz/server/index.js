@@ -810,6 +810,71 @@ app.delete('/delete_szkolenie/:id', async (req, res) => {
 });
 
 
+app.get('/szkolenia_prac', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT prac.imie, prac.nazwisko, prac.email, szk.nazwa_szkolenia
+      FROM szkolenia_pracownicy sp
+      INNER JOIN pracownicy prac ON sp.googleid = prac.googleid
+      INNER JOIN szkolenia szk ON sp.id_szkolenia = szk.id
+    `);
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas pobierania danych' });
+  }
+});
+
+
+app.get('/urlopy', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT p.imie, p.nazwisko, p.email, u.data_rozpoczecia, u.data_zakonczenia
+      FROM urlopy u
+      INNER JOIN pracownicy p ON u.googleid = p.googleid
+    `);
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas pobierania danych urlopów' });
+  }
+});
+
+app.get('/nieobecnosci', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT p.imie, p.nazwisko, p.email, n.data_poczatkowa, n.data_koncowa, n.powod
+      FROM nieobecnosci n
+      INNER JOIN pracownicy p ON n.googleid = p.googleid
+    `);
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas pobierania danych nieobecności pracowników' });
+  }
+});
+
+app.get('/dostepnosc', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT p.imie, p.nazwisko, p.email, d.dzien_tygodnia, d.godzina_rozpoczecia, d.godzina_zakonczenia
+      FROM dostepnosc d
+      INNER JOIN pracownicy p ON d.googleid = p.googleid
+    `);
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas pobierania danych dyspozycji pracowników' });
+  }
+});
+
+
+
+
 app.listen("5000", () => {
   console.log("Server is running!");
 });

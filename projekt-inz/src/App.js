@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import RedirectWithId from  "./components/RedirectWithId";
 import MainPage from "./pages/MainPage";
+import AdminPanel from "./pages/AdminPanel";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -43,6 +44,7 @@ const App = () => {
           
           <Route path="/" element={user ? <RedirectWithId user={user} /> : <MainPage />} />
           <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
+          <Route path="/AdminPanel" element= {<AdminPanel/>}/>
           {/* Tutaj można dodać więcej ścieżek jeśli potrzebujesz */}
         </Routes>
       </div>

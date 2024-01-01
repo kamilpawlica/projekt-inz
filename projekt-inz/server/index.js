@@ -520,9 +520,293 @@ app.post('/assign-training', async (req, res) => {
     res.status(500).json({ message: 'Wystąpił błąd podczas przypisywania szkolenia do pracownika.' });
   }
 
+});
 
- 
+/* AdminPanel */
+app.get('/pracownicy', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT 
+        p.googleid, 
+        p.imie, 
+        p.nazwisko, 
+        p.email, 
+        s.nazwa_stanowiska, 
+        tu.nazwa_typu_umowy, 
+        p.wynagrodzenie
+      FROM pracownicy p
+      INNER JOIN stanowiska s ON p.stanowisko = s.id
+      INNER JOIN typ_umow tu ON p.typ_umowy = tu.id
+    `);
 
+    if (result.rows.length > 0) {
+      res.json(result.rows);
+    } else {
+      res.status(404).json({ message: 'Nie znaleziono użytkowników' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas pobierania danych użytkowników' });
+  }
+});
+
+
+app.get('/benefity_pracownicy', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT bp.googleid, bp.id_benefitu, b.nazwa_benefitu
+      FROM benefity_pracownicy bp
+      INNER JOIN benefity b ON bp.id_benefitu = b.id
+    `);
+
+    if (result.rows.length > 0) {
+      res.json(result.rows);
+    } else {
+      res.status(404).json({ message: 'Nie znaleziono benefitów pracowników' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas pobierania benefitów pracowników' });
+  }
+});
+
+app.get('/kompetencje_pracownicy', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT kp.googleid, k.nazwa_kompetencji
+      FROM kompetencje_pracownicy kp
+      INNER JOIN kompetencje k ON kp.kompetencje = k.id
+    `);
+
+    if (result.rows.length > 0) {
+      res.json(result.rows);
+    } else {
+      res.status(404).json({ message: 'Nie znaleziono kompetencji pracowników' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas pobierania kompetencji pracowników' });
+  }
+});
+
+
+app.delete('/delete_benefit/:id', async (req, res) => {
+  const benefitId = req.params.id;
+
+  try {
+    // Sprawdź, czy benefit o danym ID istnieje
+    const checkBenefit = await pool.query('SELECT * FROM benefity WHERE id = $1', [benefitId]);
+
+    if (checkBenefit.rows.length === 0) {
+      return res.status(404).json({ message: 'Benefit o podanym ID nie istnieje' });
+    }
+
+    // Usuń benefit z tabeli
+    await pool.query('DELETE FROM benefity WHERE id = $1', [benefitId]);
+
+    res.json({ message: 'Benefit został pomyślnie usunięty' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas usuwania benefitu' });
+  }
+});
+
+
+app.post('/add_benefit', async (req, res) => {
+  const { nazwa_benefitu } = req.body;
+
+  try {
+    const result = await pool.query('INSERT INTO benefity (nazwa_benefitu) VALUES ($1) RETURNING *', [nazwa_benefitu]);
+
+    if (result.rows.length > 0) {
+      res.status(201).json(result.rows[0]); // Zwróć dodany benefit
+    } else {
+      res.status(404).json({ message: 'Nie udało się dodać benefitu' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas dodawania benefitu' });
+  }
+});
+
+
+app.get('/stanowiska', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM stanowiska');
+    res.json(result.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas pobierania stanowisk' });
+  }
+});
+
+app.delete('/delete_stanowisko/:id', async (req, res) => {
+  const stanowiskoId = req.params.id;
+
+  try {
+    // Sprawdź, czy stanowisko o danym ID istnieje
+    const checkStanowisko = await pool.query('SELECT * FROM stanowiska WHERE id = $1', [stanowiskoId]);
+
+    if (checkStanowisko.rows.length === 0) {
+      return res.status(404).json({ message: 'Stanowisko o podanym ID nie istnieje' });
+    }
+
+    // Usuń stanowisko z tabeli
+    await pool.query('DELETE FROM stanowiska WHERE id = $1', [stanowiskoId]);
+
+    res.json({ message: 'Stanowisko zostało pomyślnie usunięte' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas usuwania stanowiska' });
+  }
+});
+
+
+app.post('/add_stanowisko', async (req, res) => {
+  const { nazwa_stanowiska } = req.body;
+
+  try {
+    const result = await pool.query('INSERT INTO stanowiska (nazwa_stanowiska) VALUES ($1) RETURNING *', [nazwa_stanowiska]);
+
+    if (result.rows.length > 0) {
+      res.status(201).json(result.rows[0]); // Zwróć dodane stanowisko
+    } else {
+      res.status(404).json({ message: 'Nie udało się dodać stanowiska' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas dodawania stanowiska' });
+  }
+});
+
+
+app.delete('/delete_kompetencja/:id', async (req, res) => {
+  const kompetencjaId = req.params.id;
+
+  try {
+    // Sprawdź, czy kompetencja o danym ID istnieje
+    const checkKompetencja = await pool.query('SELECT * FROM kompetencje WHERE id = $1', [kompetencjaId]);
+
+    if (checkKompetencja.rows.length === 0) {
+      return res.status(404).json({ message: 'Kompetencja o podanym ID nie istnieje' });
+    }
+
+    // Usuń kompetencję z tabeli
+    await pool.query('DELETE FROM kompetencje WHERE id = $1', [kompetencjaId]);
+
+    res.json({ message: 'Kompetencja została pomyślnie usunięta' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas usuwania kompetencji' });
+  }
+});
+
+
+app.post('/add_kompetencja', async (req, res) => {
+  const { nazwa_kompetencji } = req.body;
+
+  try {
+    const result = await pool.query('INSERT INTO kompetencje (nazwa_kompetencji) VALUES ($1) RETURNING *', [nazwa_kompetencji]);
+
+    if (result.rows.length > 0) {
+      res.status(201).json(result.rows[0]); // Zwróć dodaną kompetencję
+    } else {
+      res.status(404).json({ message: 'Nie udało się dodać kompetencji' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas dodawania kompetencji' });
+  }
+});
+
+app.get('/typy_umow', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM typ_umow');
+    res.json(result.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas pobierania typów umów' });
+  }
+});
+
+
+app.post('/add_typ_umowy', async (req, res) => {
+  const { nazwa_typu_umowy } = req.body;
+
+  try {
+    const result = await pool.query('INSERT INTO typ_umow (nazwa_typu_umowy) VALUES ($1) RETURNING *', [nazwa_typu_umowy]);
+
+    if (result.rows.length > 0) {
+      res.status(201).json(result.rows[0]); // Zwróć dodany typ umowy
+    } else {
+      res.status(404).json({ message: 'Nie udało się dodać typu umowy' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas dodawania typu umowy' });
+  }
+});
+
+app.delete('/delete_typ_umowy/:id', async (req, res) => {
+  const typUmowyId = req.params.id;
+
+  try {
+    // Sprawdź, czy typ umowy o danym ID istnieje
+    const checkTypUmowy = await pool.query('SELECT * FROM typ_umow WHERE id = $1', [typUmowyId]);
+
+    if (checkTypUmowy.rows.length === 0) {
+      return res.status(404).json({ message: 'Typ umowy o podanym ID nie istnieje' });
+    }
+
+    // Usuń typ umowy z tabeli
+    await pool.query('DELETE FROM typ_umow WHERE id = $1', [typUmowyId]);
+
+    res.json({ message: 'Typ umowy został pomyślnie usunięty' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas usuwania typu umowy' });
+  }
+});
+
+app.post('/add_szkolenie', async (req, res) => {
+  const { nazwa_szkolenia, opis_szkolenia, data_szkolenia } = req.body;
+
+  try {
+    const result = await pool.query(
+      'INSERT INTO szkolenia (nazwa_szkolenia, opis_szkolenia, data_szkolenia) VALUES ($1, $2, $3) RETURNING *',
+      [nazwa_szkolenia, opis_szkolenia, data_szkolenia]
+    );
+
+    if (result.rows.length > 0) {
+      res.status(201).json(result.rows[0]); // Zwróć dodane szkolenie
+    } else {
+      res.status(404).json({ message: 'Nie udało się dodać szkolenia' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas dodawania szkolenia' });
+  }
+});
+
+app.delete('/delete_szkolenie/:id', async (req, res) => {
+  const szkolenieId = req.params.id;
+
+  try {
+    // Sprawdź, czy szkolenie o danym ID istnieje
+    const checkSzkolenie = await pool.query('SELECT * FROM szkolenia WHERE id = $1', [szkolenieId]);
+
+    if (checkSzkolenie.rows.length === 0) {
+      return res.status(404).json({ message: 'Szkolenie o podanym ID nie istnieje' });
+    }
+
+    // Usuń szkolenie z tabeli
+    await pool.query('DELETE FROM szkolenia WHERE id = $1', [szkolenieId]);
+
+    res.json({ message: 'Szkolenie zostało pomyślnie usunięte' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas usuwania szkolenia' });
+  }
 });
 
 

@@ -6,6 +6,7 @@ import LeaveForm from '../components/LeaveForm';
 import AvailabilityForm from '../components/AvailabilityForm';
 import Benefits from '../components/Benefits';
 import Training from '../components/Training';
+import "../pages/AdminPanel.jsx";
 import Danezdj from "../img/dane.PNG";
 import { Link } from "react-router-dom";
 import "../pages/UserPanel.css"
@@ -69,7 +70,8 @@ const UserPanel = () => {
     return (
         <div>
             <h1><center>Panel pracownika </center></h1>
-            <h2><center>Witaj, {userData.imie} </center></h2>
+            <h2><center>Witaj, {userData.imie}  </center></h2>
+            <h3><center><Link to = "AdminPanel">AdminPanel </Link></center></h3>
             {userData ? (
                 <div className='ukladstrony'>
                 

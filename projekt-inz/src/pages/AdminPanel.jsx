@@ -14,7 +14,8 @@ const AdminPanel = () => {
     <div>
     <h1><center>Panel administratora </center></h1>
     <div className='uklad'>
-    <EmployeeList/>
+     
+    {<EmployeeList/>}
     <EmployeeAvailability/>
     <BenefitsManagement/>
     <PositionManagement/>

@@ -873,7 +873,136 @@ app.get('/dostepnosc', async (req, res) => {
 });
 
 
+app.put('/zmien_wynagrodzenie/:googleid', async (req, res) => {
+  try {
+    const googleid = req.params.googleid;
+    const noweWynagrodzenie = req.body.wynagrodzenie;
 
+    if (!noweWynagrodzenie) {
+      return res.status(400).json({ message: 'Brak nowego wynagrodzenia w żądaniu' });
+    }
+
+    const query = 'UPDATE pracownicy SET wynagrodzenie = $1 WHERE googleid = $2';
+    const values = [noweWynagrodzenie, googleid];
+
+    const result = await pool.query(query, values);
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: 'Pracownik o podanym ID nie istnieje' });
+    }
+
+    return res.status(200).json({ message: 'Wynagrodzenie pracownika zostało zmienione', nowe_wynagrodzenie: noweWynagrodzenie });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Wystąpił błąd serwera' });
+  }
+});
+
+
+app.put('/zmien_stanowisko/:googleid', async (req, res) => {
+  try {
+    const { googleid } = req.params;
+    const { noweStanowiskoId } = req.body; // Zakładam, że przesyłasz ID nowego stanowiska
+
+    // Sprawdzamy, czy pracownik istnieje
+    const checkEmployeeQuery = 'SELECT * FROM pracownicy WHERE googleid = $1';
+    const employee = await pool.query(checkEmployeeQuery, [googleid]);
+
+    if (employee.rows.length === 0) {
+      return res.status(404).json({ message: 'Pracownik o podanym googleid nie istnieje' });
+    }
+
+    // Sprawdzamy, czy nowe stanowisko istnieje
+    const checkPositionQuery = 'SELECT * FROM stanowiska WHERE id = $1';
+    const position = await pool.query(checkPositionQuery, [noweStanowiskoId]);
+
+    if (position.rows.length === 0) {
+      return res.status(404).json({ message: 'Stanowisko o podanym ID nie istnieje' });
+    }
+
+    // Aktualizujemy stanowisko pracownika w tabeli pracownicy
+    const updateEmployeePositionQuery = 'UPDATE pracownicy SET stanowisko = $1 WHERE googleid = $2';
+    await pool.query(updateEmployeePositionQuery, [noweStanowiskoId, googleid]);
+
+    return res.status(200).json({ message: 'Stanowisko pracownika zostało zaktualizowane' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Wystąpił błąd podczas aktualizacji stanowiska pracownika' });
+  }
+});
+
+
+app.get('/pracownicy_lista', async (req, res) => {
+  try {
+      const query = `
+          SELECT 
+              p.googleid,
+              p.imie, 
+              p.nazwisko, 
+              p.email, 
+              s.nazwa_stanowiska as stanowisko, 
+              tu.nazwa_typu_umowy as typ_umowy, 
+              array_agg(distinct k.nazwa_kompetencji) as kompetencje, 
+              array_agg(distinct b.nazwa_benefitu) as benefity, 
+              p.wynagrodzenie
+          FROM 
+              pracownicy p
+          LEFT JOIN stanowiska s ON p.stanowisko = s.id
+          LEFT JOIN typ_umow tu ON p.typ_umowy = tu.id
+          LEFT JOIN kompetencje_pracownicy kp ON p.googleid = kp.googleid
+          LEFT JOIN kompetencje k ON kp.kompetencje = k.id
+          LEFT JOIN benefity_pracownicy bp ON p.googleid = bp.googleid
+          LEFT JOIN benefity b ON bp.id_benefitu = b.id
+          GROUP BY p.googleid, s.nazwa_stanowiska, tu.nazwa_typu_umowy, p.wynagrodzenie
+      `;
+      
+      const result = await pool.query(query);
+      res.json(result.rows);
+  } catch (err) {
+      console.error(err);
+      res.status(500).send('Error while fetching data');
+  }
+});
+
+
+app.put('/aktualizuj_pracownika/:googleid', async (req, res) => {
+  const googleid = req.params.googleid;
+  const { stanowisko, typ_umowy, kompetencje, benefity, wynagrodzenie } = req.body;
+
+  try {
+      await pool.query('BEGIN');
+
+      const pracownikQuery = `
+          UPDATE pracownicy 
+          SET stanowisko = $1, typ_umowy = $2, wynagrodzenie = $3
+          WHERE googleid = $4
+      `;
+      await pool.query(pracownikQuery, [stanowisko, typ_umowy, wynagrodzenie, googleid]);
+
+      const updateKompetencje = async () => {
+          await pool.query('DELETE FROM kompetencje_pracownicy WHERE googleid = $1', [googleid]);
+          for (const kompetencja of kompetencje) {
+              await pool.query('INSERT INTO kompetencje_pracownicy (googleid, kompetencje) VALUES ($1, $2)', [googleid, kompetencja]);
+          }
+      };
+      await updateKompetencje();
+
+      const updateBenefity = async () => {
+          await pool.query('DELETE FROM benefity_pracownicy WHERE googleid = $1', [googleid]);
+          for (const benefit of benefity) {
+              await pool.query('INSERT INTO benefity_pracownicy (googleid, id_benefitu) VALUES ($1, $2)', [googleid, benefit]);
+          }
+      };
+      await updateBenefity();
+
+      await pool.query('COMMIT');
+      res.status(200).send('Pracownik zaktualizowany pomyślnie.');
+  } catch (err) {
+      await pool.query('ROLLBACK');
+      console.error(err);
+      res.status(500).send('Błąd podczas aktualizacji pracownika.');
+  }
+});
 
 app.listen("5000", () => {
   console.log("Server is running!");

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const EmployeeAvailability = () => {
   const [employeeAvailability, setEmployeeAvailability] = useState([]);
-  const [selectedEmployee, setSelectedEmployee] = useState('');
+  const [employeesData, setEmployeesData] = useState({}); // Obiekt do przechowywania danych pracowników
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,6 +21,24 @@ const EmployeeAvailability = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    // Tworzenie obiektu zawierającego dane pracowników
+    const employeesDataObj = {};
+
+    // Iteracja przez dostępności pracowników i agregacja danych
+    employeeAvailability.forEach((employee) => {
+      const { imie, nazwisko, email } = employee;
+      const key = `${imie}_${nazwisko}_${email}`;
+      if (!employeesDataObj[key]) {
+        employeesDataObj[key] = { imie, nazwisko, email, dostepnosci: [] };
+      }
+      employeesDataObj[key].dostepnosci.push(employee);
+    });
+
+    // Aktualizacja stanu z danymi pracowników
+    setEmployeesData(employeesDataObj);
+  }, [employeeAvailability]);
+
   return (
     <div>
       <h2><center>Dane Dostępności Pracowników</center></h2>
@@ -30,20 +48,24 @@ const EmployeeAvailability = () => {
             <th>Imię</th>
             <th>Nazwisko</th>
             <th>Email</th>
-            <th>Dzień Tygodnia</th>
-            <th>Godzina Rozpoczęcia</th>
-            <th>Godzina Zakończenia</th>
+            <th>Dostępności</th>
           </tr>
         </thead>
         <tbody>
-          {employeeAvailability.map((employee, index) => (
+          {Object.values(employeesData).map((employee, index) => (
             <tr key={index}>
               <td>{employee.imie}</td>
               <td>{employee.nazwisko}</td>
               <td>{employee.email}</td>
-              <td>{employee.dzien_tygodnia}</td>
-              <td>{employee.godzina_rozpoczecia}</td>
-              <td>{employee.godzina_zakonczenia}</td>
+              <td>
+                <ul>
+                  {employee.dostepnosci.map((availability, index) => (
+                    <li key={index}>
+                      Dzień Tygodnia: {new Date(availability.dzien_tygodnia).toLocaleDateString()}, Godzina Rozpoczęcia: {availability.godzina_rozpoczecia}, Godzina Zakończenia: {availability.godzina_zakonczenia}
+                    </li>
+                  ))}
+                </ul>
+              </td>
             </tr>
           ))}
         </tbody>

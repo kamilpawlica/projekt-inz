@@ -88,18 +88,18 @@ const UserInfoList = ({ usersData }) => {
   }
 
   return (
-    <div className='pozycja'>
-      <h1>Dane użytkownika</h1>
-      <ul>
-        <li>Typ umowy: {typUmowy}</li>
-        <li>
-          Stanowisko: {stanowisko ? stanowisko : 'Brak stanowiska'}
-        </li>
-        <li>Wynagrodzenie: {userInfo.wynagrodzenie} PLN</li>
-        <li>Kompetencje: {kompetencje.join(', ')}</li>
-        <li>Benefity: {benefity.length > 0 ? benefity.join(', ') : 'Brak benefitów'}</li>
-      </ul>
-    </div>
+    <div className="user-data">
+  <h1>Dane użytkownika</h1>
+  <ul>
+    <li className="contract-type">Typ umowy: {typUmowy}</li>
+    <li className="position">
+      Stanowisko: {stanowisko ? stanowisko : 'Brak stanowiska'}
+    </li>
+    <li className="salary">Wynagrodzenie: {userInfo.wynagrodzenie} PLN</li>
+    <li className="skills">Kompetencje: {kompetencje.join(', ')}</li>
+    <li className="benefits">Benefity: {benefity.length > 0 ? benefity.join(', ') : 'Brak benefitów'}</li>
+  </ul>
+</div>
   );
 };
 

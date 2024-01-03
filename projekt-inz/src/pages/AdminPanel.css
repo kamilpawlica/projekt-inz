@@ -4,8 +4,6 @@
     align-items: center;
     flex-direction: column;
     align-content: center;
+    background-color: #f0f0f0; /* Kolor tła */
   }
 
-.pozycja {
-  margin-bottom: 100px;
-}

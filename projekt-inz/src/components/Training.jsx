@@ -131,29 +131,30 @@ const Training = ({ usersData }) => {
   };
 
   return (
-    <div>
-      <ToastContainer />
-      <h2>Lista dostępnych szkoleń</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <ul>
-        {availableTrainings.map((training) => (
-          <li key={training.id}>
-            <strong>{training.nazwa_szkolenia}</strong>: {training.opis_szkolenia}
-            <button onClick={() => handleAssignTraining(training.id)}>Weź udział</button>
-          </li>
-        ))}
-      </ul>
+    <div className="trainingList">
+  <ToastContainer />
+  <h2>Lista dostępnych szkoleń</h2>
+  {error && <p className="error">{error}</p>}
+  <ul>
+    {availableTrainings.map((training) => (
+      <li key={training.id}>
+        <strong>{training.nazwa_szkolenia}</strong>: {training.opis_szkolenia}
+        <button onClick={() => handleAssignTraining(training.id)}>Weź udział</button>
+      </li>
+    ))}
+  </ul>
 
-      <h2>Twoje przypisane szkolenia</h2>
-      <ul>
-        {assignedTrainings.map((training) => (
-          <li key={training.id}>
-            <strong>{training.nazwa_szkolenia}</strong>
-            <button onClick={() => handleCancelTraining(training.id)}>Zrezygnuj</button>
-          </li>
-        ))}
-      </ul>
-    </div>
+  <h2>Twoje przypisane szkolenia</h2>
+  <ul>
+    {assignedTrainings.map((training) => (
+      <li key={training.id}>
+        <strong>{training.nazwa_szkolenia}</strong>
+        <button onClick={() => handleCancelTraining(training.id)}>Zrezygnuj</button>
+      </li>
+    ))}
+  </ul>
+</div>
+
   );
 };
 

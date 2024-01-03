@@ -151,64 +151,65 @@ const AbsenceForm = ({ usersData }) => {
   }, [usersData.googleid]);
 
   return (
-    <div className='pozycja'>
-      <ToastContainer />
-      <h2>Dodaj nieobecność</h2>
-      <form onSubmit={handleSubmit}>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        <div>
-          <label>Data początkowa:</label>
-          <input
-            type="date"
-            name="data_poczatkowa"
-            value={formData.data_poczatkowa}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Data końcowa:</label>
-          <input
-            type="date"
-            name="data_koncowa"
-            value={formData.data_koncowa}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Powód:</label>
-          <input
-            type="text"
-            name="powod"
-            value={formData.powod}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <button type="submit">Dodaj nieobecność</button>
-        </div>
-      </form>
-      {absences.length > 0 && (
-        <div>
-          <h3>Twoje nieobecności:</h3>
-          <ul>
-            {absences.map((absence) => (
-              <li key={absence.id}>
-                Data początkowa:{" "}
-                {new Date(absence.data_poczatkowa).toLocaleDateString()}, Data
-                końcowa: {new Date(absence.data_koncowa).toLocaleDateString()},
-                Powód: {absence.powod}
-                <button onClick={() => handleDeleteAbsence(absence.id)}>
-                  Usuń
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+    <div className="absenceForm">
+  <ToastContainer />
+  <h2>Dodaj nieobecność</h2>
+  <form onSubmit={handleSubmit} className="form">
+    {error && <p className="error">{error}</p>}
+    <div className="form-group">
+      <label>Data początkowa:</label>
+      <input
+        type="date"
+        name="data_poczatkowa"
+        value={formData.data_poczatkowa}
+        onChange={handleChange}
+        required
+      />
     </div>
+    <div className="form-group">
+      <label>Data końcowa:</label>
+      <input
+        type="date"
+        name="data_koncowa"
+        value={formData.data_koncowa}
+        onChange={handleChange}
+        required
+      />
+    </div>
+    <div className="form-group">
+      <label>Powód:</label>
+      <input
+        type="text"
+        name="powod"
+        value={formData.powod}
+        onChange={handleChange}
+        required
+      />
+    </div>
+    <div className="form-group">
+      <button type="submit">Dodaj nieobecność</button>
+    </div>
+  </form>
+  {absences.length > 0 && (
+    <div className="absences">
+      <h3>Twoje nieobecności:</h3>
+      <ul>
+        {absences.map((absence) => (
+          <li key={absence.id}>
+            Data początkowa:{" "}
+            {new Date(absence.data_poczatkowa).toLocaleDateString()}, Data
+            końcowa: {new Date(absence.data_koncowa).toLocaleDateString()},
+            Powód: {absence.powod}
+            <button onClick={() => handleDeleteAbsence(absence.id)}>
+              Usuń
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+</div>
+
   );
 };
 

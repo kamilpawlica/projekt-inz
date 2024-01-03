@@ -68,21 +68,26 @@ const UserPanel = () => {
     }
 
     return (
-        <div>
-            <h1><center>Panel pracownika </center></h1>
-            <h2><center>Witaj, {userData.imie}  </center></h2>
-            <h3><center><Link to = "AdminPanel">AdminPanel </Link></center></h3>
+        <div className='wrapperUserPanel'>
+            <div className="headerxd"> 
+            
+            <h1 className='mainHeader'>Panel pracownika <br/></h1>
+            <h2 className='secondHeader'>Witaj, {userData.imie} <br/></h2>
+            <Link to = "AdminPanel">AdminPanel </Link>
+            
+            
+            </div>
+            
             {userData ? (
                 <div className='ukladstrony'>
                 
-                    {/* komponenty */}
-                {/*  */}
                 <UserInfo usersData={userData} />
-                <AbsenceForm usersData={userData} />
-                <LeaveForm usersData={userData} />
-                <AvailabilityForm usersData={userData} />
                 <Training usersData={userData} />
                 <Benefits />
+                
+                <LeaveForm usersData={userData} />
+                <AvailabilityForm usersData={userData} />
+                <AbsenceForm usersData={userData} />
                    
                 </div>
             ) : (

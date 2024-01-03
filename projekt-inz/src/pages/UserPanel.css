@@ -1,12 +1,369 @@
+/* Tworzenie głównego kontenera */
 .ukladstrony {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    flex-direction: column;
-    align-content: center;
-   
-  }
+  display: flex;
+  flex-wrap: wrap;
+   justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+  background-color: #f0f0f0; /* Kolor tła */
+  padding: 20px;
+  min-height: 90vh;
+  max-height: auto;
+  width: 100%;
+}
 
-.pozycja {
-  margin-bottom: 100px;
+/* Styl dla każdego komponentu w kontenerze */
+.ukladstrony > * {
+  
+  min-width: 300px;
+  max-width: 400px;
+  padding: 20px;
+  background-color: #ffffff; /* Kolor tła komponentu */
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Cień */}
+
+
+
+
+.wrapperUserPanel{
+  background-color: #f0f0f0; /* Kolor tła */
+}
+
+.headerxd {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.mainHeader {
+  font-size: 1.7rem;
+  padding: 0.8rem;
+}
+
+.secondHeader {
+  font-size: 1rem;
+  padding: 0.3rem;
+}
+
+
+
+.user-data {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  background-color: #f5f5f5;
+  height: 50vh;
+  margin: 0 auto;
+  width: 40%;
+}
+
+.user-data h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.user-data ul {
+  list-style: none;
+  padding: 0;
+}
+
+.user-data li {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.user-data .contract-type {
+  font-weight: bold;
+}
+
+.user-data .position{
+  font-weight: bold;
+}
+
+.user-data .salary {
+  font-weight: bold;
+}
+
+.user-data .skills {
+  font-weight: bold;
+}
+
+.user-data .benefits {
+  font-weight: bold;
+}
+
+
+.absenceForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  background-color: #f5f5f5;
+  min-height: 50vh;
+  max-height: auto;
+  margin: 0 auto;
+}
+
+.absenceForm h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form label {
+  font-weight: bold;
+}
+
+.form input[type="date"],
+.form input[type="text"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 1rem;
+  margin-left: 0.5rem;
+}
+
+.form button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.error {
+  color: red;
+}
+
+.absences h3 {
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+.absences ul {
+  list-style: none;
+  padding: 0;
+}
+
+.absences li {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.absences button {
+  padding: 5px 10px;
+  background-color: #ff0000;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin-left: 0.5rem
+}
+
+
+.absencesList h3 {
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+.absencesList ul {
+  list-style: none;
+  padding: 0;
+}
+
+.absencesList li {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.absencesList button {
+  padding: 5px 10px;
+  background-color: #ff0000;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin-left: 0.5rem;
+}
+
+.availabilityForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  background-color: #f5f5f5;
+  min-height: 50vh;
+  max-height: auto;
+  margin: 0 auto;
+}
+
+.availabilityForm h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form label {
+  font-weight: bold;
+}
+
+.form input[type="date"],
+.form input[type="time"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 1rem;
+  margin-left: 0.5rem;
+}
+
+.form button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.error {
+  color: red;
+}
+
+.availabilityList h3 {
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+.availabilityList ul {
+  list-style: none;
+  padding: 0;
+}
+
+.availabilityList li {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.availabilityList button {
+  padding: 5px 10px;
+  background-color: #ff0000;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin-left: 0.5rem;
+}
+
+
+.trainingList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  background-color: #f5f5f5;
+  min-height: 50vh;
+  max-height: auto;
+  margin: 0 auto;
+  flex-grow: 2;
+  
+}
+
+.trainingList h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.error {
+  color: red;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+ul li {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+ul li strong {
+  font-weight: bold;
+}
+
+ul li button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 0.5rem;
+}
+
+
+.benefitsList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  background-color: #f5f5f5;
+  min-height: 50vh;
+  max-height: auto;
+  margin: 0 auto;
+  flex-grow: 2;
+}
+
+.benefitsList h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+ul li {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+ul li strong {
+  font-weight: bold;
 }

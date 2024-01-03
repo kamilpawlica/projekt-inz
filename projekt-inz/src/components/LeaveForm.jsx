@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const AbsenceForm = ({ usersData }) => {
+const LeaveForm = ({ usersData }) => {
   const initialFormData = {
-    data_poczatkowa: "",
-    data_koncowa: "",
+    data_rozpoczecia: "",
+    data_zakonczenia: "",
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -21,13 +21,13 @@ const AbsenceForm = ({ usersData }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { data_poczatkowa, data_koncowa } = formData;
+    const { data_rozpoczecia: data_rozpoczecia, data_zakonczenia: data_zakonczenia } = formData;
 
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Ustaw godzinę na północ, aby porównywać tylko daty
 
     // Sprawdź, czy data początkowa i data końcowa są wcześniejsze niż dzisiaj
-    if (new Date(data_poczatkowa) < today || new Date(data_koncowa) < today) {
+    if (new Date(data_rozpoczecia) < today || new Date(data_zakonczenia) < today) {
       
       // Wyświetl komunikat o błędzie za pomocą react-toastify
       toast.error(
@@ -44,7 +44,7 @@ const AbsenceForm = ({ usersData }) => {
     }
 
     // Sprawdź, czy data początkowa jest wcześniejsza niż data końcowa
-    if (new Date(data_poczatkowa) > new Date(data_koncowa)) {
+    if (new Date(data_rozpoczecia) > new Date(data_zakonczenia)) {
       
       // Wyświetl komunikat o błędzie za pomocą react-toastify
       toast.error(
@@ -62,8 +62,8 @@ const AbsenceForm = ({ usersData }) => {
 
     // Oblicz liczbę dni urlopu między datą początkową a datą końcową
     const oneDay = 24 * 60 * 60 * 1000; // Liczba milisekund w jednym dniu
-    const startDate = new Date(data_poczatkowa);
-    const endDate = new Date(data_koncowa);
+    const startDate = new Date(data_rozpoczecia);
+    const endDate = new Date(data_zakonczenia);
     const daysDiff = Math.round(
       Math.abs((startDate - endDate) / oneDay)
     );
@@ -83,15 +83,15 @@ const AbsenceForm = ({ usersData }) => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/insert-absence", {
+      const response = await fetch("http://localhost:5000/insert-leave", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           googleid: usersData.googleid,
-          data_poczatkowa,
-          data_koncowa,
+          data_rozpoczecia,
+          data_zakonczenia,
         }),
       });
 
@@ -125,7 +125,7 @@ const AbsenceForm = ({ usersData }) => {
   const handleDeleteAbsence = async (absenceID, daysDiff) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/delete-absence/${absenceID}`,
+        `http://localhost:5000/delete-leave/${absenceID}`,
         {
           method: "DELETE",
         }
@@ -158,7 +158,7 @@ const AbsenceForm = ({ usersData }) => {
   const fetchAbsences = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/employee-absences/${usersData.googleid}`
+        `http://localhost:5000/employee-leaves/${usersData.googleid}`
       );
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -188,8 +188,8 @@ const AbsenceForm = ({ usersData }) => {
           <label>Data początkowa:</label>
           <input
             type="date"
-            name="data_poczatkowa"
-            value={formData.data_poczatkowa}
+            name="data_rozpoczecia"
+            value={formData.data_rozpoczecia}
             onChange={handleChange}
             required
           />
@@ -198,8 +198,8 @@ const AbsenceForm = ({ usersData }) => {
           <label>Data końcowa:</label>
           <input
             type="date"
-            name="data_koncowa"
-            value={formData.data_koncowa}
+            name="data_zakonczenia"
+            value={formData.data_zakonczenia}
             onChange={handleChange}
             required
           />
@@ -215,16 +215,16 @@ const AbsenceForm = ({ usersData }) => {
             {absences.map((absence) => (
               <li key={absence.id}>
                 Data początkowa:{" "}
-                {new Date(absence.data_poczatkowa).toLocaleDateString()}, Data
-                końcowa: {new Date(absence.data_koncowa).toLocaleDateString()}
+                {new Date(absence.data_rozpoczecia).toLocaleDateString()}, Data
+                końcowa: {new Date(absence.data_zakonczenia).toLocaleDateString()}
                 <button
                   onClick={() =>
                     handleDeleteAbsence(
                       absence.id,
                       Math.round(
                         Math.abs(
-                          (new Date(absence.data_poczatkowa) -
-                            new Date(absence.data_koncowa)) /
+                          (new Date(absence.data_rozpoczecia) -
+                            new Date(absence.data_zakonczenia)) /
                             (24 * 60 * 60 * 1000)
                         )
                       )
@@ -242,4 +242,4 @@ const AbsenceForm = ({ usersData }) => {
   );
 };
 
-export default AbsenceForm;
+export default LeaveForm;

@@ -22,17 +22,17 @@ const Benefits = () => {
   }, []);
 
   return (
-    <div>
-      <h2>Benefity oferowane przez firmę</h2>
-      
-      <ul>
-        {benefits.map((benefit) => (
-          <li key={benefit.id}>
-            <strong>{benefit.nazwa_benefitu}</strong> 
-          </li>
-        ))}
-      </ul>
-    </div>
+    <div className="benefitsList">
+  <h2>Benefity oferowane przez firmę</h2>
+  <ul>
+    {benefits.map((benefit) => (
+      <li key={benefit.id}>
+        <strong>{benefit.nazwa_benefitu}</strong> 
+      </li>
+    ))}
+  </ul>
+</div>
+
   );
 };
 

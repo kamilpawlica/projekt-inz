@@ -88,38 +88,40 @@ const ContractManagement = () => {
   };
 
   return (
-    <div>
-      <h2>Zarządzanie Umowami</h2>
-      <table>
+    <div className="contract-management-container">
+    <h2 className="contract-title">Zarządzanie Umowami</h2>
+    <table className="contract-table">
         <thead>
-          <tr>
-            <th>Nazwa Typu Umowy</th>
-            <th>Akcja</th>
-          </tr>
+            <tr>
+                <th>Nazwa Typu Umowy</th>
+                <th>Akcja</th>
+            </tr>
         </thead>
         <tbody>
-          {typyUmow.map((typUmowy) => (
-            <tr key={typUmowy.id}>
-              <td>{typUmowy.nazwa_typu_umowy}</td>
-              <td>
-                <button onClick={() => handleDeleteTypUmowy(typUmowy.id)}>Usuń</button>
-              </td>
-            </tr>
-          ))}
+            {typyUmow.map((typUmowy) => (
+                <tr key={typUmowy.id} className="contract-row">
+                    <td>{typUmowy.nazwa_typu_umowy}</td>
+                    <td>
+                        <button onClick={() => handleDeleteTypUmowy(typUmowy.id)} className="delete-button">Usuń</button>
+                    </td>
+                </tr>
+            ))}
         </tbody>
-      </table>
-      <div>
-        <h3>Dodaj nowy typ umowy:</h3>
+    </table>
+    <div className="add-contract">
+    <h3 className='addingh3'>Dodaj nowy typ umowy:</h3>
         <input
-          type="text"
-          placeholder="Nazwa typu umowy"
-          value={newTypUmowy}
-          onChange={(e) => setNewTypUmowy(e.target.value)}
+            type="text"
+            placeholder="Nazwa typu umowy"
+            value={newTypUmowy}
+            onChange={(e) => setNewTypUmowy(e.target.value)}
+            className="contract-input"
         />
-        <button onClick={handleAddTypUmowy}>Dodaj</button>
-      </div>
-      <ToastContainer />
+        <button onClick={handleAddTypUmowy} className="add-button">Dodaj</button>
     </div>
+    <ToastContainer />
+</div>
+
   );
 };
 

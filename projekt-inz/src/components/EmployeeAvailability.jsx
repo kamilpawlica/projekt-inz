@@ -40,37 +40,38 @@ const EmployeeAvailability = () => {
   }, [employeeAvailability]);
 
   return (
-    <div>
-      <h2><center>Dane Dostępności Pracowników</center></h2>
-      <table>
+    <div className="employee-availability-container">
+    <h2 className="availability-title">Dane Dostępności Pracowników</h2>
+    <table className="availability-table">
         <thead>
-          <tr>
-            <th>Imię</th>
-            <th>Nazwisko</th>
-            <th>Email</th>
-            <th>Dostępności</th>
-          </tr>
+            <tr>
+                <th>Imię</th>
+                <th>Nazwisko</th>
+                <th>Email</th>
+                <th>Dostępności</th>
+            </tr>
         </thead>
         <tbody>
-          {Object.values(employeesData).map((employee, index) => (
-            <tr key={index}>
-              <td>{employee.imie}</td>
-              <td>{employee.nazwisko}</td>
-              <td>{employee.email}</td>
-              <td>
-                <ul>
-                  {employee.dostepnosci.map((availability, index) => (
-                    <li key={index}>
-                      Dzień Tygodnia: {new Date(availability.dzien_tygodnia).toLocaleDateString()}, Godzina Rozpoczęcia: {availability.godzina_rozpoczecia}, Godzina Zakończenia: {availability.godzina_zakonczenia}
-                    </li>
-                  ))}
-                </ul>
-              </td>
-            </tr>
-          ))}
+            {Object.values(employeesData).map((employee, index) => (
+                <tr key={index} className="employee-row">
+                    <td>{employee.imie}</td>
+                    <td>{employee.nazwisko}</td>
+                    <td>{employee.email}</td>
+                    <td>
+                        <ul>
+                            {employee.dostepnosci.map((availability, index) => (
+                                <li key={index} className="availability-item">
+                                    Dzień Tygodnia: {new Date(availability.dzien_tygodnia).toLocaleDateString()}, Godzina Rozpoczęcia: {availability.godzina_rozpoczecia}, Godzina Zakończenia: {availability.godzina_zakonczenia}
+                                </li>
+                            ))}
+                        </ul>
+                    </td>
+                </tr>
+            ))}
         </tbody>
-      </table>
-    </div>
+    </table>
+</div>
+
   );
 };
 

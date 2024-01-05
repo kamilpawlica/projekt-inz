@@ -88,38 +88,40 @@ const CompetencesManagement = () => {
   };
 
   return (
-    <div>
-      <h2>Zarządzanie kompetencjami</h2>
-      <table>
+    <div className="competence-management-container">
+    <h2 className="competence-title">Zarządzanie kompetencjami</h2>
+    <table className="competence-table">
         <thead>
-          <tr>
-            <th>Nazwa Kompetencji</th>
-            <th>Akcja</th>
-          </tr>
+            <tr>
+                <th>Nazwa Kompetencji</th>
+                <th>Akcja</th>
+            </tr>
         </thead>
         <tbody>
-          {competences.map((competence) => (
-            <tr key={competence.id}>
-              <td>{competence.nazwa_kompetencji}</td>
-              <td>
-                <button onClick={() => handleDeleteCompetence(competence.id)}>Usuń</button>
-              </td>
-            </tr>
-          ))}
+            {competences.map((competence) => (
+                <tr key={competence.id} className="competence-row">
+                    <td>{competence.nazwa_kompetencji}</td>
+                    <td>
+                        <button onClick={() => handleDeleteCompetence(competence.id)} className="delete-button">Usuń</button>
+                    </td>
+                </tr>
+            ))}
         </tbody>
-      </table>
-      <div>
-        <h3>Dodaj nową kompetencję:</h3>
+    </table>
+    <div className="add-competence">
+    <h3 className='addingh3'>Dodaj nową kompetencję:</h3>
         <input
-          type="text"
-          placeholder="Nazwa kompetencji"
-          value={newCompetenceName}
-          onChange={(e) => setNewCompetenceName(e.target.value)}
+            type="text"
+            placeholder="Nazwa kompetencji"
+            value={newCompetenceName}
+            onChange={(e) => setNewCompetenceName(e.target.value)}
+            className="competence-input"
         />
-        <button onClick={handleAddCompetence}>Dodaj</button>
-      </div>
-      <ToastContainer />
+        <button onClick={handleAddCompetence} className="add-button">Dodaj</button>
     </div>
+    <ToastContainer />
+</div>
+
   );
 };
 

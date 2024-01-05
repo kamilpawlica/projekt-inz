@@ -1004,6 +1004,34 @@ app.put('/aktualizuj_pracownika/:googleid', async (req, res) => {
   }
 });
 
+
+app.delete('/usun-benefity/:googleid', (req, res) => {
+  const googleid = req.params.googleid;
+
+  pool.query('DELETE FROM benefity_pracownicy WHERE googleid = $1', [googleid], (error, results) => {
+      if (error) {
+          console.error('Błąd podczas usuwania rekordów:', error);
+          res.status(500).send('Wystąpił błąd podczas usuwania benefitów pracownika');
+      } else {
+          res.status(200).send(`Usunięto benefity pracownika o GoogleID: ${googleid}`);
+      }
+  });
+});
+
+app.delete('/usun-kompetencje/:googleid', (req, res) => {
+  const googleid = req.params.googleid;
+
+  pool.query('DELETE FROM kompetencje_pracownicy WHERE googleid = $1', [googleid], (error, results) => {
+      if (error) {
+          console.error('Błąd podczas usuwania rekordów:', error);
+          res.status(500).send('Wystąpił błąd podczas usuwania kompetencji pracownika');
+      } else {
+          res.status(200).send(`Usunięto kompetencje pracownika o GoogleID: ${googleid}`);
+      }
+  });
+});
+
+
 app.listen("5000", () => {
   console.log("Server is running!");
 });

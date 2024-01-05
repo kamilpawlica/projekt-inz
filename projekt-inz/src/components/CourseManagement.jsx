@@ -143,75 +143,79 @@ const CourseManagement = () => {
   }, []);
 
   return (
-    <div>
-      <h2><center>Zarządzanie Szkoleniami</center></h2>
-      <table>
+    <div className="courses-management-container">
+    <h2 className="courses-title"><center>Zarządzanie Szkoleniami</center></h2>
+    <table className="courses-table">
         <thead>
-          <tr>
-            <th>Nazwa Szkolenia</th>
-            <th>Opis Szkolenia</th>
-            <th>Data Szkolenia</th>
-            <th>Akcja</th>
-          </tr>
+            <tr>
+                <th>Nazwa Szkolenia</th>
+                <th>Opis Szkolenia</th>
+                <th>Data Szkolenia</th>
+                <th>Akcja</th>
+            </tr>
         </thead>
         <tbody>
-          {courses.map((course) => (
-            <tr key={course.id}>
-              <td>{course.nazwa_szkolenia}</td>
-              <td>{course.opis_szkolenia}</td>
-              <td>{new Date(course.data_szkolenia).toLocaleDateString()}</td>
-              <td>
-                <button onClick={() => handleDeleteCourse(course.id)}>Usuń</button>
-              </td>
-            </tr>
-          ))}
+            {courses.map((course) => (
+                <tr key={course.id} className="course-row">
+                    <td>{course.nazwa_szkolenia}</td>
+                    <td>{course.opis_szkolenia}</td>
+                    <td>{new Date(course.data_szkolenia).toLocaleDateString()}</td>
+                    <td>
+                        <button onClick={() => handleDeleteCourse(course.id)} className="delete-button">Usuń</button>
+                    </td>
+                </tr>
+            ))}
         </tbody>
-      </table>
-      <div>
-        <h3>Dodaj nowe szkolenie:</h3>
+    </table>
+    <div className="add-course">
+    <h3 className='addingh3'>Dodaj nowe szkolenie:</h3>
         <input
-          type="text"
-          placeholder="Nazwa Szkolenia"
-          value={newCourse.nazwa_szkolenia}
-          onChange={(e) => setNewCourse({ ...newCourse, nazwa_szkolenia: e.target.value })}
+            type="text"
+            placeholder="Nazwa Szkolenia"
+            value={newCourse.nazwa_szkolenia}
+            onChange={(e) => setNewCourse({ ...newCourse, nazwa_szkolenia: e.target.value })}
+            className="course-input"
         />
         <input
-          type="text"
-          placeholder="Opis Szkolenia"
-          value={newCourse.opis_szkolenia}
-          onChange={(e) => setNewCourse({ ...newCourse, opis_szkolenia: e.target.value })}
+            type="text"
+            placeholder="Opis Szkolenia"
+            value={newCourse.opis_szkolenia}
+            onChange={(e) => setNewCourse({ ...newCourse, opis_szkolenia: e.target.value })}
+            className="course-input"
         />
         <input
-          type="date"
-          value={newCourse.data_szkolenia}
-          onChange={(e) => setNewCourse({ ...newCourse, data_szkolenia: e.target.value })}
+            type="date"
+            value={newCourse.data_szkolenia}
+            onChange={(e) => setNewCourse({ ...newCourse, data_szkolenia: e.target.value })}
+            className="course-input"
         />
-        <button onClick={handleAddCourse}>Dodaj</button>
-      </div>
-
-      <h3><center>Lista pracowników zapisanych na szkolenia</center></h3>
-<table>
-  <thead>
-    <tr>
-      <th>Imię</th>
-      <th>Nazwisko</th>
-      <th>Email</th>
-      <th>Nazwa Szkolenia</th>
-    </tr>
-  </thead>
-  <tbody>
-    {registeredEmployees.map((employee) => (
-      <tr key={`${employee.email}_${employee.imie}_${employee.nazwisko}`}>
-        <td>{employee.imie}</td>
-        <td>{employee.nazwisko}</td>
-        <td>{employee.email}</td>
-        <td>{employee.szkolenia.join(', ')}</td>
-      </tr>
-    ))}
-  </tbody>
-</table>
-      <ToastContainer />
+        <button onClick={handleAddCourse} className="add-button">Dodaj</button>
     </div>
+
+    <h3 className="registered-employees-title"><center>Lista pracowników zapisanych na szkolenia</center></h3>
+    <table className="courses-table">
+        <thead>
+            <tr>
+                <th>Imię</th>
+                <th>Nazwisko</th>
+                <th>Email</th>
+                <th>Nazwa Szkolenia</th>
+            </tr>
+        </thead>
+        <tbody>
+            {registeredEmployees.map((employee) => (
+                <tr key={`${employee.email}_${employee.imie}_${employee.nazwisko}`} className="registered-employee-row">
+                    <td>{employee.imie}</td>
+                    <td>{employee.nazwisko}</td>
+                    <td>{employee.email}</td>
+                    <td>{employee.szkolenia.join(', ')}</td>
+                </tr>
+            ))}
+        </tbody>
+    </table>
+    <ToastContainer />
+</div>
+
   );
 };
 

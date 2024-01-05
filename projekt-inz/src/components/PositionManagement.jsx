@@ -88,38 +88,40 @@ const PositionManagement = () => {
   };
 
   return (
-    <div>
-      <h2>Zarządzanie stanowiskami</h2>
-      <table>
+    <div className="position-management-container">
+    <h2 className="position-title">Zarządzanie stanowiskami</h2>
+    <table className="position-table">
         <thead>
-          <tr>
-            <th>Nazwa Stanowiska</th>
-            <th>Akcja</th>
-          </tr>
+            <tr>
+                <th>Nazwa Stanowiska</th>
+                <th>Akcja</th>
+            </tr>
         </thead>
         <tbody>
-          {positions.map((position) => (
-            <tr key={position.id}>
-              <td>{position.nazwa_stanowiska}</td>
-              <td>
-                <button onClick={() => handleDeletePosition(position.id)}>Usuń</button>
-              </td>
-            </tr>
-          ))}
+            {positions.map((position) => (
+                <tr key={position.id} className="position-row">
+                    <td>{position.nazwa_stanowiska}</td>
+                    <td>
+                        <button onClick={() => handleDeletePosition(position.id)} className="delete-button">Usuń</button>
+                    </td>
+                </tr>
+            ))}
         </tbody>
-      </table>
-      <div>
-        <h3>Dodaj nowe stanowisko:</h3>
+    </table>
+    <div className="add-position">
+        <h3 className='addingh3'>Dodaj nowe stanowisko:</h3>
         <input
-          type="text"
-          placeholder="Nazwa stanowiska"
-          value={newPositionName}
-          onChange={(e) => setNewPositionName(e.target.value)}
+            type="text"
+            placeholder="Nazwa stanowiska"
+            value={newPositionName}
+            onChange={(e) => setNewPositionName(e.target.value)}
+            className="position-input"
         />
-        <button onClick={handleAddPosition}>Dodaj</button>
-      </div>
-      <ToastContainer />
+        <button onClick={handleAddPosition} className="add-button">Dodaj</button>
     </div>
+    <ToastContainer />
+</div>
+
   );
 };
 

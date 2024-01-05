@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { MultiSelect } from 'react-multi-select-component';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const EmployeeList = () => {
     const [employees, setEmployees] = useState([]);
@@ -12,6 +14,7 @@ const EmployeeList = () => {
     const [editEmployee, setEditEmployee] = useState(null);
     const [selectedCompetencies, setSelectedCompetencies] = useState([]);
     const [selectedBenefits, setSelectedBenefits] = useState([]);
+    const [isEditMode, setIsEditMode] = useState(false);
 
     useEffect(() => {
         fetchEmployees();
@@ -77,13 +80,21 @@ const EmployeeList = () => {
         setSelectedCompetencies(employeeCompetencies);
         setSelectedBenefits(employeeBenefits);
 
-        setEditEmployee({
-            ...employee,
-            stanowisko: positionId,
-            typ_umowy: contractTypeId,
-            kompetencje: employee.kompetencje,
-            benefity: employee.benefity,
-        });
+        if (editEmployee && editEmployee.googleid === employee.googleid) {
+            // Jeśli obecnie jesteśmy w trybie edycji tego samego pracownika, to wyłącz tryb edycji.
+            setIsEditMode(false);
+            setEditEmployee(null);
+        } else {
+            // W przeciwnym razie, przełącz się w tryb edycji dla tego pracownika.
+            setIsEditMode(true);
+            setEditEmployee({
+                ...employee,
+                stanowisko: positionId,
+                typ_umowy: contractTypeId,
+                kompetencje: employee.kompetencje,
+                benefity: employee.benefity,
+            });
+        }
     };
 
     const handleChange = (e) => {
@@ -110,7 +121,22 @@ const EmployeeList = () => {
         }));
     };
 
+    const validateForm = () => {
+        const { stanowisko, typ_umowy, kompetencje, benefity, wynagrodzenie } = editEmployee;
+        if (!stanowisko || !typ_umowy || !kompetencje || !benefity || !wynagrodzenie) {
+            return false;
+        }
+        return true;
+    };
+
     const handleSubmit = async () => {
+
+        // Sprawdź czy formularz jest poprawnie wypełniony
+    if (!validateForm()) {
+        toast.error("Proszę wypełnić wszystkie pola formularza");
+        return;
+    }
+
         const { googleid, stanowisko, typ_umowy, kompetencje, benefity, wynagrodzenie } = editEmployee;
         try {
             const response = await fetch(`http://localhost:5000/aktualizuj_pracownika/${googleid}`, {
@@ -129,12 +155,46 @@ const EmployeeList = () => {
                 throw new Error('Network response was not ok');
             }
 
-            setEditEmployee(null);
+            // Informuj o pomyślnym zapisie zmian
+        toast.success("Pomyślnie zapisano zmiany");
+        setIsEditMode(false);
+        setEditEmployee(null);
+        fetchEmployees();
+    } catch (error) {
+        console.error('Error updating employee:', error);
+        toast.error("Proszę wypełnić wszystkie pola formularza");
+    }
+};
+
+
+    const handleDeleteCompetencies = async (googleid) => {
+        try {
+            const response = await fetch(`http://localhost:5000/usun-kompetencje/${googleid}`, { method: 'DELETE' });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            toast.success("Pomyślnie usunięto kompetencje pracownika");
             fetchEmployees();
         } catch (error) {
-            console.error('Error updating employee:', error);
+            console.error('Error deleting competencies:', error);
+            toast.error("Błąd podczas usuwania kompetencji");
         }
     };
+
+    const handleDeleteBenefits = async (googleid) => {
+        try {
+            const response = await fetch(`http://localhost:5000/usun-benefity/${googleid}`, { method: 'DELETE' });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            toast.success("Pomyślnie usunięto benefity pracownika");
+            fetchEmployees();
+        } catch (error) {
+            console.error('Error deleting benefits:', error);
+            toast.error("Błąd podczas usuwania benefitów");
+        }
+    };
+
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -145,50 +205,86 @@ const EmployeeList = () => {
     }
 
     return (
-        <div>
-            <h1>Lista Pracowników</h1>
-            <ul>
-                {employees.map(employee => (
-                    <li key={employee.googleid}>
-                        <strong>Imię:</strong> {employee.imie}<br />
-                        <strong>Nazwisko:</strong> {employee.nazwisko}<br />
-                        <strong>Email:</strong> {employee.email}<br />
-                        <button onClick={() => handleEditClick(employee)}>Edytuj</button>
-                    </li>
-                ))}
-            </ul>
+    <div className="employee-availability-container">
+    <ToastContainer position="top-right" autoClose={5000} hideProgressBar newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+    <h2 className='h2emplo'>Lista Pracowników</h2>
+    <table className="availability-table">
+        <thead>
+            <tr>
+                <th>Imię</th>
+                <th>Nazwisko</th>
+                <th><center>Email</center></th>
+                <th>Stanowisko</th>
+                <th>Kompetencje</th>
+                <th>Benefity</th>
+                <th>Wynagrodzenie</th>
+                <th><center>Akcje</center></th>
+            </tr>
+        </thead>
+        <tbody>
+            {employees.map(employee => (
+                <tr key={employee.googleid}>
+                    <td>{employee.imie}</td>
+                    <td>{employee.nazwisko}</td>
+                    <td>{employee.email}</td>
+                    <td><center>{employee.stanowisko}</center></td>
+                    <td><center>{employee.kompetencje.join(", ")}</center></td>
+                    <td><center>{employee.benefity.join(", ")}</center></td>
+                    <td><center>{employee.wynagrodzenie}</center></td>
+                    <td className="action-buttons">
+                        <button className="edit-button dwa" onClick={() => handleEditClick(employee)}>
+                            {isEditMode && editEmployee && editEmployee.googleid === employee.googleid ? 'Anuluj' : 'Edytuj'}
+                        </button>
+                        <button className="delete-button dwa" onClick={() => handleDeleteCompetencies(employee.googleid)}>
+                            Usuń kompetencje
+                        </button>
+                        <button className="delete-button dwa" onClick={() => handleDeleteBenefits(employee.googleid)}>
+                            Usuń benefity
+                        </button>
+                    </td>
+                </tr>
+            ))}
+        </tbody>
+    </table>
 
-            {editEmployee && (
-                <div>
-                    <h2>Edytuj Pracownika</h2>
-                    <select name="stanowisko" value={editEmployee.stanowisko} onChange={handleChange}>
+            {editEmployee && isEditMode && (
+                <div className="edit-employee">
+                    <h2 className='h2emplo'>Edytuj Pracownika</h2>
+                    <label htmlFor="stanowisko" className="edit-label">Stanowisko:</label>
+                    <select  name="stanowisko" id="stanowisko" value={editEmployee.stanowisko} onChange={handleChange} className="edit-select">
                         {positions.map(position => (
                             <option key={position.id} value={position.id}>
                                 {position.nazwa_stanowiska}
                             </option>
                         ))}
                     </select>
-                    <select name="typ_umowy" value={editEmployee.typ_umowy} onChange={handleChange}>
+                    <label htmlFor="typ_umowy" className="edit-label">Typ Umowy:</label>
+                    <select name="typ_umowy" id="typ_umowy" value={editEmployee.typ_umowy} onChange={handleChange} className="edit-select">
                         {contractTypes.map(type => (
                             <option key={type.id} value={type.id}>
                                 {type.nazwa_typu_umowy}
                             </option>
                         ))}
                     </select>
+                    <label htmlFor="kompetencje" className="edit-label">Wybierz kompetencje:</label>
                     <MultiSelect
                         options={allCompetencies}
                         value={selectedCompetencies}
                         onChange={handleChangeCompetencies}
-                        labelledBy={'Wybierz kompetencje'}
+                        labelledBy={'kompetencje'}
+                        className="rmsc"
                     />
+                    <label htmlFor="benefity" className="edit-label">Wybierz benefity:</label>
                     <MultiSelect
                         options={allBenefits}
                         value={selectedBenefits}
                         onChange={handleChangeBenefits}
-                        labelledBy={'Wybierz benefity'}
+                        labelledBy={'benefity'}
+                        className="rmsc"
                     />
-                    <input name="wynagrodzenie" value={editEmployee.wynagrodzenie} onChange={handleChange} />
-                    <button onClick={handleSubmit}>Zapisz zmiany</button>
+                    <label htmlFor="wynagrodzenie" className="edit-label">Wynagrodzenie:</label>
+                    <input name="wynagrodzenie" id="wynagrodzenie" value={editEmployee.wynagrodzenie} onChange={handleChange} className="edit-select" />
+                    <button onClick={handleSubmit} className="edit-button save">Zapisz zmiany</button>
                 </div>
             )}
         </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const EmployeeVacations = () => {
-  const [employeeVacations, setEmployeeVacations] = useState([]);
+  const [employeeVacations, setEmployeeVacations] = useState(new Map());
 
   useEffect(() => {
     const fetchData = async () => {
@@ -11,7 +11,16 @@ const EmployeeVacations = () => {
           throw new Error('Błąd podczas pobierania danych urlopów pracowników');
         }
         const data = await response.json();
-        setEmployeeVacations(data);
+        const groupedData = data.reduce((acc, employee) => {
+          const key = `${employee.imie} ${employee.nazwisko} ${employee.email}`;
+          if (!acc.has(key)) {
+            acc.set(key, []);
+          }
+          acc.get(key).push(employee);
+          return acc;
+        }, new Map());
+
+        setEmployeeVacations(groupedData);
       } catch (error) {
         console.error(error);
       }
@@ -21,9 +30,9 @@ const EmployeeVacations = () => {
   }, []);
 
   return (
-    <div>
-      <h2><center>Podgląd dni urlopowych pracowników</center></h2>
-      <table>
+    <div className="vacation-management-container">
+      <h2 className="vacation-title"><center>Podgląd dni urlopowych pracowników</center></h2>
+      <table className="vacation-table">
         <thead>
           <tr>
             <th>Imię</th>
@@ -34,14 +43,22 @@ const EmployeeVacations = () => {
           </tr>
         </thead>
         <tbody>
-          {employeeVacations.map((employee, index) => (
-            <tr key={index}>
-              <td>{employee.imie}</td>
-              <td>{employee.nazwisko}</td>
-              <td>{employee.email}</td>
-              <td>{new Date(employee.data_rozpoczecia).toLocaleDateString()}</td>
-              <td>{new Date(employee.data_zakonczenia).toLocaleDateString()}</td>
-            </tr>
+          {[...employeeVacations.entries()].map(([key, vacations], index) => (
+            <React.Fragment key={index}>
+              {vacations.map((vacation, vacationIndex) => (
+                <tr key={vacationIndex} className="vacation-row">
+                  {vacationIndex === 0 && (
+                    <>
+                      <td rowSpan={vacations.length}>{vacation.imie}</td>
+                      <td rowSpan={vacations.length}>{vacation.nazwisko}</td>
+                      <td rowSpan={vacations.length}>{vacation.email}</td>
+                    </>
+                  )}
+                  <td>{new Date(vacation.data_rozpoczecia).toLocaleDateString()}</td>
+                  <td>{new Date(vacation.data_zakonczenia).toLocaleDateString()}</td>
+                </tr>
+              ))}
+            </React.Fragment>
           ))}
         </tbody>
       </table>

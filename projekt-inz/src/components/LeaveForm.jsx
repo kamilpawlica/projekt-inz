@@ -176,69 +176,70 @@ const LeaveForm = ({ usersData }) => {
   }, [usersData.googleid]);
 
   return (
-    <div className='pozycja'>
-      <ToastContainer />
-      <h2>Zaplanuj urlop</h2>
-      <p>
-        Dostępne dni urlopu: {20 - usedDays} / 20
-      </p>
-      <form onSubmit={handleSubmit}>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        <div>
-          <label>Data początkowa:</label>
-          <input
-            type="date"
-            name="data_rozpoczecia"
-            value={formData.data_rozpoczecia}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Data końcowa:</label>
-          <input
-            type="date"
-            name="data_zakonczenia"
-            value={formData.data_zakonczenia}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <button type="submit">Dodaj dni urlopowe</button>
-        </div>
-      </form>
-      {absences.length > 0 && (
-        <div>
-          <h3>Twoje nieobecności:</h3>
-          <ul>
-            {absences.map((absence) => (
-              <li key={absence.id}>
-                Data początkowa:{" "}
-                {new Date(absence.data_rozpoczecia).toLocaleDateString()}, Data
-                końcowa: {new Date(absence.data_zakonczenia).toLocaleDateString()}
-                <button
-                  onClick={() =>
-                    handleDeleteAbsence(
-                      absence.id,
-                      Math.round(
-                        Math.abs(
-                          (new Date(absence.data_rozpoczecia) -
-                            new Date(absence.data_zakonczenia)) /
-                            (24 * 60 * 60 * 1000)
-                        )
-                      )
-                    )
-                  }
-                >
-                  Usuń
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+    <div className="absenceForm">
+  <ToastContainer />
+  <h2>Zaplanuj urlop</h2>
+  <p>
+    Dostępne dni urlopu: {20 - usedDays} / 20
+  </p>
+  <form onSubmit={handleSubmit} className="form">
+    {error && <p className="error">{error}</p>}
+    <div className="form-group">
+      <label>Data początkowa:</label>
+      <input
+        type="date"
+        name="data_rozpoczecia"
+        value={formData.data_rozpoczecia}
+        onChange={handleChange}
+        required
+      />
     </div>
+    <div className="form-group">
+      <label>Data końcowa:</label>
+      <input
+        type="date"
+        name="data_zakonczenia"
+        value={formData.data_zakonczenia}
+        onChange={handleChange}
+        required
+      />
+    </div>
+    <div className="form-group">
+      <button type="submit">Dodaj dni urlopowe</button>
+    </div>
+  </form>
+  {absences.length > 0 && (
+    <div className="absences">
+      <h3>Twoje nieobecności:</h3>
+      <ul>
+        {absences.map((absence) => (
+          <li key={absence.id}>
+            Data początkowa:{" "}
+            {new Date(absence.data_rozpoczecia).toLocaleDateString()}, Data
+            końcowa: {new Date(absence.data_zakonczenia).toLocaleDateString()}
+            <button
+              onClick={() =>
+                handleDeleteAbsence(
+                  absence.id,
+                  Math.round(
+                    Math.abs(
+                      (new Date(absence.data_rozpoczecia) -
+                        new Date(absence.data_zakonczenia)) /
+                        (24 * 60 * 60 * 1000)
+                    )
+                  )
+                )
+              }
+            >
+              Usuń
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+</div>
+
   );
 };
 

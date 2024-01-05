@@ -1,9 +1,759 @@
-.uklad{
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    flex-direction: column;
-    align-content: center;
-    background-color: #f0f0f0; /* Kolor tła */
-  }
+/* Resetowanie domyślnych marginesów i paddingów */
+body, div, h1 {
+  margin: 0;
+  padding: 0;
+}
+
+/* Styl dla głównego kontenera */
+.admin-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  background-color: #333; /* Kolor tła dla kontrastu jasności */
+  color: #fff; /* Kolor tekstu */
+}
+
+/* Styl dla nagłówka */
+.admin-panel-title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Styl dla kontenera układu */
+.uklad {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
+  max-width: 800px;
+}
+
+/* Resetowanie domyślnych marginesów i paddingów */
+body, div, h1, ul, li, button, select, input {
+  margin: 0;
+  padding: 0;
+}
+
+/* Styl dla głównego kontenera */
+.employee-list-container {
+  background-color: #333; /* Ciemne tło */
+  color: #fff; /* Kolor tekstu */
+  padding: 20px;
+  border: 3px solid white;
+}
+
+/* Styl dla listy pracowników */
+.employee-list {
+  list-style: none;
+}
+
+/* Styl dla elementu pracownika */
+.employee-item {
+  margin-bottom: 20px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.h2emplo {
+  text-align: center;
+  padding:.4rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.edit-label {
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  
+
+}
+
+/* Styl dla przycisku Edytuj */
+.edit-button {
+  background-color: #444; /* Kolor tła przycisku */
+  color: #fff; /* Kolor tekstu na przycisku */
+  border: none;
+  cursor: pointer;
+  margin: 10px auto;
+}
+
+/* Styl dla formularza edycji pracownika */
+.edit-employee {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 20vw;
+  background-color: #444; /* Kolor tła formularza */
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+/* Styl dla pól wyboru (select) */
+.edit-select {
+  padding: 1rem;
+  text-align: center;
+  font-size: .9rem;
+  font-weight: bold;
+  width: auto;
+  background-color: #555; /* Kolor tła pól wyboru */
+  color: #fff; /* Kolor tekstu w polach wyboru */
+  border: none;
+  margin-bottom: .5rem;
+}
+
+/* Styl dla wielokrotnego wyboru (MultiSelect) */
+.multi-select {
+  width: 100%;
+  margin-bottom: 10px;
+  color:#007acc;
+  background-color: #555;
+}
+
+/* Styl dla pola wprowadzania danych (input) */
+.edit-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #555; /* Kolor tła pola wprowadzania danych */
+  color: #fff; /* Kolor tekstu w polu wprowadzania danych */
+  border: none;
+}
+
+/* Styl dla przycisku Zapisz zmiany */
+.edit-button {
+  background-color: #007acc; /* Kolor tła przycisku */
+  color: #fff; /* Kolor tekstu na przycisku */
+  
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.save {
+  border-radius: 8px;
+}
+
+.rmsc { 
+  --rmsc-main: #555 !important; 
+  --rmsc-hover: #555;
+  --rmsc-selected: #007acc;
+  --rmsc-border: #555;
+  --rmsc-gray: #555;
+  --rmsc-bg: #555;
+  --rmsc-p: 10px; /* Spacing */
+  --rmsc-radius: 0px; /* Radius */
+  --rmsc-h: 38px; /* Height */
+}
+
+
+
+/* Resetowanie domyślnych marginesów i paddingów */
+body, div, h2, table, thead, tbody, tr, th, td, ul, li {
+  margin: 0;
+  padding: 0;
+}
+
+/* Styl dla głównego kontenera */
+.employee-availability-container {
+  background-color: #333; /* Ciemne tło */
+  color: #fff; /* Kolor tekstu */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Styl dla tytułu */
+.availability-title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Styl dla tabeli */
+.availability-table {
+  width: 100%;
+  border-collapse: collapse;
+  
+}
+
+
+/* Styl dla nagłówków kolumn */
+.availability-table th {
+  background-color: #444; /* Kolor tła nagłówków kolumn */
+  color: #fff; /* Kolor tekstu w nagłówkach kolumn */
+  padding: 10px;
+  text-align: left;
+}
+
+/* Styl dla wierszy pracowników */
+.employee-row {
+  background-color: #555; /* Kolor tła wierszy pracowników */
+  color: #fff; /* Kolor tekstu w wierszach pracowników */
+}
+
+/* Styl dla komórek w tabeli */
+.availability-table td {
+  padding: 10px;
+}
+
+/* Styl dla listy dostępności */
+.availability-item {
+  list-style: none;
+  margin-bottom: 10px;
+}
+
+
+
+
+/* Resetowanie domyślnych marginesów i paddingów */
+body, div, h2, table, thead, tbody, tr, th, td, input, button {
+  margin: 0;
+  padding: 0;
+}
+
+/* Styl dla głównego kontenera */
+.benefits-management-container {
+  background-color: #333; /* Ciemne tło */
+  color: #fff; /* Kolor tekstu */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  
+}
+
+/* Styl dla tytułu */
+.benefits-title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Styl dla tabeli */
+.benefits-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Styl dla nagłówków kolumn */
+.benefits-table th {
+  background-color: #444; /* Kolor tła nagłówków kolumn */
+  color: #fff; /* Kolor tekstu w nagłówkach kolumn */
+  padding: 10px;
+  text-align: left;
+}
+
+/* Styl dla wierszy benefitów */
+.benefit-row {
+  background-color: #555; /* Kolor tła wierszy benefitów */
+  color: #fff; /* Kolor tekstu w wierszach benefitów */
+}
+
+/* Styl dla komórek w tabeli */
+.benefits-table td {
+  padding: 10px;
+}
+
+/* Styl dla przycisku Usuń */
+.delete-button {
+  background-color: #ff4d4d; /* Kolor tła przycisku Usuń */
+  color: #fff; /* Kolor tekstu na przycisku Usuń */
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.dwa {
+  margin: 3px;
+  width: 70%;
+  border-radius: 5%;
+  cursor: pointer;
+  
+}
+
+.action-buttons {
+  display: flex;
+  width: 70%;
+}
+
+/* Styl dla kontenera dodawania benefitu */
+.add-benefit {
+  margin-top: 20px;
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.addingh3 {
+  margin-bottom: 15px;
+}
+
+/* Styl dla pola wprowadzania danych (input) */
+.benefit-input {
+  width: 93%;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #555; /* Kolor tła pola wprowadzania danych */
+  color: #fff; /* Kolor tekstu w polu wprowadzania danych */
+  border: none;
+}
+
+/* Styl dla przycisku Dodaj */
+.add-button {
+  background-color: #007acc; /* Kolor tła przycisku Dodaj */
+  color: #fff; /* Kolor tekstu na przycisku Dodaj */
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+/* Resetowanie domyślnych marginesów i paddingów */
+body, div, h2, table, thead, tbody, tr, th, td, input, button {
+  margin: 0;
+  padding: 0;
+}
+
+/* Styl dla głównego kontenera */
+.position-management-container {
+  background-color: #333; /* Ciemne tło */
+  color: #fff; /* Kolor tekstu */
+  padding: 20px;
+}
+
+/* Styl dla tytułu */
+.position-title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Styl dla tabeli */
+.position-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Styl dla nagłówków kolumn */
+.position-table th {
+  background-color: #444; /* Kolor tła nagłówków kolumn */
+  color: #fff; /* Kolor tekstu w nagłówkach kolumn */
+  padding: 10px;
+  text-align: left;
+}
+
+/* Styl dla wierszy stanowisk */
+.position-row {
+  background-color: #555; /* Kolor tła wierszy stanowisk */
+  color: #fff; /* Kolor tekstu w wierszach stanowisk */
+}
+
+/* Styl dla komórek w tabeli */
+.position-table td {
+  padding: 10px;
+}
+
+/* Styl dla przycisku Usuń */
+.delete-button {
+  background-color: #ff4d4d; /* Kolor tła przycisku Usuń */
+  color: #fff; /* Kolor tekstu na przycisku Usuń */
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+/* Styl dla kontenera dodawania stanowiska */
+.add-position {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Styl dla pola wprowadzania danych (input) */
+.position-input {
+  width: 93%;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #555; /* Kolor tła pola wprowadzania danych */
+  color: #fff; /* Kolor tekstu w polu wprowadzania danych */
+  border: none;
+}
+
+/* Styl dla przycisku Dodaj */
+.add-button {
+  background-color: #007acc; /* Kolor tła przycisku Dodaj */
+  color: #fff; /* Kolor tekstu na przycisku Dodaj */
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+/* Resetowanie domyślnych marginesów i paddingów */
+body, div, h2, table, thead, tbody, tr, th, td, input, button {
+  margin: 0;
+  padding: 0;
+}
+
+/* Styl dla głównego kontenera */
+.competence-management-container {
+  background-color: #333; /* Ciemne tło */
+  color: #fff; /* Kolor tekstu */
+  padding: 20px;
+}
+
+/* Styl dla tytułu */
+.competence-title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Styl dla tabeli */
+.competence-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Styl dla nagłówków kolumn */
+.competence-table th {
+  background-color: #444; /* Kolor tła nagłówków kolumn */
+  color: #fff; /* Kolor tekstu w nagłówkach kolumn */
+  padding: 10px;
+  text-align: left;
+}
+
+/* Styl dla wierszy kompetencji */
+.competence-row {
+  background-color: #555; /* Kolor tła wierszy kompetencji */
+  color: #fff; /* Kolor tekstu w wierszach kompetencji */
+}
+
+/* Styl dla komórek w tabeli */
+.competence-table td {
+  padding: 10px;
+}
+
+/* Styl dla przycisku Usuń */
+.delete-button {
+  background-color: #ff4d4d; /* Kolor tła przycisku Usuń */
+  color: #fff; /* Kolor tekstu na przycisku Usuń */
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+/* Styl dla kontenera dodawania kompetencji */
+.add-competence {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Styl dla pola wprowadzania danych (input) */
+.competence-input {
+  width: 93%;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #555; /* Kolor tła pola wprowadzania danych */
+  color: #fff; /* Kolor tekstu w polu wprowadzania danych */
+  border: none;
+}
+
+/* Styl dla przycisku Dodaj */
+.add-button {
+  background-color: #007acc; /* Kolor tła przycisku Dodaj */
+  color: #fff; /* Kolor tekstu na przycisku Dodaj */
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+
+/* Resetowanie domyślnych marginesów i paddingów */
+body, div, h2, table, thead, tbody, tr, th, td, input, button {
+  margin: 0;
+  padding: 0;
+}
+
+/* Styl dla głównego kontenera */
+.contract-management-container {
+  background-color: #333; /* Ciemne tło */
+  color: #fff; /* Kolor tekstu */
+  padding: 20px;
+}
+
+/* Styl dla tytułu */
+.contract-title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Styl dla tabeli */
+.contract-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Styl dla nagłówków kolumn */
+.contract-table th {
+  background-color: #444; /* Kolor tła nagłówków kolumn */
+  color: #fff; /* Kolor tekstu w nagłówkach kolumn */
+  padding: 10px;
+  text-align: left;
+}
+
+/* Styl dla wierszy typów umowy */
+.contract-row {
+  background-color: #555; /* Kolor tła wierszy typów umowy */
+  color: #fff; /* Kolor tekstu w wierszach typów umowy */
+}
+
+/* Styl dla komórek w tabeli */
+.contract-table td {
+  padding: 10px;
+}
+
+/* Styl dla przycisku Usuń */
+.delete-button {
+  background-color: #ff4d4d; /* Kolor tła przycisku Usuń */
+  color: #fff; /* Kolor tekstu na przycisku Usuń */
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+/* Styl dla kontenera dodawania typu umowy */
+.add-contract {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Styl dla pola wprowadzania danych (input) */
+.contract-input {
+  width: 93%;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #555; /* Kolor tła pola wprowadzania danych */
+  color: #fff; /* Kolor tekstu w polu wprowadzania danych */
+  border: none;
+}
+
+/* Styl dla przycisku Dodaj */
+.add-button {
+  background-color: #007acc; /* Kolor tła przycisku Dodaj */
+  color: #fff; /* Kolor tekstu na przycisku Dodaj */
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+/* Resetowanie domyślnych marginesów i paddingów */
+body, div, h2, table, thead, tbody, tr, th, td, input, button {
+  margin: 0;
+  padding: 0;
+}
+
+/* Styl dla głównego kontenera */
+.courses-management-container {
+  background-color: #333; /* Ciemne tło */
+  color: #fff; /* Kolor tekstu */
+  padding: 20px;
+}
+
+/* Styl dla tytułu */
+.courses-title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Styl dla tabeli szkoleń */
+.courses-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Styl dla nagłówków kolumn */
+.courses-table th {
+  background-color: #444; /* Kolor tła nagłówków kolumn */
+  color: #fff; /* Kolor tekstu w nagłówkach kolumn */
+  padding: 10px;
+  text-align: left;
+}
+
+/* Styl dla wierszy szkoleń */
+.course-row {
+  background-color: #555; /* Kolor tła wierszy szkoleń */
+  color: #fff; /* Kolor tekstu w wierszach szkoleń */
+}
+
+/* Styl dla komórek w tabeli szkoleń */
+.courses-table td {
+  padding: 10px;
+}
+
+/* Styl dla przycisku Usuń */
+.delete-button {
+  background-color: #ff4d4d; /* Kolor tła przycisku Usuń */
+  color: #fff; /* Kolor tekstu na przycisku Usuń */
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+/* Styl dla kontenera dodawania szkolenia */
+.add-course {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Styl dla pól wprowadzania danych (input) szkolenia */
+.course-input {
+  width: 98%;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #555; /* Kolor tła pól wprowadzania danych */
+  color: #fff; /* Kolor tekstu w polach wprowadzania danych */
+  border: none;
+}
+
+/* Styl dla przycisku Dodaj szkolenie */
+.add-button {
+  background-color: #007acc; /* Kolor tła przycisku Dodaj */
+  color: #fff; /* Kolor tekstu na przycisku Dodaj */
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+/* Styl dla tytułu listy pracowników zapisanych na szkolenia */
+.registered-employees-title {
+  text-align: center;
+  font-size: 24px;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+/* Styl dla tabeli pracowników zapisanych na szkolenia */
+.registered-employees-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+/* Styl dla nagłówków kolumn w tabeli pracowników zapisanych na szkolenia */
+.registered-employees-table th {
+  background-color: #444; /* Kolor tła nagłówków kolumn */
+  color: #fff; /* Kolor tekstu w nagłówkach kolumn */
+  padding: 10px;
+  text-align: left;
+}
+
+/* Styl dla wierszy pracowników zapisanych na szkolenia */
+.registered-employee-row {
+  background-color: #555; /* Kolor tła wierszy pracowników zapisanych na szkolenia */
+  color: #fff; /* Kolor tekstu w wierszach pracowników zapisanych na szkolenia */
+}
+
+/* Resetowanie domyślnych marginesów i paddingów */
+body, div, h2, table, thead, tbody, tr, th, td {
+  margin: 0;
+  padding: 0;
+}
+
+/* Styl dla głównego kontenera */
+.vacation-management-container {
+  background-color: #333; /* Ciemne tło */
+  color: #fff; /* Kolor tekstu */
+  padding: 20px;
+}
+
+/* Styl dla tytułu */
+.vacation-title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Styl dla tabeli urlopów */
+.vacation-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Styl dla nagłówków kolumn */
+.vacation-table th {
+  background-color: #444; /* Kolor tła nagłówków kolumn */
+  color: #fff; /* Kolor tekstu w nagłówkach kolumn */
+  padding: 10px;
+  text-align: left;
+}
+
+/* Styl dla wierszy urlopów */
+.vacation-row {
+  background-color: #555; /* Kolor tła wierszy urlopów */
+  color: #fff; /* Kolor tekstu w wierszach urlopów */
+}
+
+/* Styl dla komórek w tabeli urlopów */
+.vacation-table td {
+  padding: 10px;
+}
+
+/* Resetowanie domyślnych marginesów i paddingów */
+body, div, h2, table, thead, tbody, tr, th, td {
+  margin: 0;
+  padding: 0;
+}
+
+/* Styl dla głównego kontenera */
+.absence-management-container {
+  background-color: #333; /* Ciemne tło */
+  color: #fff; /* Kolor tekstu */
+  padding: 20px;
+}
+
+/* Styl dla tytułu */
+.absence-title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Styl dla tabeli nieobecności */
+.absence-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Styl dla nagłówków kolumn */
+.absence-table th {
+  background-color: #444; /* Kolor tła nagłówków kolumn */
+  color: #fff; /* Kolor tekstu w nagłówkach kolumn */
+  padding: 10px;
+  text-align: left;
+}
+
+/* Styl dla wierszy nieobecności */
+.absence-row {
+  background-color: #555; /* Kolor tła wierszy nieobecności */
+  color: #fff; /* Kolor tekstu w wierszach nieobecności */
+}
+
+/* Styl dla komórek w tabeli nieobecności */
+.absence-table td {
+  padding: 10px;
+}
 

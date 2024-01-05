@@ -88,38 +88,40 @@ const BenefitsManagement = () => {
   };
 
   return (
-    <div>
-      <h2>Zarzadzanie benefitami</h2>
-      <table>
+    <div className="benefits-management-container">
+    <h2 className="benefits-title">Zarządzanie benefitami</h2>
+    <table className="benefits-table">
         <thead>
-          <tr>
-            <th>Nazwa Benefitu</th>
-            <th>Akcja</th>
-          </tr>
+            <tr>
+                <th>Nazwa Benefitu</th>
+                <th>Akcja</th>
+            </tr>
         </thead>
         <tbody>
-          {benefits.map((benefit) => (
-            <tr key={benefit.id}>
-              <td>{benefit.nazwa_benefitu}</td>
-              <td>
-                <button onClick={() => handleDeleteBenefit(benefit.id)}>Usuń</button>
-              </td>
-            </tr>
-          ))}
+            {benefits.map((benefit) => (
+                <tr key={benefit.id} className="benefit-row">
+                    <td>{benefit.nazwa_benefitu}</td>
+                    <td>
+                        <button onClick={() => handleDeleteBenefit(benefit.id)} className="delete-button">Usuń</button>
+                    </td>
+                </tr>
+            ))}
         </tbody>
-      </table>
-      <div>
-        <h3>Dodaj nowy benefit:</h3>
+    </table>
+    <div className="add-benefit">
+        <h3 className='addingh3'>Dodaj nowy benefit:</h3>
         <input
-          type="text"
-          placeholder="Nazwa benefitu"
-          value={newBenefitName}
-          onChange={(e) => setNewBenefitName(e.target.value)}
+            type="text"
+            placeholder="Nazwa benefitu"
+            value={newBenefitName}
+            onChange={(e) => setNewBenefitName(e.target.value)}
+            className="benefit-input"
         />
-        <button onClick={handleAddBenefit}>Dodaj</button>
-      </div>
-      <ToastContainer />
+        <button onClick={handleAddBenefit} className="add-button">Dodaj</button>
     </div>
+    <ToastContainer />
+</div>
+
   );
 };
 

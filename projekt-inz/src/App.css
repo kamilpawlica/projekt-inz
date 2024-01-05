@@ -101,7 +101,7 @@ input, select {
 
 .navbar {
   height: 50px;
-  background-color: goldenrod;
+  background-color: #007acc;
   color: black;
   display: flex;  
   align-items: center;

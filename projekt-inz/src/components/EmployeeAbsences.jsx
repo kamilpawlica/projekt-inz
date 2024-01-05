@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const EmployeeAbsences = () => {
-  const [employeeAbsences, setEmployeeAbsences] = useState([]);
+  const [employeeAbsences, setEmployeeAbsences] = useState(new Map());
 
   useEffect(() => {
     const fetchData = async () => {
@@ -11,7 +11,16 @@ const EmployeeAbsences = () => {
           throw new Error('Błąd podczas pobierania danych nieobecności pracowników');
         }
         const data = await response.json();
-        setEmployeeAbsences(data);
+        const groupedData = data.reduce((acc, employee) => {
+          const key = `${employee.imie} ${employee.nazwisko} ${employee.email}`;
+          if (!acc.has(key)) {
+            acc.set(key, []);
+          }
+          acc.get(key).push(employee);
+          return acc;
+        }, new Map());
+
+        setEmployeeAbsences(groupedData);
       } catch (error) {
         console.error(error);
       }
@@ -21,9 +30,9 @@ const EmployeeAbsences = () => {
   }, []);
 
   return (
-    <div>
-      <h2><center>Podgląd nieobecności pracowników</center></h2>
-      <table>
+    <div className="absence-management-container">
+      <h2 className="absence-title"><center>Podgląd nieobecności pracowników</center></h2>
+      <table className="absence-table">
         <thead>
           <tr>
             <th>Imię</th>
@@ -35,15 +44,23 @@ const EmployeeAbsences = () => {
           </tr>
         </thead>
         <tbody>
-          {employeeAbsences.map((employee, index) => (
-            <tr key={index}>
-              <td>{employee.imie}</td>
-              <td>{employee.nazwisko}</td>
-              <td>{employee.email}</td>
-              <td>{new Date(employee.data_poczatkowa).toLocaleDateString()}</td>
-              <td>{new Date(employee.data_koncowa).toLocaleDateString()}</td>
-              <td>{employee.powod}</td>
-            </tr>
+          {[...employeeAbsences.entries()].map(([key, absences], index) => (
+            <React.Fragment key={index}>
+              {absences.map((absence, absenceIndex) => (
+                <tr key={absenceIndex} className="absence-row">
+                  {absenceIndex === 0 && (
+                    <>
+                      <td rowSpan={absences.length}>{absence.imie}</td>
+                      <td rowSpan={absences.length}>{absence.nazwisko}</td>
+                      <td rowSpan={absences.length}>{absence.email}</td>
+                    </>
+                  )}
+                  <td>{new Date(absence.data_poczatkowa).toLocaleDateString()}</td>
+                  <td>{new Date(absence.data_koncowa).toLocaleDateString()}</td>
+                  <td>{absence.powod}</td>
+                </tr>
+              ))}
+            </React.Fragment>
           ))}
         </tbody>
       </table>

@@ -11,25 +11,22 @@ import EmployeeAbsences from '../components/EmployeeAbsences'
 import EmployeeAvailability from '../components/EmployeeAvailability'
 const AdminPanel = () => {
   return (
-    <div>
-    <h1><center>Panel administratora </center></h1>
-    <div className='uklad'>
-     
-    {<EmployeeList/>}
-    <EmployeeAvailability/>
-    <BenefitsManagement/>
-    <PositionManagement/>
-    <CompetencesManagement/>
-    <ContractManagement/>
-    <CourseManagement/>
-    <EmployeeVacations/>
-    <EmployeeAbsences/>
-   
-    
-    
+    <div className="admin-panel">
+    <h1 className="admin-panel-title">Panel administratora</h1>
+    <div className="uklad">
+      
+        <EmployeeList />
+        <EmployeeAvailability />
+        <BenefitsManagement />
+        <PositionManagement />
+        <CompetencesManagement />
+        <ContractManagement />
+        <CourseManagement />
+        <EmployeeVacations />
+        <EmployeeAbsences />
     </div>
-    
-    </div>
+</div>
+
   )
 }
 

@@ -62,8 +62,13 @@ body, div, h1, ul, li, button, select, input {
 .h2emplo {
   text-align: center;
   padding:.4rem;
-  margin-bottom: 1rem;
   font-size: 1.5rem;
+}
+
+.h3emplo {
+  text-align: center;
+  margin-bottom: 1rem;
+  color:#007acc;
 }
 
 .edit-label {
@@ -166,6 +171,7 @@ body, div, h2, table, thead, tbody, tr, th, td, ul, li {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 20px;
 }
 
 /* Styl dla tytułu */
@@ -195,6 +201,7 @@ body, div, h2, table, thead, tbody, tr, th, td, ul, li {
 .employee-row {
   background-color: #555; /* Kolor tła wierszy pracowników */
   color: #fff; /* Kolor tekstu w wierszach pracowników */
+  border-bottom: 1px solid #ccc; /* Linia oddzielająca wiersze */
 }
 
 /* Styl dla komórek w tabeli */
@@ -224,6 +231,9 @@ body, div, h2, table, thead, tbody, tr, th, td, input, button {
   padding: 20px;
   display: flex;
   flex-direction: column;
+  margin-top: 40px;
+  border: solid 2px white;
+ 
   
 }
 
@@ -324,6 +334,8 @@ body, div, h2, table, thead, tbody, tr, th, td, input, button {
   background-color: #333; /* Ciemne tło */
   color: #fff; /* Kolor tekstu */
   padding: 20px;
+  margin-top: 40px;
+  border: 2px solid white;
 }
 
 /* Styl dla tytułu */
@@ -405,6 +417,8 @@ body, div, h2, table, thead, tbody, tr, th, td, input, button {
   background-color: #333; /* Ciemne tło */
   color: #fff; /* Kolor tekstu */
   padding: 20px;
+  margin-top: 40px;
+  border: solid 2px white;
 }
 
 /* Styl dla tytułu */
@@ -476,6 +490,12 @@ body, div, h2, table, thead, tbody, tr, th, td, input, button {
 }
 
 
+.managementTables {
+  display: flex;
+  width: 100%;
+}
+
+
 /* Resetowanie domyślnych marginesów i paddingów */
 body, div, h2, table, thead, tbody, tr, th, td, input, button {
   margin: 0;
@@ -487,6 +507,8 @@ body, div, h2, table, thead, tbody, tr, th, td, input, button {
   background-color: #333; /* Ciemne tło */
   color: #fff; /* Kolor tekstu */
   padding: 20px;
+  margin-top: 40px;
+  border: 2px solid white;
 }
 
 /* Styl dla tytułu */
@@ -568,6 +590,7 @@ body, div, h2, table, thead, tbody, tr, th, td, input, button {
   background-color: #333; /* Ciemne tło */
   color: #fff; /* Kolor tekstu */
   padding: 20px;
+  margin-top: 40px;
 }
 
 /* Styl dla tytułu */
@@ -595,6 +618,7 @@ body, div, h2, table, thead, tbody, tr, th, td, input, button {
 .course-row {
   background-color: #555; /* Kolor tła wierszy szkoleń */
   color: #fff; /* Kolor tekstu w wierszach szkoleń */
+  border-bottom: 1px solid #ccc; /* Linia oddzielająca wiersze */
 }
 
 /* Styl dla komórek w tabeli szkoleń */
@@ -665,6 +689,7 @@ body, div, h2, table, thead, tbody, tr, th, td, input, button {
 .registered-employee-row {
   background-color: #555; /* Kolor tła wierszy pracowników zapisanych na szkolenia */
   color: #fff; /* Kolor tekstu w wierszach pracowników zapisanych na szkolenia */
+  border-bottom: 1px solid #ccc; /* Linia oddzielająca wiersze */
 }
 
 /* Resetowanie domyślnych marginesów i paddingów */
@@ -678,6 +703,7 @@ body, div, h2, table, thead, tbody, tr, th, td {
   background-color: #333; /* Ciemne tło */
   color: #fff; /* Kolor tekstu */
   padding: 20px;
+  margin-top: 60px;
 }
 
 /* Styl dla tytułu */
@@ -705,6 +731,7 @@ body, div, h2, table, thead, tbody, tr, th, td {
 .vacation-row {
   background-color: #555; /* Kolor tła wierszy urlopów */
   color: #fff; /* Kolor tekstu w wierszach urlopów */
+  
 }
 
 /* Styl dla komórek w tabeli urlopów */
@@ -723,6 +750,7 @@ body, div, h2, table, thead, tbody, tr, th, td {
   background-color: #333; /* Ciemne tło */
   color: #fff; /* Kolor tekstu */
   padding: 20px;
+  margin-top: 60px;
 }
 
 /* Styl dla tytułu */

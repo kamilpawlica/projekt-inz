@@ -15,6 +15,7 @@ const EmployeeList = () => {
     const [selectedCompetencies, setSelectedCompetencies] = useState([]);
     const [selectedBenefits, setSelectedBenefits] = useState([]);
     const [isEditMode, setIsEditMode] = useState(false);
+    const MAX_SALARY = 99999999; 
 
     useEffect(() => {
         fetchEmployees();
@@ -124,17 +125,22 @@ const EmployeeList = () => {
     const validateForm = () => {
         const { stanowisko, typ_umowy, kompetencje, benefity, wynagrodzenie } = editEmployee;
         if (!stanowisko || !typ_umowy || !kompetencje || !benefity || !wynagrodzenie) {
+            toast.error("Proszę wypełnić wszystkie pola formularza");
+            return false;
+        }
+        if (parseFloat(wynagrodzenie) >= MAX_SALARY) {
+            toast.error(`Maksymalna wartość wynagrodzenia to ${MAX_SALARY}`);
             return false;
         }
         return true;
     };
+    
 
     const handleSubmit = async () => {
 
         // Sprawdź czy formularz jest poprawnie wypełniony
     if (!validateForm()) {
-        toast.error("Proszę wypełnić wszystkie pola formularza");
-        return;
+           return;
     }
 
         const { googleid, stanowisko, typ_umowy, kompetencje, benefity, wynagrodzenie } = editEmployee;
@@ -223,7 +229,7 @@ const EmployeeList = () => {
         </thead>
         <tbody>
             {employees.map(employee => (
-                <tr key={employee.googleid}>
+                <tr key={employee.googleid} className="employee-row">
                     <td>{employee.imie}</td>
                     <td>{employee.nazwisko}</td>
                     <td>{employee.email}</td>
@@ -249,7 +255,10 @@ const EmployeeList = () => {
 
             {editEmployee && isEditMode && (
                 <div className="edit-employee">
-                    <h2 className='h2emplo'>Edytuj Pracownika</h2>
+                    <h2 className='h2emplo'>Edytuj Pracownika 
+                    </h2>
+                    <h3 className='h3emplo'> {editEmployee.imie} {editEmployee.nazwisko}
+                    </h3>
                     <label htmlFor="stanowisko" className="edit-label">Stanowisko:</label>
                     <select  name="stanowisko" id="stanowisko" value={editEmployee.stanowisko} onChange={handleChange} className="edit-select">
                         {positions.map(position => (

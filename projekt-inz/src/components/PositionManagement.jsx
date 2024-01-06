@@ -44,6 +44,11 @@ const PositionManagement = () => {
       });
     } catch (error) {
       console.error(error);
+      // Możesz także dodać ogólny toast na wypadek innych błędów
+      toast.error('Nie można usunąć stanowiska, które jest przypisane do pracownika', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
     }
   };
 

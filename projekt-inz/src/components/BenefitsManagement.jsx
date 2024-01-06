@@ -28,24 +28,42 @@ const BenefitsManagement = () => {
       const response = await fetch(`http://localhost:5000/delete_benefit/${benefitId}`, {
         method: 'DELETE',
       });
-
+  
       if (!response.ok) {
-        throw new Error('Błąd podczas usuwania benefitu');
+        // Próbujemy przechwycić i przeanalizować odpowiedź JSON
+        const errorData = await response.json();
+        
+        // Sprawdź, czy kod błędu to '23503' - naruszenie klucza obcego
+        if (errorData.code === '23503') {
+          toast.error('Nie można usunąć benefitu, który jest przypisany do pracownika', {
+            position: 'top-right',
+            autoClose: 3000,
+          });
+        } else {
+          throw new Error('Błąd podczas usuwania benefitu');
+        }
+        return;
       }
-
-      // Aktualizuj listę benefitów po usunięciu
+  
       const updatedBenefits = benefits.filter((benefit) => benefit.id !== benefitId);
       setBenefits(updatedBenefits);
-
-      // Pokaż toast po pomyślnym usunięciu
+  
       toast.success('Benefit został pomyślnie usunięty', {
         position: 'top-right',
-        autoClose: 3000, // Czas wyświetlania toastu w milisekundach
+        autoClose: 3000,
       });
     } catch (error) {
       console.error(error);
+      // Możesz także dodać ogólny toast na wypadek innych błędów
+      toast.error('Nie można usunąć benefitu, który jest przypisany do pracownika', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
     }
   };
+  
+
+  
 
   const handleAddBenefit = async () => {
     if (!newBenefitName) {

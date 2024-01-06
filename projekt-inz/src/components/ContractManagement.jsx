@@ -44,6 +44,11 @@ const ContractManagement = () => {
       });
     } catch (error) {
       console.error(error);
+      // Możesz także dodać ogólny toast na wypadek innych błędów
+      toast.error('Nie można usunąć typu umowy, który jest przypisany do pracownika', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
     }
   };
 

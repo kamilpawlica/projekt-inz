@@ -49,6 +49,11 @@ const CourseManagement = () => {
       });
     } catch (error) {
       console.error(error);
+      // Możesz także dodać ogólny toast na wypadek innych błędów
+      toast.error('Nie można usunąć szkolenia, do którego zapisany jest pracownik', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
     }
   };
 

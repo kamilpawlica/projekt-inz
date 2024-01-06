@@ -10,6 +10,7 @@ import EmployeeVacations from '../components/EmployeeVacations'
 import EmployeeAbsences from '../components/EmployeeAbsences'
 import EmployeeAvailability from '../components/EmployeeAvailability'
 const AdminPanel = () => {
+  
   return (
     <div className="admin-panel">
     <h1 className="admin-panel-title">Panel administratora</h1>
@@ -17,10 +18,12 @@ const AdminPanel = () => {
       
         <EmployeeList />
         <EmployeeAvailability />
+        
         <BenefitsManagement />
         <PositionManagement />
         <CompetencesManagement />
         <ContractManagement />
+        
         <CourseManagement />
         <EmployeeVacations />
         <EmployeeAbsences />

@@ -7,7 +7,6 @@ import AvailabilityForm from '../components/AvailabilityForm';
 import Benefits from '../components/Benefits';
 import Training from '../components/Training';
 import "../pages/AdminPanel.jsx";
-import Danezdj from "../img/dane.PNG";
 import { Link } from "react-router-dom";
 import "../pages/UserPanel.css"
 const UserPanel = () => {

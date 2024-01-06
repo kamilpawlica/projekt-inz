@@ -100,29 +100,30 @@ input, select {
 
 
 .navbar {
-  height: 50px;
-  background-color: #007acc;
-  color: black;
-  display: flex;  
-  align-items: center;
-  justify-content: space-around;
+  display: flex;
+  justify-content: space-between;
+  background-color: #1976d2;
+  color: white;
 }
 
-.logo{
-  font-size: 20px;
-  font-weight: bold;
+.logo {
+  margin-left: 16px;
 }
 
-.list{
+.list {
+  list-style: none;
   display: flex;
   align-items: center;
-  list-style: none; 
+  margin-right: 16px;
 }
 
 .listItem {
-  margin-right: 20px;
-  font-weight: 500;
-  cursor: pointer;
+  margin-left: 8px;
+}
+
+.link {
+  color: white;
+  text-decoration: none;
 }
 
 .avatar{
@@ -134,16 +135,17 @@ input, select {
 
 
 .login {
-  height: calc(100vh - 50px);
+  margin-top: 150px;
+  height: 300px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .wrapper {
-  width: 60%;
-  height: 75%;
-  border: 1px solid goldenrod;
+  width: 30%;
+  height: 65%;
+  border: 2px solid #1976d2;
   display: flex;
   align-items: center;
   border-radius: 20px;
@@ -162,6 +164,14 @@ input, select {
   align-items: center;
   justify-content: center;
   position: relative;
+}
+
+
+.backgroundImage {
+  background-image: url('./img/background.png');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.5; /* Dostosuj przezroczystość według potrzeb */
 }
 
 
@@ -219,15 +229,12 @@ input{
 }
 
 .loginTitle{
-  position: absolute;
-  top: 200px;
-  color:lightgray
+  
+  margin: 15px;
+  color:#1976d2;
 }
 
-.link {
-  color: inherit;
-  text-decoration: none;
-}
+
 
 @media screen and (max-width: 992px) {
   .card {

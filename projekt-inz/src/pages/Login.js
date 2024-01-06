@@ -1,5 +1,6 @@
-import Google from "../img/google.png";
-
+import React from "react";
+import { Container, Paper, Typography, Button, Box, Avatar } from "@mui/material";
+import GoogleIcon from "../img/google.png"; // Zaimportuj ikonę Google
 
 const Login = () => {
   const google = () => {
@@ -7,28 +8,25 @@ const Login = () => {
   };
 
   return (
-    <div className="login">
-      
-      <div className="wrapper">
-        <div className="left">
-        <div className="loginTitle"><h1>Logowanie pracownika</h1></div>
-          <div className="loginButton google" onClick={google}>
-            
-            <img src={Google} alt="" className="icon" />
-            Google
-          </div>    
-        </div>
-        <div className="center">
-          <div className="line" />  
-        </div>
-        <div className="right">
-          <div className="loginTitle"><h1>Logowanie administratora</h1></div>
-          <input type="text" placeholder="Username" />
-          <input type="text" placeholder="Password" />
-          <button className="submit">Login</button>
-        </div>
-      </div>
-    </div>
+    <Container maxWidth="sm">
+      <Paper elevation={3} className="login" sx={{ padding: 2 }} > {/* Zmniejsz padding */}
+        <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="100%">
+        <Typography variant="h7" component="h1" gutterBottom sx={{ marginBottom: 2 }}> {/* Zmniejsz rozmiar tekstu i odstęp od dołu */}
+            LOGOWANIE
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            startIcon={<Avatar src={GoogleIcon} alt="Google" />}
+            onClick={google}
+            sx={{ mt: 2 }}
+          >
+            Logowanie za pomocą Google
+          </Button>
+        </Box>
+      </Paper>
+    </Container>
   );
 };
 

@@ -160,74 +160,72 @@ const AvailabilityForm = ({ usersData }) => {
   return (
     <div className="availabilityForm">
     <ToastContainer />
-    {usersData.typ_umowy === 2 ? (
-      <div>
-        <h2>Wprowadź dostępność</h2>
-        <form onSubmit={handleSubmit} className="form">
-          {error && <p className="error">{error}</p>}
-          <div className="form-group">
-            <label>Data (wybierz dzień tygodnia):</label>
-            <input
-              type="date"
-              name="data"
-              value={formData.data}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>Godzina rozpoczęcia:</label>
-            <input
-              type="time"
-              name="godzina_rozpoczecia"
-              value={formData.godzina_rozpoczecia}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>Godzina zakończenia:</label>
-            <input
-              type="time"
-              name="godzina_zakonczenia"
-              value={formData.godzina_zakonczenia}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <button type="submit">Dodaj dostępność</button>
-          </div>
-        </form>
-        {availability.length > 0 && (
-          <div className="availabilityList">
-            <h3>Twoja dostępność:</h3>
-            <ul>
-              {availability.map((available) => (
-                <li key={available.id}>
-                  Data: {new Date(available.dzien_tygodnia).toLocaleDateString("pl-PL", { day: "2-digit", month: "2-digit", year: "numeric", weekday: "long" })}
-                  <br />
-                  Godzina rozpoczęcia: {available.godzina_rozpoczecia}, Godzina zakończenia: {available.godzina_zakonczenia}
-                  <button
-                    onClick={() => handleDeleteAvailability(available.id)}
-                  >
-                    Usuń
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+    {usersData.typ_umowy !== 2 ? (
+  <div>
+    <h2>Wprowadź dostępność</h2>
+    <p>Zgłoszenie dostępności przysługuje pracownikom pracującym na zlecenie.</p>
+  </div>
+) : (
+  <div>
+    <h2>Wprowadź dostępność</h2>
+    <form onSubmit={handleSubmit} className="form">
+      {error && <p className="error">{error}</p>}
+      <div className="form-group">
+        <label>Data (wybierz dzień tygodnia):</label>
+        <input
+          type="date"
+          name="data"
+          value={formData.data}
+          onChange={handleChange}
+          required
+        />
       </div>
-      ) : (
-        <div>
-          <p>
-            {usersData.typ_umowy === 1
-              ? "Zgłoszenie dostępności możliwe jest dla pracowników, którzy pracują na zlecenie."
-              : "Zgłoszenie dostępności możliwe jest dla pracowników, którzy pracują na zlecenie."}
-          </p>
-        </div>
-      )}
+      <div className="form-group">
+        <label>Godzina rozpoczęcia:</label>
+        <input
+          type="time"
+          name="godzina_rozpoczecia"
+          value={formData.godzina_rozpoczecia}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label>Godzina zakończenia:</label>
+        <input
+          type="time"
+          name="godzina_zakonczenia"
+          value={formData.godzina_zakonczenia}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="form-group">
+        <button type="submit">Dodaj dostępność</button>
+      </div>
+    </form>
+    {availability.length > 0 && (
+      <div className="availabilityList">
+        <h3>Twoja dostępność:</h3>
+        <ul>
+          {availability.map((available) => (
+            <li key={available.id}>
+              Data: {new Date(available.dzien_tygodnia).toLocaleDateString("pl-PL", { day: "2-digit", month: "2-digit", year: "numeric", weekday: "long" })}
+              <br />
+              Godzina rozpoczęcia: {available.godzina_rozpoczecia}, Godzina zakończenia: {available.godzina_zakonczenia}
+              <button
+                onClick={() => handleDeleteAvailability(available.id)}
+              >
+                Usuń
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </div>
+)}
+
     </div>
   );
 };

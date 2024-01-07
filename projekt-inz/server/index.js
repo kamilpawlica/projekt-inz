@@ -417,6 +417,71 @@ app.delete('/delete-employee-training/:googleid', async (req, res) => {
 });
 
 
+app.delete('/delete-employee-training/:googleid/:trainingId', async (req, res) => {
+  try {
+    const { googleid, trainingId } = req.params;
+
+    // Usuwanie rekordu z tabeli szkolenia_pracownicy na podstawie googleid i trainingId
+    const queryText = `
+      DELETE FROM szkolenia_pracownicy
+      WHERE googleid = $1 AND id_szkolenia = $2
+    `;
+    const values = [googleid, trainingId];
+
+    const result = await pool.query(queryText, values);
+
+    if (result.rowCount > 0) {
+      res.status(200).json({ message: 'Rekord został usunięty pomyślnie.' });
+    } else {
+      res.status(404).json({ message: 'Nie znaleziono rekordu do usunięcia.' });
+    }
+  } catch (error) {
+    console.error('Błąd podczas usuwania rekordu:', error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas usuwania rekordu.' });
+  }
+});
+
+
+
+app.delete('/delete-employee/:googleid', async (req, res) => {
+  try {
+    const { googleid } = req.params;
+
+    if (!googleid) {
+      return res.status(400).json({ error: 'Brak googleid' });
+    }
+
+    // Rozpoczęcie transakcji
+    await pool.query('BEGIN');
+
+    // Usuwanie powiązanych benefitów i kompetencji
+    await pool.query('DELETE FROM benefity_pracownicy WHERE googleid = $1', [googleid]);
+    await pool.query('DELETE FROM kompetencje_pracownicy WHERE googleid = $1', [googleid]);
+    await pool.query('DELETE FROM nieobecnosci WHERE googleid = $1', [googleid]);
+    await pool.query('DELETE FROM dostepnosc WHERE googleid = $1', [googleid]);
+    await pool.query('DELETE FROM szkolenia_pracownicy WHERE googleid = $1', [googleid]);
+    // Usuwanie pracownika
+    const result = await pool.query('DELETE FROM pracownicy WHERE googleid = $1', [googleid]);
+
+    if (result.rowCount === 0) {
+      // Wycofanie transakcji w przypadku braku pracownika
+      await pool.query('ROLLBACK');
+      return res.status(404).json({ error: 'Pracownik nie znaleziony' });
+    }
+
+    // Zatwierdzenie transakcji
+    await pool.query('COMMIT');
+
+    res.status(200).json({ message: 'Pracownik usunięty pomyślnie' });
+  } catch (error) {
+    // Wycofanie transakcji w przypadku błędu
+    await pool.query('ROLLBACK');
+    console.error('Błąd podczas usuwania pracownika:', error);
+    res.status(500).json({ error: 'Błąd serwera' });
+  }
+});
+
+
 app.get('/assigned-trainings/:googleid', async (req, res) => {
   const { googleid } = req.params;
 
@@ -944,7 +1009,8 @@ app.get('/pracownicy_lista', async (req, res) => {
               tu.nazwa_typu_umowy as typ_umowy, 
               array_agg(distinct k.nazwa_kompetencji) as kompetencje, 
               array_agg(distinct b.nazwa_benefitu) as benefity, 
-              p.wynagrodzenie
+              p.wynagrodzenie,
+              p.staz_pracy
           FROM 
               pracownicy p
           LEFT JOIN stanowiska s ON p.stanowisko = s.id
@@ -967,17 +1033,17 @@ app.get('/pracownicy_lista', async (req, res) => {
 
 app.put('/aktualizuj_pracownika/:googleid', async (req, res) => {
   const googleid = req.params.googleid;
-  const { stanowisko, typ_umowy, kompetencje, benefity, wynagrodzenie } = req.body;
+  const { stanowisko, typ_umowy, kompetencje, benefity, wynagrodzenie, staz_pracy } = req.body;
 
   try {
       await pool.query('BEGIN');
 
       const pracownikQuery = `
           UPDATE pracownicy 
-          SET stanowisko = $1, typ_umowy = $2, wynagrodzenie = $3
-          WHERE googleid = $4
+          SET stanowisko = $1, typ_umowy = $2, wynagrodzenie = $3, staz_pracy = $4
+          WHERE googleid = $5
       `;
-      await pool.query(pracownikQuery, [stanowisko, typ_umowy, wynagrodzenie, googleid]);
+      await pool.query(pracownikQuery, [stanowisko, typ_umowy, wynagrodzenie, staz_pracy, googleid]);
 
       const updateKompetencje = async () => {
           await pool.query('DELETE FROM kompetencje_pracownicy WHERE googleid = $1', [googleid]);
@@ -1003,6 +1069,7 @@ app.put('/aktualizuj_pracownika/:googleid', async (req, res) => {
       res.status(500).send('Błąd podczas aktualizacji pracownika.');
   }
 });
+
 
 
 app.delete('/usun-benefity/:googleid', (req, res) => {

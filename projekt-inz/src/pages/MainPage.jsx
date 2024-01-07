@@ -40,7 +40,7 @@ function FeatureCard({ title, description }) {
 
 function MainPage() {
   return (
-    <div>
+    <div classname="MainPageBg">
       
       <Container maxWidth="md">
         <FadeOnScroll>

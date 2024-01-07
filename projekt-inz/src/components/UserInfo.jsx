@@ -96,8 +96,9 @@ const UserInfoList = ({ usersData }) => {
       Stanowisko: {stanowisko ? stanowisko : 'Brak stanowiska'}
     </li>
     <li className="salary">Wynagrodzenie: {userInfo.wynagrodzenie} PLN</li>
-    <li className="skills">Kompetencje: {kompetencje.join(', ')}</li>
+    <li className="skills">Kompetencje: {kompetencje.length > 0 ? kompetencje.join(', ') : 'Brak kompetencji'}</li>
     <li className="benefits">Benefity: {benefity.length > 0 ? benefity.join(', ') : 'Brak benefitów'}</li>
+    <li className="salary">Staż pracy: {userInfo.staz_pracy} lat</li>
   </ul>
 </div>
   );

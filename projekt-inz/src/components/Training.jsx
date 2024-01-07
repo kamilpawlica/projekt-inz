@@ -71,7 +71,7 @@ const Training = ({ usersData }) => {
       });
 
       if (response.ok) {
-        toast.success('Przypisanie szkolenia do pracownika zostało wykonane pomyślnie.', {
+        toast.success('Pomyślnie zapisałeś się na szkolenie.', {
           position: 'top-right',
           autoClose: 3000,
           hideProgressBar: false,
@@ -99,12 +99,12 @@ const Training = ({ usersData }) => {
 
   const handleCancelTraining = async (id_szkolenia) => {
     try {
-      const response = await fetch(`http://localhost:5000/delete-employee-training/${usersData.googleid}`, {
+      const response = await fetch(`http://localhost:5000/delete-employee-training/${usersData.googleid}/${id_szkolenia}`, {
         method: 'DELETE',
       });
 
       if (response.ok) {
-        toast.success('Zrezygnowano ze szkolenia pomyślnie.', {
+        toast.success('Pomyślnie zrezygnowałeś ze szkolenia.', {
           position: 'top-right',
           autoClose: 3000,
           hideProgressBar: false,
@@ -132,29 +132,28 @@ const Training = ({ usersData }) => {
 
   return (
     <div className="trainingList">
-  <ToastContainer />
-  <h2>Lista dostępnych szkoleń</h2>
-  {error && <p className="error">{error}</p>}
-  <ul>
-    {availableTrainings.map((training) => (
-      <li key={training.id}>
-        <strong>{training.nazwa_szkolenia}</strong>: {training.opis_szkolenia}
-        <button onClick={() => handleAssignTraining(training.id)}>Weź udział</button>
-      </li>
-    ))}
-  </ul>
+      <ToastContainer />
+      <h2>Lista dostępnych szkoleń</h2>
+      {error && <p className="error">{error}</p>}
+      <ul>
+        {availableTrainings.map((training) => (
+          <li key={training.id}>
+            <strong>{training.nazwa_szkolenia}</strong>: {training.opis_szkolenia}
+            <button onClick={() => handleAssignTraining(training.id)}>Weź udział</button>
+          </li>
+        ))}
+      </ul>
 
-  <h2>Twoje przypisane szkolenia</h2>
-  <ul>
-    {assignedTrainings.map((training) => (
-      <li key={training.id}>
-        <strong>{training.nazwa_szkolenia}</strong>
-        <button onClick={() => handleCancelTraining(training.id)}>Zrezygnuj</button>
-      </li>
-    ))}
-  </ul>
-</div>
-
+      <h2>Twoje przypisane szkolenia</h2>
+      <ul>
+        {assignedTrainings.map((training) => (
+          <li key={training.id}>
+            <strong>{training.nazwa_szkolenia}</strong>
+            <button onClick={() => handleCancelTraining(training.id)}>Zrezygnuj</button>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 };
 

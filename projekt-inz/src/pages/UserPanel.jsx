@@ -54,6 +54,11 @@ const UserPanel = () => {
         }
     }, [googleId]);
 
+
+    if (userData && userData.stanowisko === 11) {
+        return <Navigate to="/AdminPanel" />;
+    }
+
     if (!googleId) {
         return <p>Nie podano Google ID.</p>;
     }
@@ -65,14 +70,14 @@ const UserPanel = () => {
     if (error) {
         return <p>Błąd: {error}</p>;
     }
-
+    
     return (
         <div className='wrapperUserPanel'>
             <div className="headerxd"> 
             
             <h1 className='mainHeader'>Panel pracownika <br/></h1>
             <h2 className='secondHeader'>Witaj, {userData.imie} <br/></h2>
-            <Link to = "AdminPanel">AdminPanel </Link>
+            
             
             
             </div>

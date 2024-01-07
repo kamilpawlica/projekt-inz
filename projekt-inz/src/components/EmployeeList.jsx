@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { MultiSelect } from 'react-multi-select-component';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Swal from 'sweetalert2';
+
 
 const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
@@ -203,21 +205,47 @@ const EmployeeList = () => {
         }
     };
 
-    const handleDeleteEmployee = async (googleid) => {
-      try {
-        const response = await fetch(`http://localhost:5000/delete-employee/${googleid}`, {
-          method: 'DELETE',
-        });
+    const handleDeleteEmployee = async (googleid, employeeName) => {
+      // Wyświetlenie monitu SweetAlert2
+      const result = await Swal.fire({
+        title: `Czy na pewno chcesz usunąć pracownika ${employeeName}?`,
+        text: "Tej operacji nie można cofnąć!",
+        background: '#333',
+        color: '#fff',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Tak, usuń!',
+        cancelButtonText: 'Anuluj'
+      });
     
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
+      if (result.isConfirmed) {
+        try {
+          const response = await fetch(`http://localhost:5000/delete-employee/${googleid}`, {
+            method: 'DELETE',
+          });
+    
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+    
+          // Informowanie o pomyślnym usunięciu
+          Swal.fire({
+            title: 'Usunięto!',
+            text: 'Pracownik został usunięty pomyślnie.',
+            background: '#333',
+            color: '#fff',
+            confirmButtonColor: '#3085d6'
+          });
+          fetchEmployees(); // Odświeżanie listy pracowników
+        } catch (error) {
+          console.error('Error deleting employee:', error);
+          Swal.fire(
+            'Błąd!',
+            'Nie udało się usunąć pracownika.',
+            'error'
+          );
         }
-    
-        toast.success("Pracownik został usunięty pomyślnie");
-        fetchEmployees(); // Odświeżanie listy pracowników po usunięciu
-      } catch (error) {
-        console.error('Error deleting employee:', error);
-        toast.error("Błąd podczas usuwania pracownika");
       }
     };
     
@@ -272,8 +300,13 @@ console.log(employees)
                         <button className="delete-button dwa" onClick={() => handleDeleteBenefits(employee.googleid)}>
                             Usuń benefity
                         </button>
-                        {employee.stanowisko !== "administrator" && (
-          <button className="delete-button dwa" onClick={() => handleDeleteEmployee(employee.googleid)}>Usuń pracownika</button>
+                        {employee.stanowisko !== "Administrator" && (
+         <button 
+         className="delete-button dwa" 
+         onClick={() => handleDeleteEmployee(employee.googleid, `${employee.imie} ${employee.nazwisko}`)}
+       >
+         Usuń pracownika
+       </button>
         )}
                     </td>
                 </tr>
@@ -288,7 +321,8 @@ console.log(employees)
                     <h3 className='h3emplo'> {editEmployee.imie} {editEmployee.nazwisko}
                     </h3>
                     <label htmlFor="stanowisko" className="edit-label">Stanowisko:</label>
-                    <select  name="stanowisko" id="stanowisko" value={editEmployee.stanowisko} onChange={handleChange} className="edit-select">
+                    <select  name="stanowisko" id="stanowisko"  onChange={handleChange} className="edit-select">
+                    <option disabled selected value> Wybierz stanowisko </option>
                         {positions.map(position => (
                             <option key={position.id} value={position.id}>
                                 {position.nazwa_stanowiska}
@@ -296,7 +330,8 @@ console.log(employees)
                         ))}
                     </select>
                     <label htmlFor="typ_umowy" className="edit-label">Typ Umowy:</label>
-                    <select name="typ_umowy" id="typ_umowy" value={editEmployee.typ_umowy} onChange={handleChange} className="edit-select">
+                    <select name="typ_umowy" id="typ_umowy" onChange={handleChange} className="edit-select">
+                    <option disabled selected value> Wybierz typ umowy </option>
                         {contractTypes.map(type => (
                             <option key={type.id} value={type.id}>
                                 {type.nazwa_typu_umowy}
@@ -310,6 +345,7 @@ console.log(employees)
                         onChange={handleChangeCompetencies}
                         labelledBy={'kompetencje'}
                         className="rmsc"
+                        
                     />
                     <label htmlFor="benefity" className="edit-label">Wybierz benefity:</label>
                     <MultiSelect
@@ -320,10 +356,11 @@ console.log(employees)
                         className="rmsc"
                     />
                     <label htmlFor="wynagrodzenie" className="edit-label">Wynagrodzenie:</label>
-                    <input name="wynagrodzenie" id="wynagrodzenie" value={editEmployee.wynagrodzenie} onChange={handleChange} className="edit-select" />
+                    <input name="wynagrodzenie" id="wynagrodzenie" placeholder="Wynagrodzenie w złotych"  onChange={handleChange} className="edit-select" />
+                    
 
                     <label htmlFor="staz_pracy" className="edit-label">Staż pracy:</label>
-                    <input name="staz_pracy" id="staz_pracy" value={editEmployee.staz_pracy} onChange={handleChange} className="edit-select" />
+                    <input name="staz_pracy" id="staz_pracy" placeholder="Staż w latach" onChange={handleChange} className="edit-select" />
 
                     <button onClick={handleSubmit} className="edit-button save">Zapisz zmiany</button>
                 </div>

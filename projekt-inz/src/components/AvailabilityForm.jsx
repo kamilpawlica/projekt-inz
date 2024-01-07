@@ -171,8 +171,8 @@ const AvailabilityForm = ({ usersData }) => {
     <form onSubmit={handleSubmit} className="form">
       {error && <p className="error">{error}</p>}
       <div className="form-group">
-        <label>Data (wybierz dzień tygodnia):</label>
-        <input
+        <label>Data (dzień):</label>
+        <input className="inputPlace"
           type="date"
           name="data"
           value={formData.data}
@@ -182,7 +182,7 @@ const AvailabilityForm = ({ usersData }) => {
       </div>
       <div className="form-group">
         <label>Godzina rozpoczęcia:</label>
-        <input
+        <input className="inputPlace"
           type="time"
           name="godzina_rozpoczecia"
           value={formData.godzina_rozpoczecia}
@@ -192,7 +192,7 @@ const AvailabilityForm = ({ usersData }) => {
       </div>
       <div className="form-group">
         <label>Godzina zakończenia:</label>
-        <input
+        <input className="inputPlace"
           type="time"
           name="godzina_zakonczenia"
           value={formData.godzina_zakonczenia}

@@ -10,9 +10,19 @@ const Navbar = ({ user }) => {
   return (
     <AppBar position="static" className="navbar">
       <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Human resource management
-        </Typography>
+        <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
+          {user ? (
+            <Typography variant="h6" component="div">
+              Human resource management
+            </Typography>
+          ) : (
+            <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <Typography variant="h6" component="div">
+                Human resource management
+              </Typography>
+            </Link>
+          )}
+        </Box>
         {user ? (
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Avatar src={user.photos[0].value} alt={user.displayName} sx={{ marginRight: 1 }} />
@@ -24,7 +34,7 @@ const Navbar = ({ user }) => {
             </Button>
           </Box>
         ) : (
-          <Link to="login" className="link">
+          <Link to="/login" className="link" style={{ textDecoration: 'none', color: 'inherit' }}>
             <Button color="inherit">Logowanie</Button>
           </Link>
         )}

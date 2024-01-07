@@ -17,22 +17,24 @@ function FadeOnScroll(props) {
 function FeatureCard({ title, description }) {
   const cardStyle = {
     marginBottom: '20px',
-    transition: 'background-color 0.3s', // Dodaje płynne przejście koloru
+    transition: 'background-color 0.3s',
+    backgroundColor: '#333',
+    color: 'white',
   };
 
   const cardHoverStyle = {
     ...cardStyle,
     '&:hover': {
       backgroundColor: '#1976d2',
-      color: 'white', // Zmienia kolor tekstu po najechaniu
+      color: 'white',
     },
   };
 
   return (
     <Card sx={cardHoverStyle}>
       <CardContent>
-        <Typography variant="h5" component="h2">{title}</Typography>
-        <Typography variant="body1">{description}</Typography>
+        <Typography variant="h5" component="h2" style={{ color: ' ' }}>{title}</Typography>
+        <Typography variant="body1" style={{ color: 'inherit' }}>{description}</Typography>
       </CardContent>
     </Card>
   );
@@ -40,36 +42,29 @@ function FeatureCard({ title, description }) {
 
 function MainPage() {
   return (
-    <div classname="MainPageBg">
-      
-      <Container maxWidth="md">
-        <FadeOnScroll>
-          <div style={{ marginTop: '20px' }}>
-            <Typography variant="h4" component="h1" gutterBottom>
-              
-              Welcome to HR Management
-              
-            </Typography>
+    <div className="MainPageBg">
+    <Container maxWidth="md">
+      <FadeOnScroll>
+        <div style={{ marginTop: '20px'}}> {/* Dodano wyśrodkowanie */}
+          <Typography variant="h4" component="h1" padding="20px" margin="20px" textAlign="center" gutterBottom style={{ color: 'white' }}>
+          System zarządzania zasobami ludzkimi
+          </Typography>
             
             {/* Opis aplikacji */}
             <FeatureCard 
-              title="Feature 1"
-              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit..."
+              title="Panel pracownika"
+              description="Szereg funkcjonalności dla pracowników"
               
             />
             <FeatureCard 
-              title="Feature 2"
-              description="Nulla auctor, urna a condimentum ullamcorper, mauris a dui vel velit..."
+              title="Panel administratora"
+              description="Zarządzanie danymi oraz edycja pracowników"
             />
             <FeatureCard 
-              title="Feature 3"
-              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit..."
-              
+              title="Uwierzytelnianie użytkowników"
+              description="Bezpieczne logowanie i autentykacja użytkowników"
             />
-            <FeatureCard 
-              title="Feature 4"
-              description="Nulla auctor, urna a condimentum ullamcorper, mauris a dui vel velit..."
-            />
+          
 
             <div style={{ textAlign: 'center', margin: '20px 0' }}>
               <Link to="/login" style={{ textDecoration: 'none' }}>

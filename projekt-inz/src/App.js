@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import RedirectWithId from  "./components/RedirectWithId";
 import MainPage from "./pages/MainPage";
 import AdminPanel from "./pages/AdminPanel";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -41,10 +42,13 @@ const App = () => {
       <div>
         <Navbar user={user} />
         <Routes>
-          
           <Route path="/" element={user ? <RedirectWithId user={user} /> : <MainPage />} />
           <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
-          <Route path="/AdminPanel" element= {<AdminPanel/>}/>
+          <Route path="/AdminPanel" element={
+            <ProtectedRoute user={user}>
+              <AdminPanel />
+            </ProtectedRoute>
+          }/>
           {/* Tutaj można dodać więcej ścieżek jeśli potrzebujesz */}
         </Routes>
       </div>

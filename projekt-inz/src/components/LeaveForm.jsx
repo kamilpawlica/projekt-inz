@@ -183,7 +183,7 @@ const LeaveForm = ({ usersData }) => {
         {error && <p className="error">{error}</p>}
         <div className="form-group">
           <label>Data początkowa:</label>
-          <input
+          <input className="inputPlace"
             type="date"
             name="data_rozpoczecia"
             value={formData.data_rozpoczecia}
@@ -193,7 +193,7 @@ const LeaveForm = ({ usersData }) => {
         </div>
         <div className="form-group">
           <label>Data końcowa:</label>
-          <input
+          <input className="inputPlace"
             type="date"
             name="data_zakonczenia"
             value={formData.data_zakonczenia}

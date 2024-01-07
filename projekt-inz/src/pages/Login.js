@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Paper, Typography, Button, Box, Avatar } from "@mui/material";
-import GoogleIcon from "../img/google.png"; // Zaimportuj ikonę Google
+import GoogleIcon from "../img/google.png"; 
 
 const Login = () => {
   const google = () => {
@@ -9,9 +9,9 @@ const Login = () => {
 
   return (
     <Container maxWidth="sm">
-      <Paper elevation={3} className="login" sx={{ padding: 2 }} > {/* Zmniejsz padding */}
+      <Paper elevation={3} className="login" sx={{ padding: 2, backgroundColor: '#333'}}>
         <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="100%">
-        <Typography variant="h7" component="h1" gutterBottom sx={{ marginBottom: 2 }}> {/* Zmniejsz rozmiar tekstu i odstęp od dołu */}
+          <Typography variant="h7" component="h1" gutterBottom sx={{ marginBottom: 2, color: 'white' }}>
             LOGOWANIE
           </Typography>
           <Button

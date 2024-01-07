@@ -23,7 +23,16 @@ const PositionManagement = () => {
     fetchData();
   }, []);
 
-  const handleDeletePosition = async (positionId) => {
+  const handleDeletePosition = async (positionId, positionName) => {
+
+    if (positionName === 'Administrator') {
+      toast.error('Nie można usunąć administratora systemu', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
+      return;
+    }
+
     try {
       const response = await fetch(`http://localhost:5000/delete_stanowisko/${positionId}`, {
         method: 'DELETE',
@@ -107,7 +116,9 @@ const PositionManagement = () => {
                 <tr key={position.id} className="position-row">
                     <td>{position.nazwa_stanowiska}</td>
                     <td>
-                        <button onClick={() => handleDeletePosition(position.id)} className="delete-button">Usuń</button>
+                    <button onClick={() => handleDeletePosition(position.id, position.nazwa_stanowiska)} className="delete-button">
+                Usuń
+              </button>
                     </td>
                 </tr>
             ))}

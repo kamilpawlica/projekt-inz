@@ -681,12 +681,21 @@ app.post('/add_benefit', async (req, res) => {
   const { nazwa_benefitu } = req.body;
 
   try {
-    const result = await pool.query('INSERT INTO benefity (nazwa_benefitu) VALUES ($1) RETURNING *', [nazwa_benefitu]);
+    // Sprawdź, czy benefit o podanej nazwie już istnieje
+    const existingBenefit = await pool.query('SELECT * FROM benefity WHERE nazwa_benefitu = $1', [nazwa_benefitu]);
 
-    if (result.rows.length > 0) {
-      res.status(201).json(result.rows[0]); // Zwróć dodany benefit
+    if (existingBenefit.rows.length > 0) {
+      // Jeśli benefit już istnieje, zwróć błąd
+      res.status(409).json({ message: 'Benefit o podanej nazwie już istnieje' });
     } else {
-      res.status(404).json({ message: 'Nie udało się dodać benefitu' });
+      // Dodaj nowy benefit, ponieważ nie istnieje jeszcze o tej nazwie
+      const result = await pool.query('INSERT INTO benefity (nazwa_benefitu) VALUES ($1) RETURNING *', [nazwa_benefitu]);
+
+      if (result.rows.length > 0) {
+        res.status(201).json(result.rows[0]); // Zwróć dodany benefit
+      } else {
+        res.status(404).json({ message: 'Nie udało się dodać benefitu' });
+      }
     }
   } catch (error) {
     console.error(error);
@@ -731,18 +740,28 @@ app.post('/add_stanowisko', async (req, res) => {
   const { nazwa_stanowiska } = req.body;
 
   try {
-    const result = await pool.query('INSERT INTO stanowiska (nazwa_stanowiska) VALUES ($1) RETURNING *', [nazwa_stanowiska]);
+    // Sprawdź, czy stanowisko o podanej nazwie już istnieje
+    const existingStanowisko = await pool.query('SELECT * FROM stanowiska WHERE nazwa_stanowiska = $1', [nazwa_stanowiska]);
 
-    if (result.rows.length > 0) {
-      res.status(201).json(result.rows[0]); // Zwróć dodane stanowisko
+    if (existingStanowisko.rows.length > 0) {
+      // Jeśli stanowisko już istnieje, zwróć błąd
+      res.status(409).json({ message: 'Stanowisko o podanej nazwie już istnieje' });
     } else {
-      res.status(404).json({ message: 'Nie udało się dodać stanowiska' });
+      // Dodaj nowe stanowisko, ponieważ nie istnieje jeszcze o tej nazwie
+      const result = await pool.query('INSERT INTO stanowiska (nazwa_stanowiska) VALUES ($1) RETURNING *', [nazwa_stanowiska]);
+
+      if (result.rows.length > 0) {
+        res.status(201).json(result.rows[0]); // Zwróć dodane stanowisko
+      } else {
+        res.status(404).json({ message: 'Nie udało się dodać stanowiska' });
+      }
     }
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Wystąpił błąd podczas dodawania stanowiska' });
   }
 });
+
 
 
 app.delete('/delete_kompetencja/:id', async (req, res) => {
@@ -771,18 +790,28 @@ app.post('/add_kompetencja', async (req, res) => {
   const { nazwa_kompetencji } = req.body;
 
   try {
-    const result = await pool.query('INSERT INTO kompetencje (nazwa_kompetencji) VALUES ($1) RETURNING *', [nazwa_kompetencji]);
+    // Sprawdź, czy kompetencja o podanej nazwie już istnieje
+    const existingKompetencja = await pool.query('SELECT * FROM kompetencje WHERE nazwa_kompetencji = $1', [nazwa_kompetencji]);
 
-    if (result.rows.length > 0) {
-      res.status(201).json(result.rows[0]); // Zwróć dodaną kompetencję
+    if (existingKompetencja.rows.length > 0) {
+      // Jeśli kompetencja już istnieje, zwróć błąd
+      res.status(409).json({ message: 'Kompetencja o podanej nazwie już istnieje' });
     } else {
-      res.status(404).json({ message: 'Nie udało się dodać kompetencji' });
+      // Dodaj nową kompetencję, ponieważ nie istnieje jeszcze o tej nazwie
+      const result = await pool.query('INSERT INTO kompetencje (nazwa_kompetencji) VALUES ($1) RETURNING *', [nazwa_kompetencji]);
+
+      if (result.rows.length > 0) {
+        res.status(201).json(result.rows[0]); // Zwróć dodaną kompetencję
+      } else {
+        res.status(404).json({ message: 'Nie udało się dodać kompetencji' });
+      }
     }
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Wystąpił błąd podczas dodawania kompetencji' });
   }
 });
+
 
 app.get('/typy_umow', async (req, res) => {
   try {
@@ -799,12 +828,21 @@ app.post('/add_typ_umowy', async (req, res) => {
   const { nazwa_typu_umowy } = req.body;
 
   try {
-    const result = await pool.query('INSERT INTO typ_umow (nazwa_typu_umowy) VALUES ($1) RETURNING *', [nazwa_typu_umowy]);
+    // Sprawdź, czy typ umowy o podanej nazwie już istnieje
+    const existingTypUmowy = await pool.query('SELECT * FROM typ_umow WHERE nazwa_typu_umowy = $1', [nazwa_typu_umowy]);
 
-    if (result.rows.length > 0) {
-      res.status(201).json(result.rows[0]); // Zwróć dodany typ umowy
+    if (existingTypUmowy.rows.length > 0) {
+      // Jeśli typ umowy już istnieje, zwróć błąd
+      res.status(409).json({ message: 'Typ umowy o podanej nazwie już istnieje' });
     } else {
-      res.status(404).json({ message: 'Nie udało się dodać typu umowy' });
+      // Dodaj nowy typ umowy, ponieważ nie istnieje jeszcze o tej nazwie
+      const result = await pool.query('INSERT INTO typ_umow (nazwa_typu_umowy) VALUES ($1) RETURNING *', [nazwa_typu_umowy]);
+
+      if (result.rows.length > 0) {
+        res.status(201).json(result.rows[0]); // Zwróć dodany typ umowy
+      } else {
+        res.status(404).json({ message: 'Nie udało się dodać typu umowy' });
+      }
     }
   } catch (error) {
     console.error(error);

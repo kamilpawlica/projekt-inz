@@ -61,7 +61,7 @@ const CompetencesManagement = () => {
       });
       return;
     }
-
+  
     try {
       const response = await fetch('http://localhost:5000/add_kompetencja', {
         method: 'POST',
@@ -70,23 +70,31 @@ const CompetencesManagement = () => {
         },
         body: JSON.stringify({ nazwa_kompetencji: newCompetenceName }),
       });
-
+  
       if (!response.ok) {
-        throw new Error('Błąd podczas dodawania kompetencji');
+        if (response.status === 409) {
+          // Wyświetl toast, jeśli kompetencja o danej nazwie już istnieje
+          toast.warning('Kompetencja o podanej nazwie już istnieje', {
+            position: 'top-right',
+            autoClose: 3000,
+          });
+        } else {
+          throw new Error('Błąd podczas dodawania kompetencji');
+        }
+      } else {
+        // Aktualizuj listę kompetencji po dodaniu
+        const newCompetence = await response.json();
+        setCompetences([...competences, newCompetence]);
+  
+        // Wyczyść pole tekstowe po dodaniu
+        setNewCompetenceName('');
+  
+        // Pokaż toast po pomyślnym dodaniu
+        toast.success('Kompetencja została pomyślnie dodana', {
+          position: 'top-right',
+          autoClose: 3000,
+        });
       }
-
-      // Aktualizuj listę kompetencji po dodaniu
-      const newCompetence = await response.json();
-      setCompetences([...competences, newCompetence]);
-
-      // Wyczyść pole tekstowe po dodaniu
-      setNewCompetenceName('');
-
-      // Pokaż toast po pomyślnym dodaniu
-      toast.success('Kompetencja została pomyślnie dodana', {
-        position: 'top-right',
-        autoClose: 3000, // Czas wyświetlania toastu w milisekundach
-      });
     } catch (error) {
       console.error(error);
     }

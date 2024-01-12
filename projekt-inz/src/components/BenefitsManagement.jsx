@@ -74,7 +74,7 @@ const BenefitsManagement = () => {
       });
       return;
     }
-
+  
     try {
       const response = await fetch('http://localhost:5000/add_benefit', {
         method: 'POST',
@@ -83,23 +83,31 @@ const BenefitsManagement = () => {
         },
         body: JSON.stringify({ nazwa_benefitu: newBenefitName }),
       });
-
+  
       if (!response.ok) {
-        throw new Error('Błąd podczas dodawania benefitu');
+        if (response.status === 409) {
+          // Wyświetl toast, jeśli beneficjum o danej nazwie już istnieje
+          toast.warning('Benefit o podanej nazwie już istnieje', {
+            position: 'top-right',
+            autoClose: 3000,
+          });
+        } else {
+          throw new Error('Błąd podczas dodawania benefitu');
+        }
+      } else {
+        // Aktualizuj listę beneficjów po dodaniu
+        const result = await response.json();
+        setBenefits([...benefits, result]);
+  
+        // Wyczyść pole tekstowe po dodaniu
+        setNewBenefitName('');
+  
+        // Pokaż toast po pomyślnym dodaniu
+        toast.success('Benefit został pomyślnie dodany', {
+          position: 'top-right',
+          autoClose: 3000,
+        });
       }
-
-      // Aktualizuj listę benefitów po dodaniu
-      const newBenefit = await response.json();
-      setBenefits([...benefits, newBenefit]);
-
-      // Wyczyść pole tekstowe po dodaniu
-      setNewBenefitName('');
-
-      // Pokaż toast po pomyślnym dodaniu
-      toast.success('Benefit został pomyślnie dodany', {
-        position: 'top-right',
-        autoClose: 3000, // Czas wyświetlania toastu w milisekundach
-      });
     } catch (error) {
       console.error(error);
     }

@@ -70,7 +70,7 @@ const PositionManagement = () => {
       });
       return;
     }
-
+  
     try {
       const response = await fetch('http://localhost:5000/add_stanowisko', {
         method: 'POST',
@@ -79,23 +79,31 @@ const PositionManagement = () => {
         },
         body: JSON.stringify({ nazwa_stanowiska: newPositionName }),
       });
-
+  
       if (!response.ok) {
-        throw new Error('Błąd podczas dodawania stanowiska');
+        if (response.status === 409) {
+          // Wyświetl toast, jeśli stanowisko o danej nazwie już istnieje
+          toast.warning('Stanowisko o podanej nazwie już istnieje', {
+            position: 'top-right',
+            autoClose: 3000,
+          });
+        } else {
+          throw new Error('Błąd podczas dodawania stanowiska');
+        }
+      } else {
+        // Aktualizuj listę stanowisk po dodaniu
+        const newPosition = await response.json();
+        setPositions([...positions, newPosition]);
+  
+        // Wyczyść pole tekstowe po dodaniu
+        setNewPositionName('');
+  
+        // Pokaż toast po pomyślnym dodaniu
+        toast.success('Stanowisko zostało pomyślnie dodane', {
+          position: 'top-right',
+          autoClose: 3000,
+        });
       }
-
-      // Aktualizuj listę stanowisk po dodaniu
-      const newPosition = await response.json();
-      setPositions([...positions, newPosition]);
-
-      // Wyczyść pole tekstowe po dodaniu
-      setNewPositionName('');
-
-      // Pokaż toast po pomyślnym dodaniu
-      toast.success('Stanowisko zostało pomyślnie dodane', {
-        position: 'top-right',
-        autoClose: 3000, // Czas wyświetlania toastu w milisekundach
-      });
     } catch (error) {
       console.error(error);
     }

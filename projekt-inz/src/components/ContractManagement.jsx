@@ -52,29 +52,38 @@ const ContractManagement = () => {
     }
   };
 
-  const handleAddTypUmowy = async () => {
-    if (!newTypUmowy) {
-      // Wyświetl toast, jeśli pole tekstowe jest puste
-      toast.error('Nazwa typu umowy nie może być pusta', {
-        position: 'top-right',
-        autoClose: 3000, // Czas wyświetlania toastu w milisekundach
-      });
-      return;
-    }
 
-    try {
-      const response = await fetch('http://localhost:5000/add_typ_umowy', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ nazwa_typu_umowy: newTypUmowy }),
-      });
 
-      if (!response.ok) {
+const handleAddTypUmowy = async () => {
+  if (!newTypUmowy) {
+    // Wyświetl toast, jeśli pole tekstowe jest puste
+    toast.error('Nazwa typu umowy nie może być pusta', {
+      position: 'top-right',
+      autoClose: 3000,
+    });
+    return;
+  }
+
+  try {
+    const response = await fetch('http://localhost:5000/add_typ_umowy', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ nazwa_typu_umowy: newTypUmowy }),
+    });
+
+    if (!response.ok) {
+      if (response.status === 409) {
+        // Wyświetl toast, jeśli typ umowy o danej nazwie już istnieje
+        toast.warning('Typ umowy o podanej nazwie już istnieje', {
+          position: 'top-right',
+          autoClose: 3000,
+        });
+      } else {
         throw new Error('Błąd podczas dodawania typu umowy');
       }
-
+    } else {
       // Aktualizuj listę typów umów po dodaniu
       const newTypUmowa = await response.json();
       setTypyUmow([...typyUmow, newTypUmowa]);
@@ -85,12 +94,14 @@ const ContractManagement = () => {
       // Pokaż toast po pomyślnym dodaniu
       toast.success('Typ umowy został pomyślnie dodany', {
         position: 'top-right',
-        autoClose: 3000, // Czas wyświetlania toastu w milisekundach
+        autoClose: 3000,
       });
-    } catch (error) {
-      console.error(error);
     }
-  };
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 
   return (
     <div className="contract-management-container">

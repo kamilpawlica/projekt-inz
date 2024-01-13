@@ -16,15 +16,13 @@ const AdminPanel = () => {
     <h1 className="admin-panel-title">Panel administratora</h1>
     <div className="uklad">
       
-        <EmployeeList />
-        <EmployeeAvailability />
-        
+        <EmployeeList />      
         <BenefitsManagement />
         <PositionManagement />
         <CompetencesManagement />
-        <ContractManagement />
-        
+        <ContractManagement />         
         <CourseManagement />
+        <EmployeeAvailability />
         <EmployeeVacations />
         <EmployeeAbsences />
     </div>

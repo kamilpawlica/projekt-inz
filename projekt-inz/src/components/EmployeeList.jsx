@@ -272,6 +272,7 @@ console.log(employees)
                 <th>Nazwisko</th>
                 <th><center>Email</center></th>
                 <th>Stanowisko</th>
+                <th>Typ umowy</th>
                 <th>Kompetencje</th>
                 <th>Benefity</th>
                 <th>Wynagrodzenie</th>
@@ -286,6 +287,7 @@ console.log(employees)
                     <td>{employee.nazwisko}</td>
                     <td>{employee.email}</td>
                     <td><center>{employee.stanowisko}</center></td>
+                    <td><center>{employee.typ_umowy}</center></td>
                     <td><center>{employee.kompetencje.join(", ")}</center></td>
                     <td><center>{employee.benefity.join(", ")}</center></td>
                     <td><center>{employee.wynagrodzenie}</center></td>

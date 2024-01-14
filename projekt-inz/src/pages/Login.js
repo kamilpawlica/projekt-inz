@@ -9,6 +9,9 @@ const Login = () => {
 
   return (
     <Container maxWidth="sm">
+      <Typography variant="h4" component="h1" padding="20px" margin="20px" textAlign="center" gutterBottom style={{ color: 'white' }}>
+          Panel logowania
+          </Typography>
       <Paper elevation={3} className="login" sx={{ padding: 2, backgroundColor: '#333'}}>
         <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="100%">
           <Typography variant="h7" component="h1" gutterBottom sx={{ marginBottom: 2, color: 'white' }}>

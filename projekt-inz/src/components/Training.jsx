@@ -138,7 +138,8 @@ const Training = ({ usersData }) => {
       <ul>
         {availableTrainings.map((training) => (
           <li key={training.id}>
-            <strong>{training.nazwa_szkolenia}</strong>: {training.opis_szkolenia}
+            <strong>{training.nazwa_szkolenia}</strong>: {training.opis_szkolenia} <br/>
+            <strong> Data szkolenia: {new Date(training.data_szkolenia).toLocaleDateString()}</strong>
             <button onClick={() => handleAssignTraining(training.id)}>Weź udział</button>
           </li>
         ))}
@@ -148,7 +149,7 @@ const Training = ({ usersData }) => {
       <ul>
         {assignedTrainings.map((training) => (
           <li key={training.id}>
-            <strong>{training.nazwa_szkolenia}</strong>
+            <strong>{training.nazwa_szkolenia}, data szkolenia: {new Date(training.data_szkolenia).toLocaleDateString()} </strong>
             <button onClick={() => handleCancelTraining(training.id)}>Zrezygnuj</button>
           </li>
         ))}

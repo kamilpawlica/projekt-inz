@@ -30,7 +30,7 @@ const Navbar = ({ user }) => {
               <Typography variant="body2">{user.displayName}</Typography>
             </Box>
             <Button color="inherit" onClick={logout}>
-              Logout
+              Wyloguj
             </Button>
           </Box>
         ) : (

@@ -37,7 +37,17 @@ const EmployeeList = () => {
         return response.json();
       })
       .then(data => {
-        setEmployees(data);
+        // Sortowanie pracowników - Administrator na górze
+        const sortedEmployees = data.sort((a, b) => {
+          const positionA = a.stanowisko || ''; // Obsługa stanowiska null lub undefined
+          const positionB = b.stanowisko || ''; // Obsługa stanowiska null lub undefined
+
+          if (positionA === 'Administrator') return -1;
+          if (positionB === 'Administrator') return 1;
+          return positionA.localeCompare(positionB);
+        });
+
+        setEmployees(sortedEmployees);
         setIsLoading(false);
       })
       .catch(error => {
@@ -274,9 +284,9 @@ console.log(employees)
                 <th>Stanowisko</th>
                 <th>Typ umowy</th>
                 <th>Kompetencje</th>
-                <th>Benefity</th>
+                <th><center>Benefity</center></th>
                 <th>Wynagrodzenie</th>
-                <th><center>Staż pracy</center></th>
+                <th><center>Staż pracy (lata)</center></th>
                 <th><center>Akcje</center></th>
             </tr>
         </thead>
@@ -291,7 +301,7 @@ console.log(employees)
                     <td><center>{employee.kompetencje.join(", ")}</center></td>
                     <td><center>{employee.benefity.join(", ")}</center></td>
                     <td><center>{employee.wynagrodzenie}</center></td>
-                    <td><center>{employee.staz_pracy} lat</center></td>
+                    <td><center>{employee.staz_pracy}</center></td>
                     <td className="action-buttons">
                         <button className="edit-button dwa" onClick={() => handleEditClick(employee)}>
                             {isEditMode && editEmployee && editEmployee.googleid === employee.googleid ? 'Anuluj' : 'Edytuj'}

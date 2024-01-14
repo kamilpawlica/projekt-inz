@@ -86,9 +86,9 @@ const UserPanel = () => {
                 <div className='ukladstrony'>
                 
                 <UserInfo usersData={userData} />
-                <Training usersData={userData} />
-                <Benefits />
                 
+                <Benefits />
+                <Training usersData={userData} />
                 <LeaveForm usersData={userData} />
                 <AvailabilityForm usersData={userData} />
                 <AbsenceForm usersData={userData} />

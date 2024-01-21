@@ -24,17 +24,14 @@ const AbsenceForm = ({ usersData }) => {
     const { data_poczatkowa, data_koncowa, powod } = formData;
 
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Ustaw godzinę na północ, aby porównywać tylko daty
+    today.setHours(0, 0, 0, 0);
 
-    // Sprawdź, czy data początkowa i data końcowa są wcześniejsze niż dzisiaj
     if (new Date(data_poczatkowa) < today || new Date(data_koncowa) < today) {
-      
-      // Wyświetl komunikat o błędzie za pomocą react-toastify
       toast.error(
         "Nie można ustawić nieobecności w dniu wcześniejszym niż dzisiaj.",
         {
           position: "top-right",
-          autoClose: 3000, // Czas wyświetlania komunikatu (3 sekundy)
+          autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -43,15 +40,12 @@ const AbsenceForm = ({ usersData }) => {
       return;
     }
 
-    // Sprawdź, czy data początkowa jest wcześniejsza niż data końcowa
     if (new Date(data_poczatkowa) > new Date(data_koncowa)) {
-      
-      // Wyświetl komunikat o błędzie za pomocą react-toastify
       toast.error(
         "Data początkowa nie może być wcześniejsza niż data końcowa.",
         {
           position: "top-right",
-          autoClose: 3000, // Czas wyświetlania komunikatu (3 sekundy)
+          autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -75,22 +69,18 @@ const AbsenceForm = ({ usersData }) => {
       });
 
       if (response.ok) {
-        // Wyświetl komunikat o sukcesie za pomocą react-toastify
         toast.success("Dane nieobecności zostały dodane pomyślnie.", {
           position: "top-right",
-          autoClose: 3000, // Czas wyświetlania komunikatu (3 sekundy)
+          autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
         });
 
-        // Wyczyść pola formularza i błąd
         setFormData(initialFormData);
         setError("");
-        // Odśwież listę nieobecności
         fetchAbsences();
       } else {
-        // Obsługa błędu, np. wyświetlenie komunikatu o błędzie
         console.error("Błąd podczas dodawania danych nieobecności.");
       }
     } catch (error) {
@@ -108,21 +98,16 @@ const AbsenceForm = ({ usersData }) => {
       );
 
       if (response.ok) {
-        // Wyświetl komunikat o sukcesie za pomocą react-toastify
         toast.success("Nieobecność została usunięta pomyślnie.", {
           position: "top-right",
-          autoClose: 3000, // Czas wyświetlania komunikatu (3 sekundy)
+          autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
         });
 
-        console.log(absenceID);
-
-        // Odśwież listę nieobecności po usunięciu
         fetchAbsences();
       } else {
-        // Obsługa błędu, np. wyświetlenie komunikatu o błędzie
         console.error("Błąd podczas usuwania nieobecności.");
       }
     } catch (error) {
@@ -152,64 +137,81 @@ const AbsenceForm = ({ usersData }) => {
 
   return (
     <div className="absenceForm">
-  <ToastContainer />
-  <h2>Dodaj nieobecność</h2>
-  <form onSubmit={handleSubmit} className="form">
-    {error && <p className="error">{error}</p>}
-    <div className="form-group">
-      <label>Data początkowa:</label>
-      <input className="inputPlace"
-        type="date"
-        name="data_poczatkowa"
-        value={formData.data_poczatkowa}
-        onChange={handleChange}
-        required
-      />
+      <ToastContainer />
+      <h2>Dodaj nieobecność</h2>
+      <form onSubmit={handleSubmit} className="form">
+        {error && <p className="error">{error}</p>}
+        <div className="form-group">
+          <label>Data początkowa:</label>
+          <input
+            className="inputPlace"
+            type="date"
+            name="data_poczatkowa"
+            value={formData.data_poczatkowa}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label>Data końcowa:</label>
+          <input
+            className="inputPlace"
+            type="date"
+            name="data_koncowa"
+            value={formData.data_koncowa}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label>Powód:</label>
+          <input
+            className="inputPlace"
+            type="text"
+            name="powod"
+            value={formData.powod}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <button type="submit">Dodaj nieobecność</button>
+        </div>
+      </form>
+      {absences.length > 0 && (
+        <div className="absences">
+          <h3 className="h3settings">Twoje nieobecności:</h3>
+          <table className="availability-table">
+            <thead>
+              <tr>
+                <th><center>Data początkowa</center></th>
+                <th><center>Data końcowa</center></th>
+                <th><center>Powód</center></th>
+                <th><center>Akcje</center></th>
+              </tr>
+            </thead>
+            <tbody>
+              {absences.map((absence) => (
+                <tr key={absence.id} className="employee-row">
+                  <td>
+                    {new Date(absence.data_poczatkowa).toLocaleDateString()}
+                  </td>
+                  <td>
+                    {new Date(absence.data_koncowa).toLocaleDateString()}
+                  </td>
+                  <td>{absence.powod}</td>
+                  <td>
+                    <button onClick={() => handleDeleteAbsence(absence.id)}>
+                      Usuń
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
-    <div className="form-group">
-      <label>Data końcowa:</label>
-      <input className="inputPlace"
-        type="date"
-        name="data_koncowa"
-        value={formData.data_koncowa}
-        onChange={handleChange}
-        required
-      />
-    </div>
-    <div className="form-group">
-      <label>Powód:</label>
-      <input className="inputPlace"
-        type="text"
-        name="powod"
-        value={formData.powod}
-        onChange={handleChange}
-        required
-      />
-    </div>
-    <div className="form-group">
-      <button type="submit">Dodaj nieobecność</button>
-    </div>
-  </form>
-  {absences.length > 0 && (
-    <div className="absences">
-      <h3>Twoje nieobecności:</h3>
-      <ul>
-        {absences.map((absence) => (
-          <li key={absence.id}>
-            Data początkowa:{" "}
-            {new Date(absence.data_poczatkowa).toLocaleDateString()}, Data
-            końcowa: {new Date(absence.data_koncowa).toLocaleDateString()},
-            Powód: {absence.powod}
-            <button onClick={() => handleDeleteAbsence(absence.id)}>
-              Usuń
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
-  )}
-</div>
-
   );
 };
 

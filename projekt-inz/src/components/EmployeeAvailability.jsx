@@ -47,7 +47,7 @@ const EmployeeAvailability = () => {
             <tr>
                 <th>Imię</th>
                 <th>Nazwisko</th>
-                <th>Email</th>
+                <th><center>Email</center></th>
                 <th>Dostępności</th>
             </tr>
         </thead>

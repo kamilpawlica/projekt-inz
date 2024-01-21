@@ -37,8 +37,11 @@ const EmployeeList = () => {
         return response.json();
       })
       .then(data => {
+
+        // Filtruj pracowników, zostawiając tylko tych, których pole "aktywny" wynosi "tak"
+       const activeEmployees = data.filter(employee => employee.aktywny === 'tak');
         // Sortowanie pracowników - Administrator na górze
-        const sortedEmployees = data.sort((a, b) => {
+        const sortedEmployees = activeEmployees.sort((a, b) => {
           const positionA = a.stanowisko || ''; // Obsługa stanowiska null lub undefined
           const positionB = b.stanowisko || ''; // Obsługa stanowiska null lub undefined
 
@@ -215,44 +218,46 @@ const EmployeeList = () => {
         }
     };
 
-    const handleDeleteEmployee = async (googleid, employeeName) => {
+    const handleMarkAsInactive = async (googleid, employeeName) => {
       // Wyświetlenie monitu SweetAlert2
       const result = await Swal.fire({
-        title: `Czy na pewno chcesz usunąć pracownika ${employeeName}?`,
+        title: `Czy na pewno chcesz oznaczyć pracownika ${employeeName} jako nieaktywnego?`,
         text: "Tej operacji nie można cofnąć!",
         background: '#333',
         color: '#fff',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Tak, usuń!',
+        confirmButtonText: 'Tak',
         cancelButtonText: 'Anuluj'
       });
     
       if (result.isConfirmed) {
         try {
-          const response = await fetch(`http://localhost:5000/delete-employee/${googleid}`, {
-            method: 'DELETE',
+          const response = await fetch(`http://localhost:5000/zmien_status_pracownika/${googleid}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ aktywny: 'nie' }),
           });
     
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
     
-          // Informowanie o pomyślnym usunięciu
+          // Informowanie o pomyślnym oznaczeniu jako nieaktywny
           Swal.fire({
-            title: 'Usunięto!',
-            text: 'Pracownik został usunięty pomyślnie.',
+            title: 'Oznaczono!',
+            text: 'Pracownik został oznaczony jako nieaktywny pomyślnie.',
             background: '#333',
             color: '#fff',
             confirmButtonColor: '#3085d6'
           });
           fetchEmployees(); // Odświeżanie listy pracowników
         } catch (error) {
-          console.error('Error deleting employee:', error);
+          console.error('Error marking employee as inactive:', error);
           Swal.fire(
             'Błąd!',
-            'Nie udało się usunąć pracownika.',
+            'Nie udało się oznaczyć pracownika jako nieaktywnego.',
             'error'
           );
         }
@@ -274,7 +279,7 @@ console.log(employees)
     return (
     <div className="employee-availability-container">
     <ToastContainer position="top-right" autoClose={5000} hideProgressBar newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
-    <h2 className='h2emplo'>Lista Pracowników</h2>
+    <h2 className='h2emplo'>Lista aktywnych pracowników</h2>
     <table className="availability-table">
         <thead>
             <tr>
@@ -315,9 +320,9 @@ console.log(employees)
                         {employee.stanowisko !== "Administrator" && (
          <button 
          className="delete-button dwa" 
-         onClick={() => handleDeleteEmployee(employee.googleid, `${employee.imie} ${employee.nazwisko}`)}
+         onClick={() => handleMarkAsInactive(employee.googleid, `${employee.imie} ${employee.nazwisko}`)}
        >
-         Usuń pracownika
+         Oznacz jako nieaktywnego
        </button>
         )}
                     </td>

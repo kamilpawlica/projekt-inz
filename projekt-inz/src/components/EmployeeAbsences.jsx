@@ -37,7 +37,7 @@ const EmployeeAbsences = () => {
           <tr>
             <th>Imię</th>
             <th>Nazwisko</th>
-            <th>Email</th>
+            <th><center>Email</center></th>
             <th>Data Początkowa</th>
             <th>Data Końcowa</th>
             <th>Powód</th>

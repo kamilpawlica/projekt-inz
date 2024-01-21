@@ -105,7 +105,7 @@ const handleAddTypUmowy = async () => {
 
   return (
     <div className="contract-management-container">
-    <h2 className="contract-title">Zarządzanie Umowami</h2>
+    <h2 className="contract-title">Zarządzanie umowami</h2>
     <table className="contract-table">
         <thead>
             <tr>

@@ -134,26 +134,49 @@ const Training = ({ usersData }) => {
     <div className="trainingList">
       <ToastContainer />
       <h2>Lista dostępnych szkoleń</h2>
-      {error && <p className="error">{error}</p>}
-      <ul>
-        {availableTrainings.map((training) => (
-          <li key={training.id}>
-            <strong>{training.nazwa_szkolenia}</strong>: {training.opis_szkolenia} <br/>
-            <strong> Data szkolenia: {new Date(training.data_szkolenia).toLocaleDateString()}</strong>
-            <button onClick={() => handleAssignTraining(training.id)}>Weź udział</button>
-          </li>
-        ))}
-      </ul>
+{error && <p className="error">{error}</p>}
+<table className="availability-table">
+  <thead>
+    <tr>
+      <th><center>Nazwa szkolenia</center></th>
+      <th><center>Data szkolenia</center></th>
+      <th><center>Akcje</center></th>
+    </tr>
+  </thead>
+  <tbody>
+    {availableTrainings.map((training) => (
+      <tr key={training.id} className="employee-row">
+        <td>{training.nazwa_szkolenia}</td>
+        <td>{new Date(training.data_szkolenia).toLocaleDateString()}</td>
+        <td>
+          <button className="trainingBtn2"  onClick={() => handleAssignTraining(training.id)}>Zapisz</button>
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
 
-      <h2>Twoje przypisane szkolenia</h2>
-      <ul>
-        {assignedTrainings.map((training) => (
-          <li key={training.id}>
-            <strong>{training.nazwa_szkolenia}, data szkolenia: {new Date(training.data_szkolenia).toLocaleDateString()} </strong>
-            <button onClick={() => handleCancelTraining(training.id)}>Zrezygnuj</button>
-          </li>
-        ))}
-      </ul>
+      <h3>Twoje przypisane szkolenia</h3>
+      <table className="availability-table">
+        <thead>
+          <tr>
+            <th><center>Nazwa szkolenia</center></th>
+            <th><center>Data szkolenia</center></th>
+            <th><center>Akcje</center></th>
+          </tr>
+        </thead>
+        <tbody>
+          {assignedTrainings.map((training) => (
+            <tr key={training.id} className="employee-row">
+              <td>{training.nazwa_szkolenia}</td>
+              <td>{new Date(training.data_szkolenia).toLocaleDateString()}</td>
+              <td>
+                <button className="trainingBtn" onClick={() => handleCancelTraining(training.id)}>Zrezygnuj</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

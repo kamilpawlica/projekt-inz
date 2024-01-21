@@ -206,22 +206,32 @@ const AvailabilityForm = ({ usersData }) => {
     </form>
     {availability.length > 0 && (
       <div className="availabilityList">
-        <h3>Twoja dostępność:</h3>
-        <ul>
+      <h3 className="h3settings">Twoja dostępność:</h3>
+      <table className="availability-table">
+        <thead>
+          <tr>
+            <th><center> Data </center></th>
+            <th><center> Godzina rozpoczęcia</center></th>
+            <th><center>Godzina zakończenia</center></th>
+            <th><center>Akcje</center></th>
+          </tr>
+        </thead>
+        <tbody>
           {availability.map((available) => (
-            <li key={available.id}>
-              Data: {new Date(available.dzien_tygodnia).toLocaleDateString("pl-PL", { day: "2-digit", month: "2-digit", year: "numeric", weekday: "long" })}
-              <br />
-              Godzina rozpoczęcia: {available.godzina_rozpoczecia}, Godzina zakończenia: {available.godzina_zakonczenia}
-              <button
-                onClick={() => handleDeleteAvailability(available.id)}
-              >
-                Usuń
-              </button>
-            </li>
+            <tr key={available.id} className="employee-row">
+              <td>{new Date(available.dzien_tygodnia).toLocaleDateString("pl-PL", { day: "2-digit", month: "2-digit", year: "numeric", weekday: "long" })}</td>
+              <td>{available.godzina_rozpoczecia}</td>
+              <td>{available.godzina_zakonczenia}</td>
+              <td>
+                <button onClick={() => handleDeleteAvailability(available.id)}>
+                  Usuń
+                </button>
+              </td>
+            </tr>
           ))}
-        </ul>
-      </div>
+        </tbody>
+      </table>
+    </div>
     )}
   </div>
 )}

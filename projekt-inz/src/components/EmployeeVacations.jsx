@@ -37,7 +37,7 @@ const EmployeeVacations = () => {
           <tr>
             <th>Imię</th>
             <th>Nazwisko</th>
-            <th>Email</th>
+            <th><center>Email</center></th>
             <th>Data Rozpoczęcia Urlopu</th>
             <th>Data Zakończenia Urlopu</th>
           </tr>

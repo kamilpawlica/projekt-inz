@@ -74,28 +74,24 @@ const UserPanel = () => {
     return (
         <div className='wrapperUserPanel'>
             <div className="headerxd"> 
-            
-            <h1 className='mainHeader'>Panel pracownika <br/></h1>
-            <h2 className='secondHeader'>Witaj, {userData.imie} <br/></h2>
-            
-            
-            
+                <h1 className='mainHeader'>Panel pracownika <br/></h1>
+                <h2 className='secondHeader'>Witaj, {userData.imie} <br/></h2>
+                {userData.aktywny === 'nie' && (
+                    <p className="inactiveMessage">Nie jesteś aktywnym pracownikiem firmy.</p>
+                )}
             </div>
-            
-            {userData ? (
-                <div className='ukladstrony'>
-                
-                <UserInfo usersData={userData} />
-                
-                <Benefits />
-                <Training usersData={userData} />
-                <LeaveForm usersData={userData} />
-                <AvailabilityForm usersData={userData} />
-                <AbsenceForm usersData={userData} />
-                   
-                </div>
+    
+            {userData.aktywny === 'nie' ? (
+                null // Jeżeli pracownik nie jest aktywny, nie renderuj żadnych komponentów
             ) : (
-                <p>Użytkownik nie znaleziony.</p>
+                <div className='ukladstrony'>
+                    <UserInfo usersData={userData} />
+                    <Benefits />
+                    <Training usersData={userData} />
+                    <LeaveForm usersData={userData} />
+                    <AvailabilityForm usersData={userData} />
+                    <AbsenceForm usersData={userData} />
+                </div>
             )}
         </div>
     );

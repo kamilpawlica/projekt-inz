@@ -159,6 +159,15 @@
   cursor: pointer;
 }
 
+.trainingBtn2 {
+  padding: 10px ;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 .error {
   color: red;
 }
@@ -188,10 +197,21 @@
   margin-left: 0.5rem
 }
 
+.trainingBtn {
+  padding: 5px 10px;
+  background-color: #ff0000;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin-left: 0.5rem
+}
+
 
 .absencesList h3 {
   font-size: 20px;
   margin-top: 20px;
+  
 }
 
 .absencesList ul {
@@ -272,6 +292,10 @@
   margin-top: 20px;
 }
 
+.h3settings {
+  margin-bottom: 20px;
+}
+
 .availabilityList ul {
   list-style: none;
   padding: 0;
@@ -293,6 +317,13 @@
 }
 
 
+.availability-table2 {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  
+}
+
 .trainingList {
   display: flex;
   flex-direction: column;
@@ -311,6 +342,13 @@
   font-size: 24px;
   margin-bottom: 20px;
 }
+
+.trainingList h3 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  margin-top: 40px;
+}
+
 
 .error {
   color: red;

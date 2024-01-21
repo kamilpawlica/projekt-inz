@@ -1048,7 +1048,8 @@ app.get('/pracownicy_lista', async (req, res) => {
               array_agg(distinct k.nazwa_kompetencji) as kompetencje, 
               array_agg(distinct b.nazwa_benefitu) as benefity, 
               p.wynagrodzenie,
-              p.staz_pracy
+              p.staz_pracy,
+              p.aktywny
           FROM 
               pracownicy p
           LEFT JOIN stanowiska s ON p.stanowisko = s.id
@@ -1107,6 +1108,20 @@ app.put('/aktualizuj_pracownika/:googleid', async (req, res) => {
       res.status(500).send('Błąd podczas aktualizacji pracownika.');
   }
 });
+
+app.put('/zmien_status_pracownika/:googleid', async (req, res) => {
+  const googleid = req.params.googleid;
+  const { aktywny } = req.body;
+
+  try {
+    await pool.query('UPDATE pracownicy SET aktywny = $1 WHERE googleid = $2', [aktywny, googleid]);
+    res.status(200).send('Status pracownika zaktualizowany pomyślnie.');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Błąd podczas aktualizacji statusu pracownika.');
+  }
+});
+
 
 
 

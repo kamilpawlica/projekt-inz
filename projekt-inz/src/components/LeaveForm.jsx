@@ -11,8 +11,8 @@ const LeaveForm = ({ usersData }) => {
   const [formData, setFormData] = useState(initialFormData);
   const [error, setError] = useState("");
   const [absences, setAbsences] = useState([]);
-  const [usedDays, setUsedDays] = useState(0); // Licznik wykorzystanych dni urlopu
-  const maxLeaveDays = usersData.staz_pracy >= 10 ? 26 : 20; // Maksymalna liczba dni urlopu
+  const [usedDays, setUsedDays] = useState(0);
+  const maxLeaveDays = usersData.staz_pracy >= 10 ? 26 : 20;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,9 +25,8 @@ const LeaveForm = ({ usersData }) => {
     const { data_rozpoczecia, data_zakonczenia } = formData;
 
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Ustaw godzinę na północ, aby porównywać tylko daty
+    today.setHours(0, 0, 0, 0);
 
-    // Walidacja dat
     if (new Date(data_rozpoczecia) < today || new Date(data_zakonczenia) < today) {
       toast.error("Nie można ustawić dni urlopowych w dniu wcześniejszym niż dzisiaj.", {
         position: "top-right",
@@ -66,7 +65,6 @@ const LeaveForm = ({ usersData }) => {
       return;
     }
 
-    // Logika dodawania urlopu
     try {
       const response = await fetch("http://localhost:5000/insert-leave", {
         method: "POST",
@@ -111,22 +109,17 @@ const LeaveForm = ({ usersData }) => {
       );
 
       if (response.ok) {
-        // Wyświetl komunikat o sukcesie za pomocą react-toastify
         toast.success("Dni urlopowe zostały usunięte pomyślnie.", {
           position: "top-right",
-          autoClose: 3000, // Czas wyświetlania komunikatu (3 sekundy)
+          autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
         });
 
-        // Zaktualizuj licznik wykorzystanych dni urlopu po usunięciu
         setUsedDays(usedDays - daysDiff);
-
-        // Odśwież listę nieobecności
         fetchAbsences();
       } else {
-        // Obsługa błędu, np. wyświetlenie komunikatu o błędzie
         console.error("Błąd podczas usuwania dni urlopowych.");
       }
     } catch (error) {
@@ -146,17 +139,16 @@ const LeaveForm = ({ usersData }) => {
       const data = await response.json();
       setAbsences(data);
 
-      // Oblicz całkowitą liczbę wykorzystanych dni urlopu
       let totalUsedDays = 0;
-      data.forEach(absence => {
+      data.forEach((absence) => {
         const startDate = new Date(absence.data_rozpoczecia);
         const endDate = new Date(absence.data_zakonczenia);
-        const daysDiff = Math.round((endDate - startDate) / (24 * 60 * 60 * 1000)) + 1;
+        const daysDiff =
+          Math.round((endDate - startDate) / (24 * 60 * 60 * 1000)) + 1;
         totalUsedDays += daysDiff;
       });
 
       setUsedDays(totalUsedDays);
-
     } catch (error) {
       console.error("Błąd podczas pobierania urlopu pracownika:", error);
     }
@@ -167,23 +159,27 @@ const LeaveForm = ({ usersData }) => {
   }, [usersData.googleid]);
 
   if (usersData.typ_umowy !== 1) {
-    return <div className="absenceForm">
-      <h2>Zaplanuj urlop</h2>
-      Urlop przysługuje pracownikom posiadającym umowę o pracę.
-    </div>;
+    return (
+      <div className="absenceForm">
+        <h2>Zaplanuj urlop</h2>
+        Urlop przysługuje pracownikom posiadającym umowę o pracę.
+      </div>
+    );
   }
-
 
   return (
     <div className="absenceForm">
       <ToastContainer />
       <h2>Zaplanuj urlop</h2>
-      <p>Dostępne dni urlopu: {maxLeaveDays - usedDays} / {maxLeaveDays}</p>
+      <p>
+        Dostępne dni urlopu: {maxLeaveDays - usedDays} / {maxLeaveDays}
+      </p>
       <form onSubmit={handleSubmit} className="form">
         {error && <p className="error">{error}</p>}
         <div className="form-group">
           <label>Data początkowa:</label>
-          <input className="inputPlace"
+          <input
+            className="inputPlace"
             type="date"
             name="data_rozpoczecia"
             value={formData.data_rozpoczecia}
@@ -193,7 +189,8 @@ const LeaveForm = ({ usersData }) => {
         </div>
         <div className="form-group">
           <label>Data końcowa:</label>
-          <input className="inputPlace"
+          <input
+            className="inputPlace"
             type="date"
             name="data_zakonczenia"
             value={formData.data_zakonczenia}
@@ -207,32 +204,46 @@ const LeaveForm = ({ usersData }) => {
       </form>
       {absences.length > 0 && (
         <div className="absences">
-          <h3>Twoje nieobecności:</h3>
-          <ul>
-            {absences.map((absence) => (
-              <li key={absence.id}>
-                Data początkowa:{" "}
-                {new Date(absence.data_rozpoczecia).toLocaleDateString()}, Data
-                końcowa: {new Date(absence.data_zakonczenia).toLocaleDateString()}
-                <button
-                  onClick={() =>
-                    handleDeleteAbsence(
-                      absence.id,
-                      Math.round(
-                        Math.abs(
-                          (new Date(absence.data_rozpoczecia) -
-                            new Date(absence.data_zakonczenia)) /
-                            (24 * 60 * 60 * 1000)
+          <h3 className="h3settings">Twoje nieobecności:</h3>
+          <table className="availability-table">
+            <thead>
+              <tr>
+                <th><center>Data początkowa</center></th>
+                <th><center>Data końcowa</center></th>
+                <th><center>Akcje</center></th>
+              </tr>
+            </thead>
+            <tbody>
+              {absences.map((absence) => (
+                <tr key={absence.id} className="employee-row">
+                  <td>
+                    {new Date(absence.data_rozpoczecia).toLocaleDateString()}
+                  </td>
+                  <td>
+                    {new Date(absence.data_zakonczenia).toLocaleDateString()}
+                  </td>
+                  <td>
+                    <button
+                      onClick={() =>
+                        handleDeleteAbsence(
+                          absence.id,
+                          Math.round(
+                            Math.abs(
+                              (new Date(absence.data_rozpoczecia) -
+                                new Date(absence.data_zakonczenia)) /
+                                (24 * 60 * 60 * 1000)
+                            )
+                          )
                         )
-                      )
-                    )
-                  }
-                >
-                  Usuń
-                </button>
-              </li>
-            ))}
-          </ul>
+                      }
+                    >
+                      Usuń
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
     </div>

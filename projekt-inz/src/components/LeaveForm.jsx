@@ -55,7 +55,7 @@ const LeaveForm = ({ usersData }) => {
     const daysDiff = Math.round(Math.abs((endDate - startDate) / oneDay)) + 1;
 
     if (usedDays + daysDiff > maxLeaveDays) {
-      toast.error(`Przekroczyłeś limit ${maxLeaveDays} dni urlopu.`, {
+      toast.error(`Limit ${maxLeaveDays} dni urlopu został przekroczony.`, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,

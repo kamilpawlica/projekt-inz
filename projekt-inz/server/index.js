@@ -6,15 +6,10 @@ const passport = require("passport");
 const authRoute = require("./routes/auth");
 const app = express();
 const bodyParser = require('body-parser');
-const Pool = require("pg").Pool;
-const pool = new Pool ({
-    user: "postgres",
-    password: "admin",
-    host:  "localhost",
-    port: 5432,
-    database: "zarzadzanie"
-});
+const { Pool } = require('pg');
+const dbConfig = require('./db/dbconfig');
 
+const pool = new Pool(dbConfig);
 
 app.use(
   cookieSession({ name: "session", keys: ["lama"], maxAge: 24 * 60 * 60 * 100 })

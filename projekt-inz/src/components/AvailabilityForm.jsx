@@ -66,7 +66,7 @@ const AvailabilityForm = ({ usersData }) => {
       return;
     }
 
-    // Tutaj możesz dodać dodatkową walidację danych wejściowych, jeśli jest to wymagane
+    
 
     try {
       const response = await fetch("http://localhost:5000/insert-availability", {
@@ -98,7 +98,7 @@ const AvailabilityForm = ({ usersData }) => {
         // Odśwież listę dostępności
         fetchAvailability();
       } else {
-        // Obsługa błędu, np. wyświetlenie komunikatu o błędzie
+        // Obsługa błędu
         console.error("Błąd podczas dodawania danych dostępności.");
       }
     } catch (error) {
@@ -128,7 +128,7 @@ const AvailabilityForm = ({ usersData }) => {
         // Odśwież listę dostępności po usunięciu
         fetchAvailability();
       } else {
-        // Obsługa błędu, np. wyświetlenie komunikatu o błędzie
+        // Obsługa błędu
         console.error("Błąd podczas usuwania dostępności.");
       }
     } catch (error) {

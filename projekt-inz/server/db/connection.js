@@ -20,11 +20,11 @@ const addUserToDatabase = async (userData) => {
         [google_id, first_name, last_name, email, isEmpty ? 11 : null]
       );
     } else {
-      // Użytkownik już istnieje, możesz zaktualizować dane lub nic nie robić
+      //Istnieje
     }
   } catch (err) {
     console.error('Error adding user to database:', err);
-    // Tutaj możesz obsłużyć błąd dodawania użytkownika do bazy danych
+    
   }
 };
 

@@ -250,7 +250,7 @@ app.post('/insert-leave', async (req, res) => {
   try {
     const { googleid, data_rozpoczecia, data_zakonczenia } = req.body;
 
-    // Tutaj możesz dodać walidację danych wejściowych, jeśli jest to wymagane
+    
 
     // Wstawienie danych do tabeli 'urlopy'
     const queryText = `
@@ -324,7 +324,7 @@ app.post('/insert-availability', async (req, res) => {
   try {
     const { googleid, dzien_tygodnia, godzina_rozpoczecia, godzina_zakonczenia } = req.body;
 
-    // Tutaj możesz dodać walidację danych wejściowych, jeśli jest to wymagane
+    
 
     // Wstawienie danych do tabeli 'dostepnosc'
     const queryText = `
@@ -540,7 +540,7 @@ app.post('/insert-training', async (req, res) => {
   try {
     const { nazwa_szkolenia, opis_szkolenia, data_szkolenia } = req.body;
 
-    // Tutaj możesz dodać walidację danych wejściowych, jeśli jest to wymagane
+    
 
     // Wstawienie danych do tabeli 'szkolenia'
     const queryText = `
@@ -563,7 +563,7 @@ app.post('/assign-training', async (req, res) => {
   try {
     const { googleid, id_szkolenia } = req.body;
 
-    // Tutaj możesz dodać walidację danych wejściowych, jeśli jest to wymagane
+    
 
     // Przypisanie pracownika do szkolenia w tabeli 'szkolenia_pracownicy'
     const queryText = `
@@ -1000,7 +1000,7 @@ app.put('/zmien_wynagrodzenie/:googleid', async (req, res) => {
 app.put('/zmien_stanowisko/:googleid', async (req, res) => {
   try {
     const { googleid } = req.params;
-    const { noweStanowiskoId } = req.body; // Zakładam, że przesyłasz ID nowego stanowiska
+    const { noweStanowiskoId } = req.body; 
 
     // Sprawdzamy, czy pracownik istnieje
     const checkEmployeeQuery = 'SELECT * FROM pracownicy WHERE googleid = $1';

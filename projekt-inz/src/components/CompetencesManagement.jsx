@@ -44,7 +44,7 @@ const CompetencesManagement = () => {
       });
     } catch (error) {
       console.error(error);
-      // Możesz także dodać ogólny toast na wypadek innych błędów
+      
       toast.error('Nie można usunąć kompetencji, która jest przypisana do pracownika', {
         position: 'top-right',
         autoClose: 3000,

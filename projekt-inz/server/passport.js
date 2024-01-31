@@ -15,7 +15,7 @@ passport.use(
       
     },
     async function (accessToken, refreshToken, profile, done) {
-      console.log(profile.emails[0].value,); // Dodaj tę linię
+      console.log(profile.emails[0].value,); 
       // google profile to database
       
       const userData = {

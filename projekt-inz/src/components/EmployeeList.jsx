@@ -274,7 +274,7 @@ const EmployeeList = () => {
         return <div>Error: {error}</div>;
     }
 
-console.log(employees)
+
 
     return (
     <div className="employee-availability-container">

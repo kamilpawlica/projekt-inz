@@ -430,11 +430,6 @@ COPY public.benefity (id, nazwa_benefitu) FROM stdin;
 --
 
 COPY public.benefity_pracownicy (googleid, id_benefitu) FROM stdin;
-113083158635999511252	23
-101154786872241107978	25
-101154786872241107978	23
-114367897837011570772	23
-114367897837011570772	24
 \.
 
 
@@ -443,9 +438,6 @@ COPY public.benefity_pracownicy (googleid, id_benefitu) FROM stdin;
 --
 
 COPY public.dostepnosc (id, googleid, dzien_tygodnia, godzina_rozpoczecia, godzina_zakonczenia) FROM stdin;
-46	101154786872241107978	2024-02-05	08:00:00	13:00:00
-47	101154786872241107978	2024-02-06	12:00:00	17:30:00
-48	101154786872241107978	2024-02-08	08:00:00	11:15:00
 \.
 
 
@@ -466,10 +458,6 @@ COPY public.kompetencje (id, nazwa_kompetencji) FROM stdin;
 --
 
 COPY public.kompetencje_pracownicy (googleid, kompetencje) FROM stdin;
-113083158635999511252	12
-113083158635999511252	11
-101154786872241107978	13
-114367897837011570772	10
 \.
 
 
@@ -478,10 +466,6 @@ COPY public.kompetencje_pracownicy (googleid, kompetencje) FROM stdin;
 --
 
 COPY public.nieobecnosci (id, googleid, data_poczatkowa, data_koncowa, powod) FROM stdin;
-63	101154786872241107978	2024-02-24	2024-03-27	Choroba
-64	101154786872241107978	2024-03-01	2024-03-01	Rozprawa sądowa
-66	114367897837011570772	2024-02-29	2024-02-29	Badanie kontrolne
-67	114367897837011570772	2024-02-16	2024-02-16	Wizyta stomatologiczna
 \.
 
 
@@ -490,9 +474,6 @@ COPY public.nieobecnosci (id, googleid, data_poczatkowa, data_koncowa, powod) FR
 --
 
 COPY public.pracownicy (googleid, imie, nazwisko, email, stanowisko, typ_umowy, wynagrodzenie, staz_pracy, aktywny) FROM stdin;
-101154786872241107978	Jan	Kowalski	pracowniksystemu1@gmail.com	19	2	5000.00	2	tak
-114367897837011570772	Anna	Nowak	pracowniksystemu2@gmail.com	19	1	4500.00	3	tak
-113083158635999511252	Kamil	Pawlica	kamilpawlica99@gmail.com	11	1	9000.00	7	tak
 \.
 
 
@@ -524,9 +505,6 @@ COPY public.szkolenia (id, nazwa_szkolenia, opis_szkolenia, data_szkolenia) FROM
 --
 
 COPY public.szkolenia_pracownicy (googleid, id_szkolenia) FROM stdin;
-101154786872241107978	18
-114367897837011570772	16
-114367897837011570772	17
 \.
 
 
@@ -547,9 +525,6 @@ COPY public.typ_umow (id, nazwa_typu_umowy) FROM stdin;
 --
 
 COPY public.urlopy (id, googleid, data_rozpoczecia, data_zakonczenia) FROM stdin;
-3	\N	2023-12-29	2023-12-30
-44	114367897837011570772	2024-06-10	2024-06-23
-45	114367897837011570772	2024-07-11	2024-07-14
 \.
 
 
@@ -585,7 +560,7 @@ SELECT pg_catalog.setval('public.nieobecnosci_id_seq', 67, true);
 -- Name: stanowiska_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.stanowiska_id_seq', 20, true);
+SELECT pg_catalog.setval('public.stanowiska_id_seq', 21, true);
 
 
 --
